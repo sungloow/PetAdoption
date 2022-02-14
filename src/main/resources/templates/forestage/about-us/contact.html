@@ -1,0 +1,262 @@
+﻿<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Petco - Pet Protection & Adoption</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="shortcut icon" type="image/x-icon" href="img/favicon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+        <!-- CSS here -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/animate.min.css">
+        <link rel="stylesheet" href="../css/magnific-popup.css">
+        <link rel="stylesheet" href="../css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="../css/owl.carousel.min.css">
+        <link rel="stylesheet" href="../css/nice-select.css">
+        <link rel="stylesheet" href="../css/flaticon.css">
+        <link rel="stylesheet" href="../css/odometer.css">
+        <link rel="stylesheet" href="../css/jquery-ui.css">
+        <link rel="stylesheet" href="../css/slick.css">
+        <link rel="stylesheet" href="../css/default.css">
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/responsive.css">
+    </head>
+    <body>
+
+        <!-- Preloader -->
+        <div th:replace="~{../templates/forestage/commons::commonPreloader}"></div>
+        <!-- Preloader-end -->
+
+		<!-- Scroll-top -->
+        <button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
+        <!-- Scroll-top-end-->
+
+        <!-- header-area -->
+        <header th:replace="~{../templates/forestage/commons::commonHeader('about-us')}"></header>
+        <!-- header-area-end -->
+
+
+        <!-- main-area -->
+        <main>
+
+            <!-- breadcrumb-area -->
+            <section class="breadcrumb-area breadcrumb-bg" data-background="img/bg/breadcrumb_bg.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="breadcrumb-content">
+                                <h2 class="title">联系我们</h2>
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- breadcrumb-area-end -->
+
+            <!-- contact-area -->
+            <section class="contact-area pt-110 pb-110">
+                <div class="container">
+                    <div class="container-inner-wrap">
+                        <div class="row justify-content-center justify-content-lg-between">
+                            <div class="col-lg-6 col-md-8 order-2 order-lg-0">
+                                <div class="contact-title mb-20">
+                                    <h5 class="sub-title">联系我们</h5>
+                                    <h2 class="title">Let's Talk Question<span>.</span></h2>
+                                </div>
+                                <div class="contact-wrap-content">
+                                    <p>请告知我们您联系服务中心的理由，您的问题将会被发送至适合的团体。
+                                        如果您的问题与下列目录无关， 请选择“一般性问题”作为您的理由。
+                                    </p>
+                                    <form action="#" class="contact-form">
+                                        <div class="form-grp">
+                                            <label for="name">姓名 <span>*</span></label>
+                                            <input type="text" id="name" placeholder="Jon Deo...">
+                                        </div>
+                                        <div class="form-grp">
+                                            <label for="email">邮箱 <span>*</span></label>
+                                            <input type="text" id="email" placeholder="info.example@.com">
+                                        </div>
+                                        <div class="form-grp">
+                                            <label for="email">手机号 <span>*</span></label>
+                                            <input type="text" id="phone" placeholder="130****5543">
+                                        </div>
+                                        <div class="form-grp">
+                                            <label for="categories">类别 <span>*</span></label>
+                                            <select name="categories" id="categories"  class="form-control dropdown-toggle">
+                                                <option value="">一般性问题</option>
+                                                <option value="">领养</option>
+                                                <option value="">快乐领养故事</option>
+                                                <option value="">志愿者工作</option>
+                                                <option value="">服务投诉</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-grp">
+                                            <label for="message">信息 <span>*</span></label>
+                                            <textarea name="message" id="message" placeholder="Opinion..."></textarea>
+                                        </div>
+<!--                                        <div class="fieldset-wrapper">
+
+
+
+  <div class="js-form-item js-form-type-textfield form-type-textfield js-form-item-pet-s-name form-item-pet-s-name form-group">
+          <label for="edit-pet-s-name">宠物姓名</label>
+
+
+
+  <input data-drupal-selector="edit-pet-s-name" data-msg-maxlength="宠物姓名 field has a maximum length of 255." type="text" id="edit-pet-s-name" name="pet_s_name" value="" size="60" maxlength="255" class="form-text form-control" aria-invalid="false">
+
+                  </div>
+
+
+
+  <div class="js-webform-states-hidden js-form-item js-form-type-textfield form-type-textfield js-form-item-license-number form-item-license-number form-group" style="display: none;">
+          <label for="edit-license-number">许可证号码</label>
+
+
+
+  <input data-drupal-selector="edit-license-number" data-msg-maxlength="许可证号码 field has a maximum length of 255." type="text" id="edit-license-number" name="license_number" value="" size="60" maxlength="255" class="form-text form-control" data-drupal-states="{&quot;visible&quot;:[{&quot;.webform-submission-contact-us-add-form :input[name=\u0022reason\u0022]&quot;:{&quot;value&quot;:&quot;Lost \u0026 Found Pets&quot;}},&quot;or&quot;,{&quot;.webform-submission-contact-us-add-form :input[name=\u0022reason\u0022]&quot;:{&quot;value&quot;:&quot;Licensing&quot;}}]}" aria-invalid="false">
+
+                  </div>
+<div class="js-webform-states-hidden js-form-wrapper" data-drupal-states="{&quot;visible&quot;:{&quot;.webform-submission-contact-us-add-form :input[name=\u0022reason\u0022]&quot;:{&quot;value&quot;:&quot;Happy Adoption Story&quot;}}}" style="display: block;"><div id="ajax-wrapper">
+
+
+  <div class="js-form-item js-form-type-webform-image-file form-type-webform-image-file js-form-item-photo form-item-photo form-group">
+          <label for="edit-photo-upload" id="edit-photo--label">照片</label>
+
+
+<div id="edit-photo" class="js-webform-image-file webform-image-file js-form-managed-file form-managed-file">
+
+
+  <input data-drupal-selector="edit-photo-upload" accept="image/*" type="file" id="edit-photo-upload" name="files[photo]" size="22" class="js-form-file form-file form-control">
+
+
+  <input class="js-hide button js-form-submit form-submit form-control btn btn-secondary-gradient text-uppercase" data-drupal-selector="edit-photo-upload-button" formnovalidate="formnovalidate" type="submit" id="edit-photo-upload-button" name="photo_upload_button" value="上传">
+
+
+  <input data-drupal-selector="edit-photo-fids" type="hidden" name="photo[fids]" class="form-control" value="">
+
+</div>
+
+                      <small class="description text-muted d-block">
+
+  <div id="edit-photo--description" class="webform-element-description">仅选择一份文件。最多1份文件。<br>64 MB limit.<br>Allowed types: jpg.
+</div>
+
+      </small>
+      </div>
+</div></div><div class="js-webform-states-hidden js-form-wrapper" data-drupal-states="{&quot;visible&quot;:{&quot;.webform-submission-contact-us-add-form :input[name=\u0022reason\u0022]&quot;:{&quot;value&quot;:&quot;Happy Adoption Story&quot;}}}" style="display: block;">
+
+
+  <div class="js-form-item js-form-type-webform-markup form-type-webform-markup js-form-item-markup-01 form-item-markup-01 form-no-label form-group" id="edit-markup-01">
+                <h4>许可</h4>
+                  </div>
+</div>
+
+
+  <fieldset class="js-webform-states-hidden js-form-item js-form-type-checkbox checkbox form-check js-form-item-permission form-item-permission form-group has-error is-invalid" style="display: block;">
+
+
+  <input data-drupal-selector="edit-permission" aria-describedby="edit-permission--description permission-error" data-msg-required="是 field is required." type="checkbox" id="edit-permission" name="permission" value="1" class="form-checkbox form-check-input has-error is-invalid" data-drupal-states="{&quot;visible&quot;:{&quot;.webform-submission-contact-us-add-form :input[name=\u0022reason\u0022]&quot;:{&quot;value&quot;:&quot;Happy Adoption Story&quot;}},&quot;required&quot;:{&quot;.webform-submission-contact-us-add-form :input[name=\u0022reason\u0022]&quot;:{&quot;value&quot;:&quot;Happy Adoption Story&quot;}}}" aria-invalid="true" required="required" aria-required="true">
+
+          <label class="form-check-label option js-form-required form-required" for="edit-permission">是</label>
+                      <small class="description text-muted d-block">
+
+  <div id="edit-permission--description" class="webform-element-description">通过勾选此方框，我了解并同意Multnomah县可能出于讲述故事或者告知公众有关本县项目信息的目的占用我的图像、姓名或声明信息。该县可能会用以下任何一种方式使用我的图像、姓名或声明：照片、视频、声音记录、电视、网络、社交媒体以及电子邮件时事通讯。我免除Multnomah县因使用我的姓名、形象或声明而引起的任何诉讼或损害赔偿要求，包括任何诽谤或侵犯隐私的索赔。如果我不满18岁，则由我的父母或法定监护人将以我的名义提交该表格，并且同意意见条款。</div>
+
+      </small>
+      </fieldset>
+
+          </div>-->
+                                        <div class="form-grp checkbox-grp">
+                                            <input type="checkbox" id="checkbox">
+                                            <label for="checkbox">隐藏隐私信息</label>
+                                        </div>
+                                        <button type="button" class="btn rounded-btn">提交</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-xl-5 col-lg-6 col-md-8">
+                                <div class="contact-info-wrap">
+                                    <div class="contact-img">
+                                        <img src="img/images/contact_img.png" alt="">
+                                    </div>
+                                    <div class="contact-info-list">
+                                        <ul>
+                                            <li>
+                                                <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+                                                <div class="content">
+                                                    <p>W84 New Park Lan, New York, NY 4586 United States</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="icon"><i class="fas fa-phone-alt"></i></div>
+                                                <div class="content">
+                                                    <p>+1 (608) 561 8029</p>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="icon"><i class="fas fa-envelope-open"></i></div>
+                                                <div class="content">
+                                                    <p>info.com</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="contact-social">
+                                        <ul>
+                                            <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                            <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                            <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- contact-area-end -->
+
+            <!-- newsletter-area -->
+            <div th:replace="~{../templates/forestage/commons::newsletter}"></div>
+            <!-- newsletter-area-end -->
+
+        </main>
+        <!-- main-area-end -->
+
+
+        <!-- footer-start -->
+        <footer th:replace="~{../templates/forestage/commons::commonFooter}"></footer>
+        <!-- footer-end -->
+
+
+
+
+
+        <!-- JS here -->
+        <script src="../js/vendor/jquery-3.6.0.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script src="../js/isotope.pkgd.min.js"></script>
+        <script src="../js/imagesloaded.pkgd.min.js"></script>
+        <script src="../js/jquery.magnific-popup.min.js"></script>
+        <script src="../js/owl.carousel.min.js"></script>
+        <script src="../js/jquery.odometer.min.js"></script>
+        <script src="../js/jquery.nice-select.min.js"></script>
+        <script src="../js/jquery-ui.min.js"></script>
+        <script src="../js/jquery.appear.js"></script>
+        <script src="../js/slick.min.js"></script>
+        <script src="../js/wow.min.js"></script>
+        <script src="../js/plugins.js"></script>
+        <script src="../js/main.js"></script>
+    </body>
+</html>

@@ -1,20 +1,545 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-    <meta charset="UTF-8">
-    <title>Pet Adoption</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/4.6.0/css/bootstrap.min.css" />
-    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/4.6.0/js/bootstrap.min.js"></script>
-</head>
-<body>
-<div class="container"><br/>
-    <div class="alert alert-success">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-        <h3>index首页</h3>Hello, <strong>springboot and bootstrap！！！</strong>
-        <h3>测试热部署</h3>
-        <a>点击测试</a>
-    </div>
-</div>
-</body>
+﻿<!doctype html>
+<!--<html class="no-js" lang="en">-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Petco - Pet Protection & Adoption</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+
+		<!-- CSS here -->
+        <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/animate.min.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/magnific-popup.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/fontawesome-all.min.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/owl.carousel.min.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/nice-select.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/flaticon.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/odometer.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/jquery-ui.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/slick.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/default.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/style.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+    </head>
+    <body>
+
+        <!-- Preloader -->
+        <div id="preloader">
+            <img th:src="@{/fore/img/preloader.gif}" alt="">
+        </div>
+        <!-- Preloader-end -->
+
+		<!-- Scroll-top -->
+        <button class="scroll-top scroll-to-target" data-target="html">
+            <i class="fas fa-angle-up"></i>
+        </button>
+        <!-- Scroll-top-end-->
+
+        <!-- header-area -->
+        <header th:replace="~{../templates/forestage/commons::commonHeader('home')}"></header>
+        <!-- header-area-end -->
+
+
+        <!-- main-area -->
+        <main>
+
+            <!-- slider-area -->
+            <section class="slider-area slider-style-two">
+                <div class="slider-active">
+                    <div class="single-slider slider-bg d-flex align-items-center" th:data-background="@{/fore/img/slider/s_slider_bg01.jpg}">
+                        <div class="container custom-container">
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-7 col-md-10">
+                                    <div class="slider-content">
+                                        <div class="slider-title">
+                                            <h2 class="title" data-animation="fadeInUpBig" data-delay=".2s" data-duration="1.2s">Best Friend <span>with</span> Happy Time</h2>
+                                        </div>
+                                        <div class="slider-desc">
+                                            <p class="desc" data-animation="fadeInUpBig" data-delay=".4s" data-duration="1.2s">Human Shampoo on Dogs After six days of delirat, the jury found Hernandez guilty of first-degree murder</p>
+                                        </div>
+                                        <a href="dog-list" class="btn" data-animation="fadeInUpBig" data-delay=".6s" data-duration="1.2s">查看更多 <img src="fore/img/icon/w_pawprint.png" alt=""></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-slider slider-bg d-flex align-items-center" data-background="fore/img/slider/s_slider_bg02.jpg">
+                        <div class="container custom-container">
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-7 col-md-10">
+                                    <div class="slider-content">
+                                        <div class="slider-title">
+                                            <h2 class="title" data-animation="fadeInUpBig" data-delay=".2s" data-duration="1.2s">Best Friend <span>with</span> Happy Time</h2>
+                                        </div>
+                                        <div class="slider-desc">
+                                            <p class="desc" data-animation="fadeInUpBig" data-delay=".4s" data-duration="1.2s">Human Shampoo on Dogs After six days of delirat, the jury found Hernandez guilty of first-degree murder</p>
+                                        </div>
+                                        <a href="dog-list" class="btn" data-animation="fadeInUpBig" data-delay=".6s" data-duration="1.2s">查看更多 <img src="fore/img/icon/w_pawprint.png" alt=""></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- slider-area-end -->
+
+            <!-- find-area -->
+            <div class="find-area">
+                <div class="container custom-container">
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="#">
+                                <div class="find-wrap">
+                                    <div class="location">
+                                        <i class="flaticon-location"></i>
+                                        <p>重庆，重庆市</p>
+                                    </div>
+                                    <div class="find-category">
+                                        <ul>
+                                            <li><a href="shop"><i class="flaticon-dog"></i> 狗</a></li>
+                                            <li><a href="shop"><i class="flaticon-happy"></i> 猫</a></li>
+                                            <li><a href="shop"><i class="flaticon-dove"></i> 禽类</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="other-find">
+                                        <div class="dropdown">
+                                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                查看更多可领养的动物
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="shop">兔子</a>
+                                                <a class="dropdown-item" href="shop">乌龟</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- find-area-end -->
+
+            <!-- breeder-area -->
+            <section class="breeder-area breeder-bg">
+                <div class="container">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-xl-4 col-lg-8">
+                            <div class="adoption-content">
+                                <h2 class="title">你好！我的名字是 <br> <span>Dots</span>, 很高兴见到你</h2>
+                                <p>我叫 Dots，我在找一个新家。
+                                    我是作为流浪者来到庇护所的，所以我的历史不为人知。
+                                    我在这里一直是一个非常可爱的女孩，但我非常活跃，正在寻找一个能给我身体和精神上足够刺激的家。
+                                    如果你正在寻找伴侣，我会成为一个很好的伙伴。我确实需要一点学习，学习不要跳到别人身上，
+                                    但我非常积极，所以训练对我们来说应该很容易。如果你有兴趣收养我，请今天填写申请表！</p>
+                                <a href="breeder" class="btn">申请 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-lg-9 col-md-12 col-sm-9">
+                            <div class="breeder-info-wrap">
+                                <div class="row no-gutters justify-content-center">
+                                    <div class="col-md-6">
+                                        <div class="breeder-active owl-carousel">
+                                            <div class="breeder-item">
+                                                <a href="breeder-details">
+                                                    <img th:src="@{/fore/img/images/breeder_img01.jpg}" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="breeder-item">
+                                                <a href="breeder-details">
+                                                    <img th:src="@{/fore/img/images/breeder_img02.jpg}" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="breeder-item">
+                                                <a href="breeder-details">
+                                                    <img src="fore/img/images/breeder_img03.jpg" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="breeder-item">
+                                                <a href="breeder-details">
+                                                    <img src="fore/img/images/breeder_img04.jpg" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="breeder-item">
+                                                <a href="breeder-details">
+                                                    <img src="fore/img/images/breeder_img05.jpg" alt="">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="breed-services-info" data-background="fore/img/bg/breed_services_bg.jpg">
+                                            <h5 class="sub-title">保护动物，造福人类</h5>
+                                            <h3 class="title">Best Friend</h3>
+                                            <p>一次領養，拯救兩個生命。 每有一隻幸運的動物離開我們的領養中心，便能空出一個位置，讓另一隻動物可以在中心等待尋找新家！</p>
+<!--                                            <a href="dog-list" class="btn">查看更多 <img src="fore/img/icon/w_pawprint.png" alt=""></a>-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="counter-area mt-70">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div class="counter-item">
+                                    <h2 class="count"><span class="odometer" data-count="65"></span>%</h2>
+                                    <p>领养率</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div class="counter-item">
+                                    <h2 class="count"><span class="odometer" data-count="259"></span></h2>
+                                    <p>待领养</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div class="counter-item">
+                                    <h2 class="count"><span class="odometer" data-count="50"></span>+</h2>
+                                    <p>志愿者</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <div class="counter-item">
+                                    <h2 class="count"><span class="odometer" data-count="450"></span>+</h2>
+                                    <p>已领养</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- breeder-area-end -->
+
+            <!-- adoption-area -->
+            <section class="adoption-area-two pt-110 pb-110">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-7 col-lg-9">
+                            <div class="section-title text-center mb-65">
+                                <div class="section-icon"><img src="fore/img/icon/pawprint.png" alt=""></div>
+                                <h5 class="sub-title">Meet the animals</h5>
+                                <h2 class="title">等待收养的小伙伴</h2>
+                                <p>它们正在等待你的到来。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container custom-container">
+                    <div class="row adopt-active">
+                        <div class="col-xl-3">
+                            <div class="adoption-item">
+                                <div class="adopt-thumb">
+                                    <a href="breeder-details"><img src="fore/img/images/adop_img01.png" alt=""></a>
+                                    <span class="status">公</span>
+                                </div>
+                                <div class="adopt-content">
+                                    <div class="adopt-date"><i class="far fa-calendar-alt"></i> 生日 : 2021.2</div>
+                                    <h3 class="title"><a href="breeder-details">Golden Retriever</a></h3>
+                                    <p>The Golden Retriever is a medium-large gun dog that was bred.</p>
+                                    <a href="breeder-details" class="read-more">查看更多 <img src="fore/img/icon/pawprint.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="adoption-item">
+                                <div class="adopt-thumb">
+                                    <a href="breeder-details"><img src="fore/img/images/adop_img02.png" alt=""></a>
+                                    <span class="status">母</span>
+                                </div>
+                                <div class="adopt-content">
+                                    <div class="adopt-date"><i class="far fa-calendar-alt"></i> Birth : 2021.8</div>
+                                    <h3 class="title"><a href="breeder-details">German Sharped</a></h3>
+                                    <p>The German Shepherd is a breed of medium to large-sized.</p>
+                                    <a href="breeder-details" class="read-more">查看更多 <img src="fore/img/icon/pawprint.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="adoption-item">
+                                <div class="adopt-thumb">
+                                    <a href="breeder-details"><img src="fore/img/images/adop_img03.png" alt=""></a>
+                                    <span class="status">母</span>
+                                </div>
+                                <div class="adopt-content">
+                                    <div class="adopt-date"><i class="far fa-calendar-alt"></i> Birth : 2021.9</div>
+                                    <h3 class="title"><a href="breeder-details">Siberian Husky</a></h3>
+                                    <p>The Siberian Husky is a medium-sized working sled dog breed.</p>
+                                    <a href="breeder-details" class="read-more">查看更多 <img src="fore/img/icon/pawprint.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="adoption-item">
+                                <div class="adopt-thumb">
+                                    <a href="breeder-details"><img src="fore/img/images/adop_img04.png" alt=""></a>
+                                    <span class="status">母</span>
+                                </div>
+                                <div class="adopt-content">
+                                    <div class="adopt-date"><i class="far fa-calendar-alt"></i> Birth : 2021.3</div>
+                                    <h3 class="title"><a href="breeder-details">French Bulldog</a></h3>
+                                    <p>French Bulldog is a breed of domestic dog, bred to be companion.</p>
+                                    <a href="breeder-details" class="read-more">查看更多 <img src="fore/img/icon/pawprint.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <div class="adoption-item">
+                                <div class="adopt-thumb">
+                                    <a href="breeder-details"><img src="fore/img/images/adop_img05.png" alt=""></a>
+                                    <span class="status">公</span>
+                                </div>
+                                <div class="adopt-content">
+                                    <div class="adopt-date"><i class="far fa-calendar-alt"></i> Birth : 2021.12</div>
+                                    <h3 class="title"><a href="breeder-details">Siberian Husky</a></h3>
+                                    <p>French Bulldog is a breed of domestic dog, bred to be companion.</p>
+                                    <a href="breeder-details" class="read-more">查看更多 <img src="fore/img/icon/pawprint.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- adoption-area-end -->
+
+            <!-- faq-area -->
+            <section class="faq-area faq-bg">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="faq-img-wrap">
+                                <img src="fore/img/images/faq_tv.png" class="img-frame" alt="">
+                                <img src="fore/img/images/faq_img.png" class="main-img" alt="">
+                                <a href="https://www.youtube.com/watch?v=XdFfCPK5ycw" class="popup-video"></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="faq-wrapper">
+                                <div class="section-title mb-35">
+                                    <h5 class="sub-title">FAQ Question</h5>
+                                    <h2 class="title">History & Family Adoption</h2>
+                                </div>
+                                <div class="accordion" id="accordionExample">
+                                    <div class="card">
+                                        <div class="card-header" id="headingOne">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                                                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    为收养宠物而努力
+                                                </button>
+                                            </h2>
+                                        </div>
+                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                The best overall dog DNA test is embark breed & health Kit (view atths Chewy), which provides you with a breed brwn and ition on provides ancestors most dogs.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="headingTwo">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                                                    data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    Competitions & Awards
+                                                </button>
+                                            </h2>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                The best overall dog DNA test is embark breed & health Kit (view atths Chewy), which provides you with a breed brwn and ition on provides ancestors most dogs.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="headingThree">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                                                    data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    The puppies are 3 months old
+                                                </button>
+                                            </h2>
+                                        </div>
+                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                The best overall dog DNA test is embark breed & health Kit (view atths Chewy), which provides you with a breed brwn and ition on provides ancestors most dogs.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-shape"><img src="fore/img/images/faq_shape.png" alt=""></div>
+            </section>
+            <!-- faq-area-end -->
+
+            <!-- brand-area -->
+            <div class="brand-area pt-80 pb-80">
+                <div class="container">
+                    <div class="row brand-active">
+                        <div class="col-12">
+                            <div class="brand-item">
+                                <img src="fore/img/brand/brand_item01.png" alt="img">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="brand-item">
+                                <img src="fore/img/brand/brand_item02.png" alt="img">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="brand-item">
+                                <img src="fore/img/brand/brand_item03.png" alt="img">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="brand-item">
+                                <img src="fore/img/brand/brand_item04.png" alt="img">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="brand-item">
+                                <img src="fore/img/brand/brand_item05.png" alt="img">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="brand-item">
+                                <img src="fore/img/brand/brand_item06.png" alt="img">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="brand-item">
+                                <img src="fore/img/brand/brand_item03.png" alt="img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- brand-area-end -->
+
+            <!-- blog-area -->
+            <section class="blog-area pt-110 pb-60">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-7 col-lg-9">
+                            <div class="section-title text-center mb-65">
+                                <div class="section-icon"><img src="fore/img/icon/pawprint.png" alt=""></div>
+                                <h5 class="sub-title">新闻和活动</h5>
+                                <h2 class="title">最新的新闻更新</h2>
+                                <p>The best overall dog DNA test is Embark Breed & Health Kit (view at Chewy), which provides you with a
+                                    breed brwn and information most dogs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="blog-post-item mb-50">
+                                <div class="blog-post-thumb">
+                                    <a href="blog-details"><img src="fore/img/blog/blog_post_thumb01.jpg" alt=""></a>
+                                    <div class="blog-post-tag">
+                                        <a href="#"><i class="flaticon-bookmark-1"></i>Sharped</a>
+                                    </div>
+                                </div>
+                                <div class="blog-post-content">
+                                    <div class="blog-post-meta">
+                                        <ul>
+                                            <li><i class="far fa-user"></i><a href="#">Admin</a></li>
+                                            <li><i class="far fa-bell"></i> Mar 10, 2021</li>
+                                        </ul>
+                                    </div>
+                                    <h3 class="title"><a href="blog-details">Working For Dog Adoption</a></h3>
+                                    <p>The best overall dog test is Embark Breed & Health Kit view at Chewy.</p>
+                                    <a href="blog-details" class="read-more">Read More <img src="fore/img/icon/pawprint.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="blog-post-item mb-50">
+                                <div class="blog-post-thumb">
+                                    <a href="blog-details"><img src="fore/img/blog/blog_post_thumb02.jpg" alt=""></a>
+                                    <div class="blog-post-tag">
+                                        <a href="#"><i class="flaticon-bookmark-1"></i>快乐领养</a>
+                                    </div>
+                                </div>
+                                <div class="blog-post-content">
+                                    <div class="blog-post-meta">
+                                        <ul>
+                                            <li><i class="far fa-user"></i><a href="#">Admin</a></li>
+                                            <li><i class="far fa-bell"></i> Mar 12, 2021</li>
+                                        </ul>
+                                    </div>
+                                    <h3 class="title"><a href="blog-details">快乐领养: Sonny</a></h3>
+                                    <p>Sonny 正在享受他新的奢侈的生活方式：经常散步，偶尔长跑，无限的沙发时间，频繁的宠物，当然还有他最喜欢的玩具--绳子。</p>
+                                    <a href="blog-details" class="read-more">阅读更多 <img src="fore/img/icon/pawprint.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="blog-post-item mb-50">
+                                <div class="blog-post-thumb">
+                                    <a href="blog-details"><img src="fore/img/blog/blog_post_thumb03.jpg" alt=""></a>
+                                    <div class="blog-post-tag">
+                                        <a href="#"><i class="flaticon-bookmark-1"></i>Business</a>
+                                    </div>
+                                </div>
+                                <div class="blog-post-content">
+                                    <div class="blog-post-meta">
+                                        <ul>
+                                            <li><i class="far fa-user"></i><a href="#">Admin</a></li>
+                                            <li><i class="far fa-bell"></i> Mar 12, 2021</li>
+                                        </ul>
+                                    </div>
+                                    <h3 class="title"><a href="blog-details">Ten Dog Breeds are Noted</a></h3>
+                                    <p>The best overall dog test is Embark Breed & Health Kit view at Chewy.</p>
+                                    <a href="blog-details" class="read-more">Read More <img src="fore/img/icon/pawprint.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- blog-area-end -->
+
+            <!-- newsletter-area -->
+            <div th:replace="~{../templates/forestage/commons::newsletter}"></div>
+            <!-- newsletter-area-end -->
+
+        </main>
+        <!-- main-area-end -->
+
+
+        <!-- footer-start -->
+        <footer th:replace="~{../templates/forestage/commons::commonFooter}"></footer>
+        <!-- footer-end -->
+
+
+
+
+
+		<!-- JS here -->
+        <script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/fore/js/bootstrap.min.js}"></script>
+        <script th:src="@{/fore/js/isotope.pkgd.min.js}"></script>
+        <script th:src="@{/fore/js/imagesloaded.pkgd.min.js}"></script>
+        <script th:src="@{/fore/js/jquery.magnific-popup.min.js}"></script>
+        <script th:src="@{/fore/js/owl.carousel.min.js}"></script>
+        <script th:src="@{/fore/js/jquery.odometer.min.js}"></script>
+        <script th:src="@{/fore/js/jquery.nice-select.min.js}"></script>
+        <script th:src="@{/fore/js/jquery-ui.min.js}"></script>
+        <script th:src="@{/fore/js/jquery.appear.js}"></script>
+        <script th:src="@{/fore/js/slick.min.js}"></script>
+        <script th:src="@{/fore/js/wow.min.js}"></script>
+        <script th:src="@{/fore/js/plugins.js}"></script>
+        <script th:src="@{/fore/js/main.js}"></script>
+    </body>
 </html>

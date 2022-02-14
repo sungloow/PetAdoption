@@ -31,6 +31,12 @@
             <scope>test</scope>
         </dependency>
 
+<!--        AOP-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
 <!--        引入项目所需依赖-->
         <!--        thymeleaf-->
         <dependency>
@@ -84,6 +90,13 @@
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
             <version>3.6.0</version>
+        </dependency>
+
+        <!--Shiro-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.4.0</version>
         </dependency>
 
     </dependencies>
