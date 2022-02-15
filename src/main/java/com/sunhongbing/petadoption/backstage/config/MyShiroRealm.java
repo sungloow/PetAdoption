@@ -5,6 +5,7 @@ import com.sunhongbing.petadoption.backstage.entity.SysPermission;
 import com.sunhongbing.petadoption.backstage.entity.SysRole;
 import com.sunhongbing.petadoption.backstage.enums.UserStatus;
 import com.sunhongbing.petadoption.backstage.service.AdminInfoService;
+import com.sunhongbing.petadoption.backstage.service.PermissionService;
 import com.sunhongbing.petadoption.backstage.service.RoleService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -21,6 +22,8 @@ public class MyShiroRealm extends AuthorizingRealm {
     private AdminInfoService adminInfoService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private PermissionService permissionService;
 
     //主要是用来进行身份认证的，验证用户输入的账号和密码是否正确
     @Override
@@ -60,7 +63,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         System.out.println("----->>roleList="+roleList);
         for(SysRole role:roleList){
             authorizationInfo.addRole(role.getRole());
-            List<SysPermission> permissionListByRoleId = roleService.getPermissionListByRoleId(role.getId());
+            List<SysPermission> permissionListByRoleId = permissionService.getPermissionListByRoleId(role.getId());
             System.out.println("----->>permissionListByRoleId="+permissionListByRoleId);
             for(SysPermission p:permissionListByRoleId){
                 authorizationInfo.addStringPermission(p.getPermission());

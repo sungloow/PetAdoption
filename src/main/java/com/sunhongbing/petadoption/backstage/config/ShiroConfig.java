@@ -5,16 +5,16 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 
 @Configuration
 public class ShiroConfig {
@@ -23,7 +23,14 @@ public class ShiroConfig {
 		System.out.println("ShiroConfig.shirFilter()");
 		ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
-		// 拦截器
+
+		// 设置拦截后跳转的请求路径
+		shiroFilterFactoryBean.setLoginUrl("/admin/login");
+		// 登录成功后要跳转的链接，首页
+		shiroFilterFactoryBean.setSuccessUrl("/admin/index");
+		// 未授权页面;
+		shiroFilterFactoryBean.setUnauthorizedUrl("/admin/unAuth");
+		// 拦截器，此处应该使用LinkedHashMap，否则会出现资源只能加载一次然后就被拦截的情况
 		Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
 		// 配置不会被拦截的链接，顺序判断
 		filterChainDefinitionMap.put("/static/**", "anon");
@@ -31,15 +38,16 @@ public class ShiroConfig {
 		// 配置退出登录过滤器，退出代码Shiro已经实现了
 		filterChainDefinitionMap.put("/admin/logout", "logout");
 		// 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
-		// authc:所有url都必须认证通过才可以访问
-		// anon:所有url都都可以匿名访问
-		filterChainDefinitionMap.put("/**", "authc");
-		// 如果不设置，默认会自动寻找Web工程根目录下的"/login.jsp"页面
-		shiroFilterFactoryBean.setLoginUrl("/admin/login");
-		// 登录成功后要跳转的链接
-		shiroFilterFactoryBean.setSuccessUrl("/admin/index");
-		// 未授权页面;
-		shiroFilterFactoryBean.setUnauthorizedUrl("/admin/unAuth");
+		// authc:所有url都必须认证通过才可以访问 anon:所有url都都可以匿名访问
+		filterChainDefinitionMap.put("/admin/**", "authc");
+
+		// 自定义filters，覆盖默认的Filter列表
+		Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
+		// 定制logout 过滤，指定注销后跳转到登录页(默认为根路径)
+		LogoutFilter logoutFilter = new LogoutFilter();
+		logoutFilter.setRedirectUrl("/admin/login");
+		filters.put("logout", logoutFilter);
+		shiroFilterFactoryBean.setFilters(filters);
 
 		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
 		return shiroFilterFactoryBean;

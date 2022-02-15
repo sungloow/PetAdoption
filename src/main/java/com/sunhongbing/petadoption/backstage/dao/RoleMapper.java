@@ -10,10 +10,8 @@ import java.util.List;
 @Mapper
 public interface RoleMapper {
 
+    // 根据用户id查询角色
     @Select("SELECT * FROM role WHERE id IN (SELECT role_id FROM role_admin_ref WHERE admin_id = #{id})")
     List<SysRole> getRoleListByAdminId(String id);
 
-    //根据角色id获取权限
-    @Select("SELECT * FROM permission WHERE id IN (SELECT permission_id FROM role_permission_ref WHERE role_id = #{roleId})")
-    List<SysPermission> getPermissionListByRoleId(int roleId);
 }

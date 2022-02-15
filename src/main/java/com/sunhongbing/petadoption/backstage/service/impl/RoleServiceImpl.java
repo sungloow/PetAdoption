@@ -25,8 +25,4 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.getRoleListByAdminId(id);
     }
 
-    @Override
-    public List<SysPermission> getPermissionListByRoleId(int id) {
-        return roleMapper.getPermissionListByRoleId(id);
-    }
 }

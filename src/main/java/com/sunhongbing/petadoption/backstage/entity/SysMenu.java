@@ -2,6 +2,8 @@ package com.sunhongbing.petadoption.backstage.entity;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @className: SysMenu
  * @Description: TODO
@@ -16,4 +18,9 @@ public class SysMenu {
     private String type;
     private String url;
     private String icon;
+
+    /**
+     * 子菜单Menu列表
+     */
+    private List<SysMenu> childMenu;
 }

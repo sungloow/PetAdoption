@@ -17,49 +17,15 @@
 				</div>
 				<div class="navDiv">
 					<div class="navName">导航</div>
+<!--					nav-list begin-->
 					<div class="nav-list">
-						<ul>
-							<li class="nav-tab a_active waves-effect">
-								<a th:href="@{/admin/home}" class="li-a active" target="iframe"><i class='bx bx-home-smile'></i> 主页
-<!--									<span class="badge badge-pill badge-primary float-right">3</span>-->
-								</a>
-							</li>
-<!--							<li class="nav-tab">-->
-<!--								<a href="#" class="li-a"><i class='bx bx-home-smile'></i> 主页</a>-->
-<!--							</li>-->
-							<li class="nav-tab nav-ul">
-								<a href="javascript:void[0]" class="li-a" target="iframe"><i class='bx bx-layer'></i> 人员管理
-									<i class='bx bx-chevron-right' style="float: right;"></i></a>
-								<div class="nav-box">
-									<a href="menu/user.html" class="li-a-a" target="iframe">查看</a>
-									<a href="menu/user.html" class="li-a-a" target="iframe">添加</a>
-								</div>
-							</li>
-							<li class="nav-tab nav-ul">
-								<a href="javascript:void[0]" class="li-a"><i class='bx bx-cog'></i> 角色管理
-									<i class='bx bx-chevron-right' style="float: right;"></i></a>
-								<div class="nav-box">
-									<a href="menu/3-1.html" class="li-a-a" target="iframe">权限</a>
-								</div>
-							</li>
-							<li class="nav-tab nav-ul">
-								<a href="javascript:void[0]" class="li-a"><i class='bx bx-buildings'></i> 巡检管理
-									<i class='bx bx-chevron-right' style="float: right;"></i></a>
-								<div class="nav-box">
-									<a href="menu/4-1.html" class="li-a-a" target="iframe">巡检计划</a>
-								</div>
-							</li>
-							<li class="nav-tab nav-ul">
-								<a href="javascript:void[0]" class="li-a"><i class='bx bx-edit'></i> 工单管理
-									<i class='bx bx-chevron-right' style="float: right;"></i></a>
-								<div class="nav-box">
-									<a href="menu/5-1.html" class="li-a-a" target="iframe">维修计划</a>
-								</div>
-							</li>
+						<ul id="menu-ul">
 						</ul>
 					</div>
+<!--					nav-list end-->
 				</div>
 			</div>
+
 			<div class="nav-right" ref="navRight">
 				<div class="nav-top">
 					<button type="button" class="btn btn-primary btn-sm hiddenBtn" style="line-height: 10px;" @click="isShowLeft">
@@ -68,26 +34,64 @@
 					<a style="float: right" th:href="@{/admin/logout}">logout</a>
 				</div>
 				<div class="content-page" ref="cPage">
-					<iframe name="iframe" width="100%" height="100%" frameborder="0" th:src="@{/admin/home}"></iframe>
+					<iframe name="iframe" width="100%" height="100%" frameborder="0" th:src="@{/admin/dashboard}"></iframe>
 				</div>
 			</div>
 		</div>
+
 		<script th:src="@{/back/js/vue.min.js}"></script>
 		<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+
+		<script type="text/javascript">
+			//初始化菜单
+			$.ajax({
+				url: '/admin/listMenu',
+				type: 'GET',
+				success: function (data) {
+					console.log(data);
+					if (data.code === 200) {
+						//for循环初始化菜单
+						let str = '';
+						$.each(data.result, function (i, item) {
+							item.childMenu = item.childMenu.length > 0 ? item.childMenu : [];
+							str += '<li class="nav-tab nav-ul">';
+							let h = item.childMenu.length !== 0 ? "javascript:void[0]" : item.url;
+							str += '<a href="'+h+'" class="li-a" target="iframe">';
+							str += '<i class="' + item.icon + '"></i>';
+							str += '<span>' + item.name + '</span>';
+							if (item.childMenu.length !== 0) {
+								str += '<i class="bx bx-chevron-right" style="float: right;"></i>'
+							}
+							str += '</a>';
+							if (item.childMenu.length !== 0) {
+								str += '<div class="nav-box">';
+								$.each(item.childMenu, function (j, item2) {
+									str += '<a href="'+item2.url+'" class="li-a-a" target="iframe">'+item2.name+'</a>';
+								})
+								str += '</div>';
+							}
+							str += '</li>';
+						});
+						$("#menu-ul").html(str);
+					}
+				},
+				error: function () {
+				}
+			});
+		</script>
+
 		<script type="text/javascript">
 			$(function() {
 				let navflag = false;
 				$('.nav-tab').click(function() {
 					$(this).siblings().each(function() {
 						$(this).removeClass('a_active');
-						// $(this).removeClass('a_active');
 						$(this).find('.nav-box').css('height', '0')
 						//关闭右侧箭头
-						if ($(this).attr('class').indexOf('nav-ul') != -1) {
+						if ($(this).attr('class').indexOf('nav-ul') !== -1) {
 							$(this).find('.bx-chevron-right').css('transform', 'rotateZ(0deg)')
 							$(this).find('.bx-chevron-right').css('transition', 'all .5s')
 							$(this).removeClass('nav-show')
-							// $(this).find('div').removeClass('nav-box')
 						}
 					})
 					//当前选中
@@ -119,18 +123,10 @@
 							this.$refs.navRight.style.paddingLeft = '0px'
 							this.$refs.cPage.style.left = '0px';
 							this.navLeftFlag = false;
-							// this.$refs.navLeft.style.width = '0px';
-							// setTimeout(()=>{
-							// 	this.navLeftFlag = false;
-							// },200)
 						} else {
 							this.$refs.navRight.style.paddingLeft = '240px';
 							this.$refs.cPage.style.left = '240px';
 							this.navLeftFlag = true;
-							// this.$refs.navLeft.style.width = '240px';
-							// setTimeout(()=>{
-							// 	this.navLeftFlag = true;
-							// },200)
 						}
 					}
 				}
