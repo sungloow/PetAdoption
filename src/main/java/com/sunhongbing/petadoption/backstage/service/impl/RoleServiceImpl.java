@@ -1,5 +1,6 @@
 package com.sunhongbing.petadoption.backstage.service.impl;
 
+import com.sunhongbing.petadoption.backstage.dao.AdminMapper;
 import com.sunhongbing.petadoption.backstage.dao.RoleMapper;
 import com.sunhongbing.petadoption.backstage.entity.SysPermission;
 import com.sunhongbing.petadoption.backstage.entity.SysRole;
@@ -21,8 +22,10 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
 
     @Override
-    public List<SysRole> getRoleListByAdminId(String id) {
-        return roleMapper.getRoleListByAdminId(id);
+    public List<SysRole> getRoleListById(int id) {
+        id = id<=100?id:0;
+        return roleMapper.getRoleListById(id);
     }
+
 
 }

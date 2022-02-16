@@ -1,4 +1,4 @@
-package com.sunhongbing.petadoption.backstage.config;
+package com.sunhongbing.petadoption.config;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -25,9 +25,9 @@ public class ShiroConfig {
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
 
 		// 设置拦截后跳转的请求路径
-		shiroFilterFactoryBean.setLoginUrl("/admin/login");
+		shiroFilterFactoryBean.setLoginUrl("/fore/");
 		// 登录成功后要跳转的链接，首页
-		shiroFilterFactoryBean.setSuccessUrl("/admin/index");
+//		shiroFilterFactoryBean.setSuccessUrl("/admin/index");
 		// 未授权页面;
 		shiroFilterFactoryBean.setUnauthorizedUrl("/admin/unAuth");
 		// 拦截器，此处应该使用LinkedHashMap，否则会出现资源只能加载一次然后就被拦截的情况
@@ -35,6 +35,12 @@ public class ShiroConfig {
 		// 配置不会被拦截的链接，顺序判断
 		filterChainDefinitionMap.put("/static/**", "anon");
 		filterChainDefinitionMap.put("/fore/**", "anon");
+
+		//adminUserLogin
+		filterChainDefinitionMap.put("/admin/login", "anon");
+		//commonUserLogin
+		filterChainDefinitionMap.put("/login", "anon");
+
 		// 配置退出登录过滤器，退出代码Shiro已经实现了
 		filterChainDefinitionMap.put("/admin/logout", "logout");
 		// 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
@@ -42,10 +48,10 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/admin/**", "authc");
 
 		// 自定义filters，覆盖默认的Filter列表
-		Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
+		Map<String, Filter> filters = new LinkedHashMap<>();
 		// 定制logout 过滤，指定注销后跳转到登录页(默认为根路径)
 		LogoutFilter logoutFilter = new LogoutFilter();
-		logoutFilter.setRedirectUrl("/admin/login");
+		logoutFilter.setRedirectUrl("/fore/");
 		filters.put("logout", logoutFilter);
 		shiroFilterFactoryBean.setFilters(filters);
 

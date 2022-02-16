@@ -19,10 +19,10 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
         if (e instanceof UnauthorizedException) { // 未授权 : 403
-            ModelAndView mv = new ModelAndView("backstage/html/error/403");
+            ModelAndView mv = new ModelAndView("error/403");
             return mv;
         } else if (e instanceof UnauthenticatedException) { // 未认证 : 401
-            ModelAndView mv = new ModelAndView("backstage/html/login");
+            ModelAndView mv = new ModelAndView("forestage/index");
             return mv;
         }
         return null;

@@ -1,8 +1,8 @@
 package com.sunhongbing.petadoption.backstage.service.impl;
 
-import com.sunhongbing.petadoption.backstage.dao.AdminInfoMapper;
-import com.sunhongbing.petadoption.backstage.entity.AdminInfo;
-import com.sunhongbing.petadoption.backstage.service.AdminInfoService;
+import com.sunhongbing.petadoption.backstage.dao.AdminMapper;
+import com.sunhongbing.petadoption.backstage.entity.Admin;
+import com.sunhongbing.petadoption.backstage.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
  * @date: 2022-02-13 17:34
  */
 @Service
-public class AdminInfoServiceImpl implements AdminInfoService {
+public class AdminServiceImpl implements AdminService {
     @Autowired
-    private AdminInfoMapper adminInfoDao;
+    private AdminMapper adminInfoDao;
 
     @Override
-    public AdminInfo findAdminByUsername(String username) {
+    public Admin findAdminByUsername(String username) {
         return adminInfoDao.findAdminByUsername(username);
     }
 }

@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 public class LoginParam implements Serializable {
-    private static final long serialVersionUID = 166457193110647497L;
+    private static final long serialVersionUID = 1L;
     private String username;
     private String password;
 }

@@ -11,12 +11,13 @@ import java.io.Serializable;
  * @date: 2022-02-13 17:25
  */
 @Data
-public class AdminInfo implements Serializable {
+public class Admin implements Serializable {
 
-    //序列化
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private int id;
+
+    private String username;
 
     private String password;
 

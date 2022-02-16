@@ -1,5 +1,6 @@
 package com.sunhongbing.petadoption.backstage.controller;
 
+import com.sunhongbing.petadoption.config.AdminUserToken;
 import com.sunhongbing.petadoption.backstage.entity.LoginParam;
 import com.sunhongbing.petadoption.backstage.entity.SysMenu;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
@@ -35,34 +36,34 @@ public class BackstageController {
     @Autowired
     private MenuService menuService;
 
-    //登录页面
-    @GetMapping("/login")
-    public String login() {
-        return "backstage/html/login";
-    }
+//    //登录页面
+//    @GetMapping("/login")
+//    public String login() {
+//        return "backstage/html/login";
+//    }
+//
+//    //登录提交请求
+//    @PostMapping("/login")
+//    public String login_auth(LoginParam loginParam, Model model) {
+//        //验证用户名和密码
+//        org.apache.shiro.subject.Subject subject = SecurityUtils.getSubject();
+//        UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), loginParam.getPassword());
+//        String msg = "";
+//        try {
+//            subject.login(token);
+//        } catch (UnknownAccountException e) {
+//            msg = "账号不存在！";
+//        } catch (IncorrectCredentialsException e) {
+//            msg = "密码不正确！";
+//        } catch (LockedAccountException e) {
+//            msg = "账号被锁定！请联系管理员。";
+//        } catch (Exception e) {
+//            msg = "发生了一些错误！请联系管理员。";
+//        }
+//        model.addAttribute("msg", msg);
+//        return "backstage/html/login";
+//    }
 
-    //登录提交请求
-    @PostMapping("/login")
-    public String login_auth(LoginParam loginParam, Model model) {
-        //验证用户名和密码
-        org.apache.shiro.subject.Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), loginParam.getPassword());
-        String msg = "";
-        try {
-            subject.login(token);
-            return "redirect:/admin/index";
-        } catch (UnknownAccountException e) {
-            msg = "账号不存在！";
-        } catch (IncorrectCredentialsException e) {
-            msg = "密码不正确！";
-        } catch (LockedAccountException e) {
-            msg = "账号被锁定！请联系管理员。";
-        } catch (Exception e) {
-            msg = "发生了一些错误！请联系管理员。";
-        }
-        model.addAttribute("msg", msg);
-        return "backstage/html/login";
-    }
 
     // 后台首页
     @GetMapping("/index")
@@ -184,7 +185,7 @@ public class BackstageController {
     // 403
     @GetMapping("/unAuth")
     public String error403() {
-        return "backstage/html/error/403";
+        return "error/403";
     }
 
     // listMenu

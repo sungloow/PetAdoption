@@ -1,5 +1,6 @@
 package com.sunhongbing.petadoption.forestage.controller;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -20,7 +21,6 @@ public class ForestageController {
     //logback
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
     // 访问首页
     @GetMapping("/")
     public String index2() {
@@ -28,6 +28,12 @@ public class ForestageController {
         return "forestage/index";
     }
 
+    //home
+    @GetMapping("/home")
+    @RequiresPermissions("user:home")
+    public String home() {
+        return "forestage/home";
+    }
 
     // other
     //shop.html

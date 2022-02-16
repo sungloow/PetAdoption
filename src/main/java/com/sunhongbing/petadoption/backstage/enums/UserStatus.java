@@ -2,7 +2,8 @@ package com.sunhongbing.petadoption.backstage.enums;
 
 public enum UserStatus {
     NORMAL(1, "正常"),
-    DISABLE(0, "禁用");
+    DISABLE(0, "禁用"),
+    DELETE(-1, "删除");
 
     private final int code;
     private final String desc;
