@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/fore")
 public class ForestageController {
-    //
+
     //logback
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

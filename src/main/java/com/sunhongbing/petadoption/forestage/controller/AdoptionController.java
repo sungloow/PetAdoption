@@ -1,6 +1,8 @@
 package com.sunhongbing.petadoption.forestage.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -29,5 +31,12 @@ public class AdoptionController {
     @RequestMapping("/happy")
     public String happy() {
         return "forestage/adoption/happy-adoption";
+    }
+
+    // 宠物详细信息
+    @RequestMapping("/detail/{id}")
+    public String detail(@PathVariable(value="id") Integer id, Model model) {
+        model.addAttribute("id", id);
+        return "forestage/adoption/pet-detail";
     }
 }

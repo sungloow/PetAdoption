@@ -36,3 +36,4 @@ build/
 ### My Config ###
 **/application-dev.yml
 **/application-prod.yml
+logs
