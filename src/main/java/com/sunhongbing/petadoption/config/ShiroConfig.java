@@ -64,20 +64,19 @@ public class ShiroConfig {
 	 * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了）
 	 */
 	// 因为我们的密码是加过密的，所以，如果要Shiro验证用户身份的话，需要告诉它我们用的是md5加密的，并且是加密了两次。
-	// 同时我们在自己的Realm中也通过SimpleAuthenticationInfo返回了加密时使用的盐。
 	// 这样Shiro就能顺利的解密密码并验证用户名和密码是否正确了。
 	@Bean
 	public HashedCredentialsMatcher hashedCredentialsMatcher(){
 		HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-		hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-		hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
+		hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法
+		hashedCredentialsMatcher.setHashIterations(1);//散列的次数，
 		return hashedCredentialsMatcher;
 	}
 
 	@Bean
 	public MyShiroRealm myShiroRealm(){
 		MyShiroRealm myShiroRealm = new MyShiroRealm();
-//		myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());// 设置解密规则
+		myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());// 设置解密规则
 		return myShiroRealm;
 	}
 
@@ -90,7 +89,7 @@ public class ShiroConfig {
 	}
 
 	/**
-	 *  开启shiro aop注解支持，不开启无法使用 shiro 的注解.
+	 *  开启shiro aop注解支持，不开启无法使用 shiro 的注解 .
 	 *  使用代理方式;所以需要开启代码支持;
 	 * @param securityManager
 	 * @return

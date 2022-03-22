@@ -60,7 +60,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             //普通用户的认证逻辑
             UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
             String username = (String)token.getPrincipal();
-            User user = userService.findUserByUsername(username);
+            User user = userService.findUserByEmail(username);
             if(user == null) {
                 return null;
             }

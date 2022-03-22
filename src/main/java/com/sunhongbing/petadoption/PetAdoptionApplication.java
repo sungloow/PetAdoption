@@ -4,7 +4,10 @@ import com.sunhongbing.petadoption.backstage.exception.GlobalExceptionHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
+@Controller
 @SpringBootApplication
 public class PetAdoptionApplication {
 
@@ -16,6 +19,12 @@ public class PetAdoptionApplication {
     @Bean
     public GlobalExceptionHandler globalExceptionHandler() {
         return new GlobalExceptionHandler();
+    }
+
+    // 访问首页
+    @GetMapping("/")
+    public String index() {
+        return "redirect:/fore/";
     }
 
 }

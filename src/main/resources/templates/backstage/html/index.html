@@ -82,7 +82,7 @@
 
 		<script type="text/javascript">
 			$(function() {
-				let navflag = false;
+				var navflag = false;
 				$('.nav-tab').click(function() {
 					$(this).siblings().each(function() {
 						$(this).removeClass('a_active');
@@ -110,8 +110,8 @@
 					})
 					$(this).addClass('active-li-a');
 				})
-
 			})
+
 			const vue = new Vue({
 				el: '#app',
 				data: {

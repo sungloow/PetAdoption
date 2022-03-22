@@ -1,10 +1,103 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-	</head>
-	<body>
-		养护计划
-	</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>宠物管理</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+	<link rel='stylesheet' th:href='@{/fore/css/bootstrap-4.1.min.css}'>
+	<link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+</head>
+<body>
+	<table class="table">
+		<thead class="thead-light">
+			<tr>
+				<th>#</th>
+				<th>ID</th>
+				<th>名字</th>
+				<th>性别</th>
+				<th>种别</th>
+				<th>生日</th>
+				<th>年龄</th>
+				<th>描述</th>
+				<th>状态</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="animal,animalStat : ${animalList}">
+				<th th:text="${animalStat.count}"></th>
+				<td class="id" th:text="${animal.id}"></td>
+				<td class="name" th:text="${animal.name}"></td>
+				<td class="sex" th:text="${animal.sex}"></td>
+				<td class="type" th:text="${animal.type}"></td>
+				<td class="birth" th:text="${#dates.format(animal.birth,'yyyy-MM-dd')}"></td>
+				<td class="age" th:text="${animal.age}"></td>
+				<td class="detail" th:text="${#strings.abbreviate(animal.detail,18)}"></td>
+				<td class="status" th:text="${animal.status == 1 ? '已领养': (animal.status == 0 ? '待领养':'已下架')}"></td>
+				<td>
+					<a href="javascript:void(0);" class="edit">编辑</a>
+					<a href="javascript:void(0);" class="delete">删除</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+
+<!-- jquery -->
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script>
+	//提示框
+	function prompt(message, style, time) {
+		style = (style === undefined) ? 'alert-success' : style;
+		time = (time === undefined) ? 1500 : time;
+		$('<div></div>')
+				.appendTo('body')
+				.addClass('alert ' + style)
+				.html(message)
+				.show()
+				.delay(time)
+				.fadeOut();
+	}
+	//删除
+	$('.delete').click(function(){
+		//确认框
+		if(!confirm('确认删除？')){
+			return false;
+		}
+		var id = $(this).parents('tr').find('td:eq(0)').text();
+		console.log('id: '+id);
+		$.ajax({
+			url: '/admin/pet/delete',
+			type: 'post',
+			data: {
+				id: id
+			},
+			success: function(res){
+				if(res.code === 200){
+					window.location.reload();
+					prompt(res.msg, 'alert-success', 1500);
+				}else{
+					prompt(res.msg, 'alert-danger', 1500);
+				}
+			},
+			error: function(err){
+				console.log(err);
+			}
+		})
+	})
+
+	//编辑
+	$('.edit').click(function(){
+		var id = $(this).parents('tr').find('td:eq(0)').text();
+		let url = '/admin/pet/edit/'+id;
+		console.log('url: '+url);
+		//跳转
+		window.location.href=url;
+	})
+
+</script>
+
+
 </html>

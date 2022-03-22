@@ -1,5 +1,7 @@
 package com.sunhongbing.petadoption.backstage.controller;
 
+import com.sunhongbing.petadoption.backstage.entity.Animal;
+import com.sunhongbing.petadoption.backstage.service.PetManageService;
 import com.sunhongbing.petadoption.config.AdminUserToken;
 import com.sunhongbing.petadoption.backstage.entity.LoginParam;
 import com.sunhongbing.petadoption.backstage.entity.SysMenu;
@@ -15,11 +17,11 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,9 @@ public class BackstageController {
 
     @Autowired
     private MenuService menuService;
+    @Autowired
+    private PetManageService petManageService;
+
 
 //    //登录页面
 //    @GetMapping("/login")
@@ -102,13 +107,18 @@ public class BackstageController {
     //宠物管理
     @GetMapping("/pet")
     @RequiresPermissions("pet:all")
-    public String pet() {
+    public String pet(Model model) throws ParseException {
+        List<Animal> animalList = petManageService.findAll(-99);
+        model.addAttribute("animalList", animalList);
         return "backstage/html/menu/pet-list";
     }
     //查看宠物信息
     @GetMapping("/pet/list")
     @RequiresPermissions("pet:all")
-    public String petInfo() {
+    public String petInfo(Model model) {
+        //查询所有宠物信息
+        List<Animal> animalList = petManageService.findAll(-99);
+        model.addAttribute("animalList", animalList);
         return "backstage/html/menu/pet-list";
     }
     //添加宠物
@@ -116,6 +126,67 @@ public class BackstageController {
     @RequiresPermissions("pet:all")
     public String petAdd() {
         return "backstage/html/menu/pet-add";
+    }
+    @PostMapping("/pet/add")
+    @RequiresPermissions("pet:all")
+    public String petAdd_post(Animal animal, Model model) {
+        int i = petManageService.insertPet(animal);
+        if (i > 0) {
+            model.addAttribute("msg_flag", "ok");
+            model.addAttribute("msg", "添加成功！");
+        } else if (i == -1) {
+            model.addAttribute("msg_flag", "fail");
+            model.addAttribute("msg", "添加失败，数据有误！");
+        }
+        else {
+            model.addAttribute("msg_flag", "fail");
+            model.addAttribute("msg", "添加失败！");
+        }
+        return "backstage/html/menu/pet-add";
+    }
+    //修改宠物信息
+    @GetMapping("/pet/edit/{id}")
+    @RequiresPermissions("pet:all")
+    public String petEdit(@PathVariable("id") Integer id, Model model) {
+        Animal animal = petManageService.findPetById(String.valueOf(id));
+        model.addAttribute("animal", animal);
+        return "backstage/html/menu/pet-edit";
+    }
+    @PostMapping("/pet/edit")
+    @RequiresPermissions("pet:all")
+    public String petEdit(Animal animal, Model model ) {
+        int re = petManageService.updatePet(animal);
+        System.out.println("修改结果：" + re);
+        System.out.println(animal);
+        if (re == 1) {
+            model.addAttribute("msg_flag", "ok");
+            model.addAttribute("msg", "修改成功！");
+        } else {
+            model.addAttribute("msg_flag", "fail");
+            model.addAttribute("msg", "修改失败！");
+        }
+        return "backstage/html/menu/pet-edit";
+    }
+    //删除宠物
+    @PostMapping("/pet/delete")
+    @ResponseBody
+    @RequiresPermissions("pet:all")
+    public ResultVO petDelete(String id) {
+        ResultVO resultVO = new ResultVO();
+        if (id == null || id.equals("")) {
+            resultVO.setCode(500);
+            resultVO.setMsg("删除失败，数据有误！");
+            return resultVO;
+        }
+        int re = petManageService.deletePet(id);
+        if (re == 1) {
+            resultVO.setCode(200);
+            resultVO.setMsg("删除成功！");
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("删除失败！");
+        }
+        return resultVO;
     }
 
     //志愿者管理

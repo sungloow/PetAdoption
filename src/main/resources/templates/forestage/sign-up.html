@@ -1,10 +1,217 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html class="no-js" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>注册</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/nice-select.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/odometer.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/slick.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/default.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/style.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
 </head>
 <body>
 
+<!-- Preloader -->
+<div th:replace="~{../templates/forestage/commons::commonPreloader}"></div>
+<!-- Preloader-end -->
+
+<!-- Scroll-top -->
+<button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
+<!-- Scroll-top-end-->
+
+<!-- header-area -->
+<header th:replace="~{../templates/forestage/commons::commonHeader('')}"></header>
+<!-- header-area-end -->
+
+
+<!-- main-area -->
+<main>
+
+    <section class="contact-area pt-110 pb-110">
+        <div class="container">
+            <div class="container-inner-wrap">
+                <div class="row justify-content-center justify-content-lg-between">
+                    <div class="col-lg-8 col-md-8 order-2 order-lg-0">
+                        <div class="contact-title mb-20">
+                            <h5 class="sub-title">欢迎注册</h5>
+                            <h2 class="title">Let's go<span>.</span></h2>
+                        </div>
+                        <div class="contact-wrap-content">
+                            <form th:action="@{/sign-up}" method="post" name="registerForm" class="contact-form"
+                                  onsubmit="return submitForm()">
+                                <div class="form-grp">
+                                    <label for="email">邮箱 <span>*</span></label>
+                                    <input type="text" name="email" id="email" placeholder="info@example.com">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="password">密码 <span>*</span></label>
+                                    <input type="password" name="password" id="password" placeholder="至少8位">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="confirmPassword">确认密码 <span>*</span></label>
+                                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="两次密码应一致">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="tel">联系电话 <span>*</span></label>
+                                    <input type="text" name="tel" id="tel">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="name">姓名 <span>*</span></label>
+                                    <input type="text" name="name" id="name">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="age">年龄 <span>*</span></label>
+                                    <input type="number" name="age" id="age">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="sex">性别 <span>*</span></label>
+                                    <select name="sex" id="sex"  class="form-control dropdown-toggle">
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
+                                    </select>
+                                </div>
+                                <div class="form-grp">
+                                    <label for="address">联系地址 <span>*</span></label>
+                                    <input type="text" name="address" id="address">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="experience">养宠经验 <span>*</span></label>
+                                    <select name="experience" id="experience"  class="form-control dropdown-toggle">
+                                        <option value="0">第一次养宠</option>
+                                        <option value="1">有养宠经验✅</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn  rounded-btn">提交</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+<!-- main-area-end -->
+
+
+<!-- footer-start -->
+<footer th:replace="~{../templates/forestage/commons::commonFooter}"></footer>
+<!-- footer-end -->
+
+
+
+
+
+<!-- JS here -->
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+<script th:src="@{/fore/js/isotope.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/imagesloaded.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/fore/js/owl.carousel.min.js}"></script>
+<script th:src="@{/fore/js/jquery.odometer.min.js}"></script>
+<script th:src="@{/fore/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/fore/js/jquery-ui.min.js}"></script>
+<script th:src="@{/fore/js/jquery.appear.js}"></script>
+<script th:src="@{/fore/js/slick.min.js}"></script>
+<script th:src="@{/fore/js/wow.min.js}"></script>
+<script th:src="@{/fore/js/plugins.js}"></script>
+<script th:src="@{/fore/js/main.js}"></script>
+
+<script type="text/javascript">
+    //提交表单时简单验证表单
+    function submitForm() {
+        const email = $("#email").val();
+        const password = $("#password").val();
+        const confirmPassword = $("#confirmPassword").val();
+        const tel = $("#tel").val();
+        const name = $("#name").val();
+        const age = $("#age").val();
+        const address = $("#address").val();
+//        全部必须输入
+        if (email === "" || password === "" || confirmPassword === "" || tel === "" || name === "" || age === "" || address === "") {
+            prompt('请填写完整信息', 'alert-warning');
+            return false;
+        }
+        // email格式验证
+        if (!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/)) {
+            prompt('邮箱格式不正确', 'alert-warning');
+            return false;
+        }
+        //        密码长度不能小于8位
+        if (password.length < 8) {
+            prompt('密码长度不能小于8位', 'alert-warning');
+            return false;
+        }
+        //        密码和确认密码必须一致
+        if (password !== confirmPassword) {
+            prompt('密码和确认密码必须一致', 'alert-warning');
+            return false;
+        }
+        //        手机号码格式不正确
+        if (!(/^1[3456789]\d{9}$/.test(tel))) {
+            prompt('手机号码格式不正确', 'alert-warning');
+            return false;
+        }
+        //        年龄必须为数字
+        if (!(/^\d+$/.test(age))) {
+            prompt('年龄必须为数字', 'alert-warning');
+            return false;
+        }
+        return true;
+    }
+
+    //提示框
+    function prompt(message, style, time) {
+        style = (style === undefined) ? 'alert-success' : style;
+        time = (time === undefined) ? 1500 : time;
+        $('<div></div>')
+            .appendTo('body')
+            .addClass('alert ' + style)
+            .html(message)
+            .show()
+            .delay(time)
+            .fadeOut();
+    }
+
+    $(document).ready(function() {
+        const msg = '[[${signUpResult}]]';
+
+        if (msg !== "") {
+            const flag = '[[${signUpResultFlag}]]';
+            if (flag === "ok") {
+                prompt(msg, 'alert-success');
+                setTimeout(function() {
+                    window.location.href = "/login";
+                }, 2500);
+            } else {
+                prompt(msg, 'alert-danger');
+            }
+        }
+
+    });
+
+
+</script>
 </body>
 </html>

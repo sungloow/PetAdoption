@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>添加宠物</title>
+    <title>update宠物</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
     <link rel='stylesheet' th:href='@{/fore/css/bootstrap-4.1.min.css}'>
@@ -15,8 +15,13 @@
 <div class="col-md-6">
     <div class="card">
         <div class="card-body">
-
-            <form th:action="@{/admin/pet/add}" method="post">
+            <button type="button" class="btn btn-warning" onclick="window.location.href='/admin/pet/list'">返回</button>
+            <h3></h3>
+            <form th:action="@{/admin/pet/edit}" method="post">
+                <div class="form-group">
+                    <label for="id">ID</label>
+                    <input class="form-control" type="text" id="id" name="id" required hidden>
+                </div>
                 <div class="form-group">
                     <label for="name">名字</label>
                     <input class="form-control" type="text" id="name" name="name" required>
@@ -47,6 +52,14 @@
                 <div class="form-group">
                     <label for="detail">描述</label>
                     <textarea  class="form-control" type="text" id="detail" name="detail"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="status" class="control-label">状态</label>
+                    <select name="status" id="status"  class="form-control dropdown-toggle">
+                        <option value="-1">下架</option>
+                        <option value="0">待领养</option>
+                        <option value="1">已领养</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">提交</button>
@@ -89,7 +102,6 @@
 
     $(document).ready(function() {
         const msg = '[[${msg}]]';
-
         if (msg !== "") {
             const flag = '[[${msg_flag}]]';
             if (flag === "ok") {
@@ -99,6 +111,42 @@
             }
         }
 
+        const animal = '[[${animal}]]';
+        const id = '[[${animal.id}]]';
+        const name = '[[${animal.name}]]';
+        const birth = '[[${animal.birth}]]';
+        const detail = '[[${animal.detail}]]';
+        const sex = '[[${animal.sex}]]';
+        const type = '[[${animal.type}]]';
+        const status = '[[${animal.status}]]';
+        if (animal !== "") {
+            console.log(animal);
+
+            $('#id').val(id);
+            $('#name').val(name);
+            $('#birth').val(birth);
+            $('#detail').val(detail);
+            if (sex === '公'){
+                document.getElementById('sex')[0].selected = true;
+            } else {
+                document.getElementById('sex')[1].selected = true;
+            }
+            if (type === '猫') {
+                document.getElementById('type')[0].selected = true;
+            } else if (type === '狗') {
+                document.getElementById('type')[1].selected = true;
+            } else {
+                document.getElementById('type')[2].selected = true;
+            }
+
+            if (status === '-1') {
+                document.getElementById('status')[0].selected = true;
+            } else if (status === '0') {
+                document.getElementById('status')[1].selected = true;
+            } else {
+                document.getElementById('status')[2].selected = true;
+            }
+        }
     });
 
 

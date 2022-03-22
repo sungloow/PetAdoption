@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserMapper {
     // 通过username查找用户信息
-    @Select("select * from user where username = #{username}")
-    User findUserByUsername(String username);
+    @Select("select * from user where email = #{email}")
+    User findUserByEmail(String email);
 }
