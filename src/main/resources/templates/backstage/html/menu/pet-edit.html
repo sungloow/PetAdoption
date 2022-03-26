@@ -19,7 +19,7 @@
             <h3></h3>
             <form th:action="@{/admin/pet/edit}" method="post">
                 <div class="form-group">
-                    <label for="id">ID</label>
+                    <label for="id" hidden>ID</label>
                     <input class="form-control" type="text" id="id" name="id" required hidden>
                 </div>
                 <div class="form-group">
@@ -53,6 +53,7 @@
                     <label for="detail">描述</label>
                     <textarea  class="form-control" type="text" id="detail" name="detail"></textarea>
                 </div>
+
                 <div class="form-group">
                     <label for="status" class="control-label">状态</label>
                     <select name="status" id="status"  class="form-control dropdown-toggle">
@@ -60,6 +61,16 @@
                         <option value="0">待领养</option>
                         <option value="1">已领养</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="pic" class="control-label">图片</label>
+                    <div class="upload-card-box change-file-box">
+                        <img id="pic" width="80px" height="80px" src="" alt="picture"/><br/>
+                        <input type="file" name="file" id="upload_pic_ipt" style="display: none"><br/>
+                        <button type="button" onclick="upload_pic_ajax('upload_pic_ipt')" >选择文件</button>
+                    </div>
+
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit">提交</button>
@@ -84,7 +95,9 @@
 <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
 <script>
-    $("#birth").datetimepicker();
+    $("#birth").datetimepicker({
+        format:'YYYY/MM/DD HH:mm:ss'
+    });
 
 
     //提示框
@@ -119,6 +132,7 @@
         const sex = '[[${animal.sex}]]';
         const type = '[[${animal.type}]]';
         const status = '[[${animal.status}]]';
+        const pics = '[[${animal.pics}]]';
         if (animal !== "") {
             console.log(animal);
 
@@ -126,6 +140,7 @@
             $('#name').val(name);
             $('#birth').val(birth);
             $('#detail').val(detail);
+            $('#pic').attr('src', pics);
             if (sex === '公'){
                 document.getElementById('sex')[0].selected = true;
             } else {
@@ -146,9 +161,32 @@
             } else {
                 document.getElementById('status')[2].selected = true;
             }
+
         }
     });
 
+    function upload_pic_ajax(s){
+        $("#"+s).click().change(function (){
+            const formData = new FormData();
+            formData.append("file", $("#upload_pic_ipt")[0].files[0]);
+            $.ajax({
+                url: "/admin/pet/upload/"+$("#id").val(),
+                type: "POST",
+                enctype : "multipart/form-data",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.code === 200) {
+                        prompt(data.msg, 'alert-success');
+                        $("#pic").attr("src", data.result);
+                    } else {
+                        prompt(data.msg, 'alert-danger');
+                    }
+                }
+            });
+        });
 
+    }
 </script>
 </html>

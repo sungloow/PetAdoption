@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Petco - Pet Protection & Adoption</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/nice-select.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/odometer.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/slick.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/default.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/style.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
+</head>
+<body>
+
+<!-- Preloader -->
+<div th:replace="~{../templates/forestage/commons::commonPreloader}"></div>
+<!-- Preloader-end -->
+
+<!-- Scroll-top -->
+<button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
+<!-- Scroll-top-end-->
+
+<!-- header-area -->
+<header th:replace="~{../templates/forestage/commons::commonHeader('adoption')}"></header>
+<!-- header-area-end -->
+
+
+<!-- main-area -->
+<main>
+
+    <!-- breadcrumb-area -->
+    <section class="breadcrumb-area breadcrumb-bg" th:data-background="@{/fore/img/bg/breadcrumb_bg.jpg}">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-content">
+                        <h2 class="title">Adoption Apply</h2>
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Adoption Apply</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb-area-end -->
+
+    <!-- breeder-details-area -->
+    <section class="breeder-details-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="breeder-details-content">
+                        <h4 class="title" th:text="${animal.name}"></h4>
+                        <p th:text="${animal.detail}" ></p>
+                        <div class="breeder-details-img">
+                            <img th:src="${animal.pics}" alt="">
+                        </div>
+                        <div class="breeder-dog-info">
+                            <h5 class="title">Information</h5>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-4 col-6">
+                                    <div class="breeder-info-item">
+                                        <h6>Birth:</h6>
+                                        <span th:text="${animal.birth}"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-4 col-6">
+                                    <div class="breeder-info-item">
+                                        <h6>Age:</h6>
+                                        <span th:text="${animal.age}"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-4 col-6">
+                                    <div class="breeder-info-item">
+                                        <h6>Sex:</h6>
+                                        <span th:text="${animal.sex}"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-4 col-6">
+                                    <div class="breeder-info-item">
+                                        <h6>Type:</h6>
+                                        <span th:text="${animal.type}"></span>
+                                    </div>
+                                </div>
+<input type="text" id="animalId" th:value="${animal.id}" hidden>
+                            </div>
+                            <a href="#" class="btn" id="apply">Apply
+                                <img th:src="@{/fore/img/icon/w_pawprint.png}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- breeder-details-area-end -->
+
+
+
+</main>
+<!-- main-area-end -->
+
+
+<!-- footer-start -->
+<footer th:replace="~{../templates/forestage/commons::commonFooter}"></footer>
+<!-- footer-end -->
+
+
+
+
+
+<!-- JS here -->
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+<script th:src="@{/fore/js/isotope.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/imagesloaded.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/fore/js/owl.carousel.min.js}"></script>
+<script th:src="@{/fore/js/jquery.odometer.min.js}"></script>
+<script th:src="@{/fore/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/fore/js/jquery-ui.min.js}"></script>
+<script th:src="@{/fore/js/jquery.appear.js}"></script>
+<script th:src="@{/fore/js/slick.min.js}"></script>
+<script th:src="@{/fore/js/wow.min.js}"></script>
+<script th:src="@{/fore/js/plugins.js}"></script>
+<script th:src="@{/fore/js/main.js}"></script>
+
+<script>
+    //提示框
+    function prompt(message, style, time) {
+        style = (style === undefined) ? 'alert-success' : style;
+        time = (time === undefined) ? 1500 : time;
+        $('<div></div>')
+            .appendTo('body')
+            .addClass('alert ' + style)
+            .html(message)
+            .show()
+            .delay(time)
+            .fadeOut();
+    }
+
+    $('#apply').click(function () {
+        $.ajax({
+            url: '/adoption/apply/'+$('#animalId').val(),
+            type: 'POST',
+            data: {},
+            success: function (data) {
+                if (data.code === 200) {
+                    prompt(data.msg, 'alert-success', 1500);
+                } else {
+                    prompt(data.msg, 'alert-danger', 1500);
+                }
+            },
+            error: function (data) {
+                prompt('Error', 'alert-danger', 1500);
+            }
+
+        });
+    });
+</script>
+</body>
+</html>

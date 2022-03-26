@@ -1,10 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+﻿<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Petco - Pet Protection & Adoption</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-</body>
+        <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+
+        <!-- CSS here -->
+        <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/animate.min.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/magnific-popup.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/fontawesome-all.min.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/owl.carousel.min.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/nice-select.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/flaticon.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/odometer.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/jquery-ui.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/slick.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/default.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/style.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+
+        <style>
+            .accept{
+                font-size: 15px;
+                size: 20px;
+                border-radius: 6px;
+                background: #00ff00;
+            }
+            .reject{
+                font-size: 15px;
+                border-radius: 6px;
+                background-color: #ff4b36;
+            }
+            .apply{
+                font-size: 15px;
+                border-radius: 6px;
+                background-color: #ffff00;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <!-- Preloader -->
+        <div th:replace="~{../templates/forestage/commons::commonPreloader}"></div>
+        <!-- Preloader-end -->
+
+        <!-- Scroll-top -->
+        <button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
+        <!-- Scroll-top-end-->
+
+        <!-- main-area -->
+        <main>
+
+            <!-- adoption-area -->
+            <section class="adoption-shop-area">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-7 col-lg-9">
+                            <div class="section-title text-center mb-65">
+                                <div class="section-icon"><img th:src="@{/fore/img/icon/pawprint.png}" alt=""></div>
+                                <h5 class="sub-title">Meet the animals</h5>
+<!--                                <h2 class="title">等待收养的小伙伴</h2>-->
+<!--                                <p>它们正在等待你的到来。</p>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center" id="pets_list" >
+
+                        <div class="col-lg-4 col-md-6" th:each="animal,animalStat : ${animalList}">
+                            <div class="adoption-shop-item">
+                                <div class="adoption-shop-thumb">
+                                    <img th:src="${animal.pics}" alt="" >
+<!--                                    <a th:href="@{${'/adoption/apply/'+animal.id}}" class="btn">领养-->
+<!--                                        <img th:src="@{/fore/img/icon/w_pawprint.png}" alt="">-->
+<!--                                    </a>-->
+                                </div>
+                                <div class="adoption-shop-content">
+                                    <h4 class="title"><a th:href="@{${'/adoption/detail/'+animal.id}}" th:text="${animal.name}"></a></h4>
+                                    <div class="adoption-meta">
+                                        <ul>
+                                            <li><i class="fas fa-cog"></i><span th:text="${animal.type}"></span></li>
+                                            <li><i class="far fa-calendar-alt"></i> 申请日期 : <span th:text="${animal.time}"></span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="adoption-rating">
+                                        <ul >
+                                            <li class="price">
+                                                <span th:class="${animal.status==0?'apply':(animal.status==-1?'reject':'accept') }"
+                                                      th:text="${animal.status==0?'申请中':(animal.status==-1?'拒绝':'已同意')}"></span>
+                                            </li>
+                                            <li class="price">年龄 : <span th:text="${animal.age}"></span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </section>
+            <!-- adoption-area-end -->
+
+
+        </main>
+        <!-- main-area-end -->
+
+
+        <!-- JS here -->
+        <script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+        <script th:src="@{/fore/js/bootstrap.min.js}"></script>
+        <script th:src="@{/fore/js/isotope.pkgd.min.js}"></script>
+        <script th:src="@{/fore/js/imagesloaded.pkgd.min.js}"></script>
+        <script th:src="@{/fore/js/jquery.magnific-popup.min.js}"></script>
+        <script th:src="@{/fore/js/owl.carousel.min.js}"></script>
+        <script th:src="@{/fore/js/jquery.odometer.min.js}"></script>
+        <script th:src="@{/fore/js/jquery.nice-select.min.js}"></script>
+        <script th:src="@{/fore/js/jquery-ui.min.js}"></script>
+        <script th:src="@{/fore/js/jquery.appear.js}"></script>
+        <script th:src="@{/fore/js/slick.min.js}"></script>
+        <script th:src="@{/fore/js/wow.min.js}"></script>
+        <script th:src="@{/fore/js/plugins.js}"></script>
+        <script th:src="@{/fore/js/main.js}"></script>
+
+    </body>
 </html>

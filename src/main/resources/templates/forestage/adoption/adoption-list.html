@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html class="no-js" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -8,7 +8,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
-        <!-- Place favicon.ico in the root directory -->
 
         <!-- CSS here -->
         <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
@@ -76,19 +75,20 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-4 col-md-6">
+                    <div class="row justify-content-center" id="pets_list" >
+
+                        <div class="col-lg-4 col-md-6" th:each="animal,animalStat : ${animalList}">
                             <div class="adoption-shop-item">
                                 <div class="adoption-shop-thumb">
-                                    <img th:src="@{/fore/img/product/adoption_shop_thumb01.jpg}" alt="">
-                                    <a th:href="@{/adoption/detail/123}" class="btn">领养 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt=""></a>
+                                    <img th:src="${animal.pics}" alt="" >
+                                    <a th:href="@{${'/adoption/apply/'+animal.id}}" class="btn">领养 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt=""></a>
                                 </div>
                                 <div class="adoption-shop-content">
-                                    <h4 class="title"><a th:href="@{/shop-details}">MT</a></h4>
+                                    <h4 class="title"><a th:href="@{${'/adoption/detail/'+animal.id}}" th:text="${animal.name}"></a></h4>
                                     <div class="adoption-meta">
                                         <ul>
-                                            <li><i class="fas fa-cog"></i><a href="#">西伯利亚雪橇犬</a></li>
-                                            <li><i class="far fa-calendar-alt"></i> Birth : 2021</li>
+                                            <li><i class="fas fa-cog"></i><span th:text="${animal.type}"></span></li>
+                                            <li><i class="far fa-calendar-alt"></i> Birth : <span th:text="${animal.birth}"></span></li>
                                         </ul>
                                     </div>
                                     <div class="adoption-rating">
@@ -100,128 +100,15 @@
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
                                             </li>
-                                            <li class="price">手续费 : <span>￥100</span></li>
+                                            <li class="price">年龄 : <span th:text="${animal.age}"></span></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="adoption-shop-item">
-                                <div class="adoption-shop-thumb">
-                                    <img th:src="@{/fore/img/product/adoption_shop_thumb01.jpg}" alt="">
-                                    <a th:href="@{/adoption/detail/123}" class="btn">领养 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt=""></a>
-                                </div>
-                                <div class="adoption-shop-content">
-                                    <h4 class="title"><a th:href="@{/shop-details}">MT</a></h4>
-                                    <div class="adoption-meta">
-                                        <ul>
-                                            <li><i class="fas fa-cog"></i><a href="#">西伯利亚雪橇犬</a></li>
-                                            <li><i class="far fa-calendar-alt"></i> Birth : 2021</li>
-                                        </ul>
-                                    </div>
-                                    <div class="adoption-rating">
-                                        <ul>
-                                            <li class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                            <li class="price">手续费 : <span>￥100</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="adoption-shop-item">
-                                <div class="adoption-shop-thumb">
-                                    <img th:src="@{/fore/img/product/adoption_shop_thumb01.jpg}" alt="">
-                                    <a th:href="@{/adoption/detail/123}" class="btn">领养 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt=""></a>
-                                </div>
-                                <div class="adoption-shop-content">
-                                    <h4 class="title"><a th:href="@{/shop-details}">MT</a></h4>
-                                    <div class="adoption-meta">
-                                        <ul>
-                                            <li><i class="fas fa-cog"></i><a href="#">西伯利亚雪橇犬</a></li>
-                                            <li><i class="far fa-calendar-alt"></i> Birth : 2021</li>
-                                        </ul>
-                                    </div>
-                                    <div class="adoption-rating">
-                                        <ul>
-                                            <li class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                            <li class="price">手续费 : <span>￥100</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="adoption-shop-item">
-                                <div class="adoption-shop-thumb">
-                                    <img th:src="@{/fore/img/product/adoption_shop_thumb01.jpg}" alt="">
-                                    <a th:href="@{/adoption/detail/123}" class="btn">领养 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt=""></a>
-                                </div>
-                                <div class="adoption-shop-content">
-                                    <h4 class="title"><a th:href="@{/shop-details}">MT</a></h4>
-                                    <div class="adoption-meta">
-                                        <ul>
-                                            <li><i class="fas fa-cog"></i><a href="#">西伯利亚雪橇犬</a></li>
-                                            <li><i class="far fa-calendar-alt"></i> Birth : 2021</li>
-                                        </ul>
-                                    </div>
-                                    <div class="adoption-rating">
-                                        <ul>
-                                            <li class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                            <li class="price">手续费 : <span>￥100</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="adoption-shop-item">
-                                <div class="adoption-shop-thumb">
-                                    <img th:src="@{/fore/img/product/adoption_shop_thumb01.jpg}" alt="">
-                                    <a th:href="@{/adoption/detail/123}" class="btn">领养 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt=""></a>
-                                </div>
-                                <div class="adoption-shop-content">
-                                    <h4 class="title"><a th:href="@{/shop-details}">MT</a></h4>
-                                    <div class="adoption-meta">
-                                        <ul>
-                                            <li><i class="fas fa-cog"></i><a href="#">西伯利亚雪橇犬</a></li>
-                                            <li><i class="far fa-calendar-alt"></i> Birth : 2021</li>
-                                        </ul>
-                                    </div>
-                                    <div class="adoption-rating">
-                                        <ul>
-                                            <li class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                            <li class="price">手续费 : <span>￥100</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+
+
                     </div>
                 </div>
             </section>
@@ -259,5 +146,95 @@
         <script th:src="@{/fore/js/wow.min.js}"></script>
         <script th:src="@{/fore/js/plugins.js}"></script>
         <script th:src="@{/fore/js/main.js}"></script>
+
+    <script>
+        let pages = 2;
+        let page = 2;
+        let isloding = false;
+
+        $(document).on('scroll', function () {
+            const list_height = $("#pets_list").height();
+            const list_scroll_height = $(document).scrollTop()
+            const win_height = $(window).height();
+            if (list_scroll_height + win_height >= list_height && isloding === false) {
+                console.log("到底啦！")
+                isloding = true
+                lod()
+            }
+        })
+        function lod() {
+            const url = '/adoption/list_page';
+            const data = {
+                sort:'id',
+                order:'asc',
+                pageNumber:page,
+                pageSize:9
+            }
+            if (page > pages) {
+                return
+            }
+            $.ajax({
+                type: "get",
+                url: url,
+                dataType: 'json',
+                data: data,
+                success: function(res){
+                    if(res.code === 200){
+                        pages = res.result.pages
+                        page = res.result.nextPageNum;
+                        const animalList = res.result.animalList;
+                        console.log(res.result)
+                        $.each(animalList, function(index, value) {
+                            const animal = animalList[index];
+                            console.log(animal)
+                            const html = `
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="adoption-shop-item">
+                                        <div class="adoption-shop-thumb">
+                                            <img src="${animal.pics}" alt="" >
+                                                <a href="/adoption/apply/${animal.id}" class="btn">领养 <img src="/fore/img/icon/w_pawprint.png" alt=""></a>
+                                        </div>
+                                        <div class="adoption-shop-content">
+                                            <h4 class="title"><a href="/adoption/detail/${animal.id}">${animal.name}</a></h4>
+                                            <div class="adoption-meta">
+                                                <ul>
+                                                    <li><i class="fas fa-cog"></i><span>${animal.type}</span></li>
+                                                    <li><i class="far fa-calendar-alt"></i> Birth : <span>${animal.birth}</span></li>
+                                                </ul>
+                                            </div>
+                                            <div class="adoption-rating">
+                                                <ul>
+                                                    <li class="rating">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                    </li>
+                                                    <li class="price">年龄 : <span>${animal.age}</span></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `
+                            $("#pets_list").append(html)
+                        });
+                        isloding = false
+                    }else{
+                        prompt(res.msg, 'alert-danger', 1500);
+                    }
+                },
+                error: function(err){
+                    console.log(err);
+                },
+                complete: function () {
+
+                }
+
+            });
+
+        }
+    </script>
     </body>
 </html>

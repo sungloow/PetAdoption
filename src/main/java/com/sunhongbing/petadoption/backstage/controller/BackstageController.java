@@ -1,29 +1,30 @@
 package com.sunhongbing.petadoption.backstage.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.sunhongbing.petadoption.backstage.entity.Animal;
+import com.sunhongbing.petadoption.backstage.entity.RequestParamsPetList;
+import com.sunhongbing.petadoption.backstage.enums.PetStatus;
 import com.sunhongbing.petadoption.backstage.service.PetManageService;
-import com.sunhongbing.petadoption.config.AdminUserToken;
-import com.sunhongbing.petadoption.backstage.entity.LoginParam;
 import com.sunhongbing.petadoption.backstage.entity.SysMenu;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
 import com.sunhongbing.petadoption.backstage.service.MenuService;
+import com.sunhongbing.petadoption.config.OSSUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.IOException;
+import java.sql.Blob;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @className: BackstageController
@@ -108,18 +109,43 @@ public class BackstageController {
     @GetMapping("/pet")
     @RequiresPermissions("pet:all")
     public String pet(Model model) throws ParseException {
-        List<Animal> animalList = petManageService.findAll(-99);
+        List<Animal> animalList = petManageService.findAll(PetStatus.ALL.getCode(),"id", "desc");
         model.addAttribute("animalList", animalList);
-        return "backstage/html/menu/pet-list";
+        return "backstage/html/menu/pet-list2";
     }
     //查看宠物信息
     @GetMapping("/pet/list")
     @RequiresPermissions("pet:all")
-    public String petInfo(Model model) {
+    public String petInfo(Model model) throws ParseException {
         //查询所有宠物信息
-        List<Animal> animalList = petManageService.findAll(-99);
+        List<Animal> animalList = petManageService.findAll(PetStatus.ALL.getCode(), "id", "desc");
         model.addAttribute("animalList", animalList);
-        return "backstage/html/menu/pet-list";
+        return "backstage/html/menu/pet-list2";
+    }
+    //查看单个宠物信息
+    @GetMapping("/pet/info/{id}")
+    @RequiresPermissions("pet:all")
+    public String petInfo(@PathVariable("id") Integer id, Model model) {
+        Animal animal = petManageService.findPetById(id);
+        model.addAttribute("animal", animal);
+        return "backstage/html/menu/pet-detail";
+    }
+
+    @GetMapping("/pet/list_query")
+    @ResponseBody
+    @RequiresPermissions("pet:all")
+    public Map<String, Object> petInfo_query(RequestParamsPetList params) throws ParseException {
+        System.out.println(params);
+        int status = params.getSearch_status();
+        PageHelper.startPage(params.getPageNumber(),params.getPageSize());
+        List<Animal> animalList = petManageService.findAll(status, params.getSort(), params.getOrder());
+        List<Animal> animalList_size = petManageService.findAll(PetStatus.ALL.getCode(), params.getSort(), params.getOrder());
+        int total = animalList_size.size();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("total", total);
+        hashMap.put("rows", animalList);
+        return hashMap;
+
     }
     //添加宠物
     @GetMapping("/pet/add")
@@ -144,11 +170,68 @@ public class BackstageController {
         }
         return "backstage/html/menu/pet-add";
     }
+    //上传宠物图片
+    @PostMapping("/pet/upload/{id}")
+    @ResponseBody
+    @RequiresPermissions("pet:all")
+    public ResultVO petUpload( MultipartFile file, @PathVariable Integer id) throws IOException {
+        ResultVO resultVO = new ResultVO();
+        if (file.isEmpty()) {
+            resultVO.setCode(500);
+            resultVO.setMsg("请选择图片");
+            return resultVO;
+        }
+        // 原始文件名称
+        String originalFilename = file.getOriginalFilename();
+        // 唯一的文件名称
+        String fileName = id + "/" + UUID.randomUUID() + "." + originalFilename;
+        // 上传地址
+        OSSUtil ossUtil = new OSSUtil();
+        String url = ossUtil.uploadImg2Oss(file, fileName);
+        if (url != null) {
+            if (id>0) {
+                int i = petManageService.insertPetImg(id, url);
+                if (i > 0) {
+                    resultVO.setCode(200);
+                    resultVO.setMsg("上传成功");
+                    resultVO.setResult(url);
+                }else {
+                    resultVO.setCode(500);
+                    resultVO.setMsg("上传失败");
+                }
+            } else {
+                resultVO.setCode(200);
+                resultVO.setMsg("上传成功");
+                resultVO.setResult(url);
+            }
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("上传失败");
+        }
+        return resultVO;
+    }
+    //查找宠物图片
+    @GetMapping("/pet/img/{id}")
+    @ResponseBody
+    @RequiresPermissions("pet:all")
+    public ResultVO petImg(@PathVariable Integer id) {
+        String pic = petManageService.findPetPicById(id);
+        ResultVO resultVO = new ResultVO();
+        if (pic != null) {
+            resultVO.setCode(200);
+            resultVO.setMsg("查找成功！");
+            resultVO.setResult(pic);
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("查找失败！");
+        }
+        return resultVO;
+    }
     //修改宠物信息
     @GetMapping("/pet/edit/{id}")
     @RequiresPermissions("pet:all")
     public String petEdit(@PathVariable("id") Integer id, Model model) {
-        Animal animal = petManageService.findPetById(String.valueOf(id));
+        Animal animal = petManageService.findPetById(id);
         model.addAttribute("animal", animal);
         return "backstage/html/menu/pet-edit";
     }
@@ -156,8 +239,6 @@ public class BackstageController {
     @RequiresPermissions("pet:all")
     public String petEdit(Animal animal, Model model ) {
         int re = petManageService.updatePet(animal);
-        System.out.println("修改结果：" + re);
-        System.out.println(animal);
         if (re == 1) {
             model.addAttribute("msg_flag", "ok");
             model.addAttribute("msg", "修改成功！");
@@ -171,15 +252,10 @@ public class BackstageController {
     @PostMapping("/pet/delete")
     @ResponseBody
     @RequiresPermissions("pet:all")
-    public ResultVO petDelete(String id) {
+    public ResultVO petDelete(int[] ids) {
         ResultVO resultVO = new ResultVO();
-        if (id == null || id.equals("")) {
-            resultVO.setCode(500);
-            resultVO.setMsg("删除失败，数据有误！");
-            return resultVO;
-        }
-        int re = petManageService.deletePet(id);
-        if (re == 1) {
+        int i = petManageService.deletePets(ids);
+        if (i == ids.length) {
             resultVO.setCode(200);
             resultVO.setMsg("删除成功！");
         } else {

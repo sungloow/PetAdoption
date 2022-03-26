@@ -1,4 +1,4 @@
-package com.sunhongbing.petadoption.backstage.entity;
+package com.sunhongbing.petadoption.forestage.entity;
 
 import lombok.Data;
 
@@ -11,11 +11,9 @@ import java.io.Serializable;
  * @date: 2022-02-16 15:41
  */
 @Data
-public class User implements Serializable {
+public class EditParam implements Serializable {
     private static final long serialVersionUID = 1L;
     private int id;
-//    private String username;
-    private String password;
     private String name;
     //性别
     private String sex;
@@ -29,6 +27,4 @@ public class User implements Serializable {
     private String address;
     //养宠经验
     private int experience;
-    //账号状态
-    private int status;
 }

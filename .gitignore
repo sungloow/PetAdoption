@@ -37,3 +37,4 @@ build/
 **/application-dev.yml
 **/application-prod.yml
 logs
+**/aliyun.properties

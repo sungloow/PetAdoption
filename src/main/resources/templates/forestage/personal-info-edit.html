@@ -1,0 +1,210 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>personal-info-edit</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/nice-select.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/odometer.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/slick.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/default.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/style.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
+</head>
+<body>
+
+<!-- Preloader -->
+<div th:replace="~{../templates/forestage/commons::commonPreloader}"></div>
+<!-- Preloader-end -->
+
+<!-- Scroll-top -->
+<button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
+<!-- Scroll-top-end-->
+
+
+<!-- main-area -->
+<main>
+
+    <section class="contact-area pt-110 pb-110">
+        <div class="container">
+            <div class="container-inner-wrap">
+                <div class="row justify-content-center justify-content-lg-between">
+                    <div class="col-lg-8 col-md-8 order-2 order-lg-0">
+                        <div class="contact-title mb-20">
+                            <h6><button class="btn  btn-info" id="back">返回</button></h6>
+
+                            <!--                            <h5 class="sub-title">欢迎注册</h5>-->
+                            <h2 class="title">更新个人信息<span>.</span></h2>
+                        </div>
+                        <div class="contact-wrap-content">
+                            <form  id="editForm" class="contact-form">
+                                <div class="form-grp">
+                                    <label for="email">邮箱 <span>*</span></label>
+                                    <input type="text" name="email" id="email" th:value="${user.email}" disabled>
+                                </div>
+                                <div class="form-grp">
+                                    <label for="tel">联系电话 <span>*</span></label>
+                                    <input type="text" name="tel" id="tel" th:value="${user.tel}">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="name">姓名 <span>*</span></label>
+                                    <input type="text" name="name" id="name" th:value="${user.name}">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="age">年龄 <span>*</span></label>
+                                    <input type="number" name="age" id="age" th:value="${user.age}" required>
+                                </div>
+                                <div class="form-grp">
+                                    <label for="sex">性别 <span>*</span></label>
+                                    <select name="sex" id="sex"  class="form-control dropdown-toggle">
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
+                                    </select>
+                                </div>
+                                <div class="form-grp">
+                                    <label for="address">联系地址 <span>*</span></label>
+                                    <input type="text" name="address" id="address" th:value="${user.address}">
+                                </div>
+                                <div class="form-grp">
+                                    <label for="experience">养宠经验 <span>*</span></label>
+                                    <select name="experience" id="experience"  class="form-control dropdown-toggle">
+                                        <option value="0">第一次养宠</option>
+                                        <option value="1">有养宠经验✅</option>
+                                    </select>
+                                </div>
+                                <button type="button" id="edit_btn" class="btn  rounded-btn">提交</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+<!-- main-area-end -->
+
+
+
+<!-- JS here -->
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+<script th:src="@{/fore/js/isotope.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/imagesloaded.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/fore/js/owl.carousel.min.js}"></script>
+<script th:src="@{/fore/js/jquery.odometer.min.js}"></script>
+<script th:src="@{/fore/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/fore/js/jquery-ui.min.js}"></script>
+<script th:src="@{/fore/js/jquery.appear.js}"></script>
+<script th:src="@{/fore/js/slick.min.js}"></script>
+<script th:src="@{/fore/js/wow.min.js}"></script>
+<script th:src="@{/fore/js/plugins.js}"></script>
+<script th:src="@{/fore/js/main.js}"></script>
+
+<script type="text/javascript">
+    //back
+
+    $(document).ready(function(){
+        $("#back").click(function(){
+            window.location.href="/fore/personal_info";
+        });
+    });
+
+    //提交表单时简单验证表单
+    function submitForm() {
+        const email = $("#email").val();
+        const tel = $("#tel").val();
+        const name = $("#name").val();
+        const age = $("#age").val();
+        const address = $("#address").val();
+//        全部必须输入
+        if (email === "" || tel === "" || name === "" || age === ""|| address === "") {
+            prompt('请填写完整信息', 'alert-warning');
+            return false;
+        }
+        // email格式验证
+        if (!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/)) {
+            prompt('邮箱格式不正确', 'alert-warning');
+            return false;
+        }
+        //        手机号码格式不正确
+        if (!(/^1[3456789]\d{9}$/.test(tel))) {
+            prompt('手机号码格式不正确', 'alert-warning');
+            return false;
+        }
+        //        年龄必须在0-100之间
+        if (age < 0 || age > 100) {
+            prompt('年龄必须在0-100之间', 'alert-warning');
+            return false;
+        }
+        //        年龄必须为数字
+        if (!(/^\d+$/.test(age))) {
+            prompt('年龄必须为数字', 'alert-warning');
+            return false;
+        }
+
+        return true;
+    }
+
+    //提示框
+    function prompt(message, style, time) {
+        style = (style === undefined) ? 'alert-success' : style;
+        time = (time === undefined) ? 1500 : time;
+        $('<div></div>')
+            .appendTo('body')
+            .addClass('alert ' + style)
+            .html(message)
+            .show()
+            .delay(time)
+            .fadeOut();
+    }
+
+    //ajax提交表单
+        $(function() {
+            $("#edit_btn").on("click", function() {
+                if (!submitForm()){
+                    return;
+                }
+                $.ajax({
+                    url: '/fore/personal_info_edit',
+                    type: 'post',
+                    dataType: 'json',
+                    data: $('#editForm').serialize(),
+                    success: function (data) {
+                        if (data.code === 200) {
+                            prompt(data.msg, 'alert-success', 2000);
+                        } else {
+                            prompt(data.msg, 'alert-warning', 2000);
+                        }
+                    },
+                    error: function(err){
+                        prompt('数据异常', 'alert-warning', 2000);
+                    }
+                })
+            })
+        })
+
+
+
+</script>
+</body>
+</html>

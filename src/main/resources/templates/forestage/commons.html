@@ -43,7 +43,7 @@
                     <div class="menu-wrap">
                         <nav class="menu-nav show">
                             <div class="logo"><a th:href="@{/}">
-                                <img alt="LOGO"  src="../fore/img/logo/logo.png"></a></div>
+                                <img alt="LOGO"  th:src="@{/fore/img/logo/logo.png}"></a></div>
                             <div class="navbar-wrap main-menu d-none d-lg-flex">
                                 <ul class="navigation">
                                     <li th:class="${target}=='home'?'active menu-item-has-children':'menu-item-has-children'">
@@ -79,6 +79,9 @@
                                             <li><a href="/about-us/working-time">时间和地点</a></li>
                                             <li><a href="/about-us/faq">常见问答</a></li>
                                         </ul>
+                                    </li>
+                                    <li th:class="${target}=='about-us'?'active menu-item-has-children':'menu-item-has-children'">
+                                        <a th:href="@{/fore/home}">个人中心</a>
                                     </li>
                                 </ul>
                             </div>

@@ -4,9 +4,10 @@ import com.sunhongbing.petadoption.backstage.entity.Animal;
 import com.sunhongbing.petadoption.backstage.service.PetManageService;
 import com.sunhongbing.petadoption.forestage.dao.AdoptionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Blob;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,11 +35,16 @@ public class PetManageServiceImpl implements PetManageService {
     }
 
     @Override
-    public List<Animal> findAll(int status) {
-        List<Animal> animalList = adoptionMapper.findAll(status);
+    public List<Animal> findAll(int status, String order, String sort) throws ParseException {
+        List<Animal> animalList = adoptionMapper.findAll(status, order, sort);
         for (Animal animal : animalList) {
-            animal.setAge(calculatingAge(animal.getBirth()));
+            // animal.getBirth() 转 Date
+            DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
+            Date date = fmt.parse(animal.getBirth());
+
+            animal.setAge(calculatingAge(date));
         }
+
         return animalList;
     }
 
@@ -48,7 +54,7 @@ public class PetManageServiceImpl implements PetManageService {
     }
 
     @Override
-    public Animal findPetById(String id) {
+    public Animal findPetById(int id) {
         return adoptionMapper.findPetById(id);
     }
 
@@ -76,12 +82,25 @@ public class PetManageServiceImpl implements PetManageService {
     }
 
     @Override
-    public int deletePet(String id) {
+    public int insertPetImg(int id, String pics) {
+        return adoptionMapper.insertPetPic(id, pics);
+    }
+
+    @Override
+    public String findPetPicById(int id) {
+        String pic = adoptionMapper.findPetPicById(id);
+        System.out.println("findPetPicById: ");
+        System.out.println(pic);
+        return adoptionMapper.findPetPicById(id);
+    }
+
+    @Override
+    public int deletePet(int id) {
         return adoptionMapper.deletePet(id);
     }
 
     @Override
-    public int deletePets(String[] ids) {
-        return 0;
+    public int deletePets(int[] ids) {
+        return adoptionMapper.deletePets(ids);
     }
 }

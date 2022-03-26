@@ -59,13 +59,13 @@ public class MyShiroRealm extends AuthorizingRealm {
         if(authenticationToken instanceof CommonUserToken) {
             //普通用户的认证逻辑
             UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-            String username = (String)token.getPrincipal();
-            User user = userService.findUserByEmail(username);
+            String email = (String)token.getPrincipal();
+            User user = userService.findUserByEmail(email);
             if(user == null) {
                 return null;
             }
             if (UserStatus.DISABLE.getCode() == user.getStatus()) {
-                throw new LockedAccountException(username + "账号被锁定，请联系管理员！");
+                throw new LockedAccountException(email + " 账号被锁定，请联系管理员！");
             }
             return new SimpleAuthenticationInfo(
                     user.getId(), //用户名

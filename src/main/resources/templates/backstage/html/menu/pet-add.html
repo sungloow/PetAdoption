@@ -23,7 +23,6 @@
                 </div>
                 <div class="form-group">
                     <label for="sex">性别</label>
-<!--                    <input class="form-control" type="text" id="sex" name="sex" required>-->
                     <select name="sex" id="sex"  class="form-control dropdown-toggle">
                         <option value="公">公</option>
                         <option value="母">母</option>
@@ -31,7 +30,6 @@
                 </div>
                 <div class="form-group">
                     <label for="type">种别</label>
-<!--                    <input class="form-control" type="text" id="type" name="type" required>-->
                     <select name="type" id="type"  class="form-control dropdown-toggle">
                         <option value="猫">猫</option>
                         <option value="狗">狗</option>
@@ -48,8 +46,20 @@
                     <label for="detail">描述</label>
                     <textarea  class="form-control" type="text" id="detail" name="detail"></textarea>
                 </div>
+
+
                 <div class="form-group">
-                    <button class="btn btn-primary" type="submit">提交</button>
+                    <label for="pic" class="control-label">图片</label>
+                    <div class="upload-card-box change-file-box">
+                        <img id="pic" width="80px" height="80px" src="" alt="picture"/><br/>
+                        <input type="file" name="file" id="upload_pic_ipt" style="display: none"><br/>
+                        <button type="button" onclick="upload_pic_ajax('upload_pic_ipt')" >选择文件</button>
+                    </div>
+                    <input type="text" name="pics" id="pics" hidden>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit" onclick="submitForm()">提交</button>
                 </div>
             </form>
 
@@ -71,7 +81,9 @@
 <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
 <script>
-    $("#birth").datetimepicker();
+    $("#birth").datetimepicker({
+        format:'YYYY/MM/DD HH:mm:ss'
+    });
 
 
     //提示框
@@ -100,6 +112,30 @@
         }
 
     });
+
+    function upload_pic_ajax(s){
+        $("#"+s).click().change(function (){
+            const formData = new FormData();
+            formData.append("file", $("#upload_pic_ipt")[0].files[0]);
+            $.ajax({
+                url: "/admin/pet/upload/"+'0',
+                type: "POST",
+                enctype : "multipart/form-data",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.code === 200) {
+                        // prompt(data.msg, 'alert-success');
+                        $("#pics").val(data.result);
+                        $("#pic").attr("src", data.result);
+                    } else {
+                        prompt(data.msg, 'alert-danger');
+                    }
+                }
+            });
+        });
+    }
 
 
 </script>
