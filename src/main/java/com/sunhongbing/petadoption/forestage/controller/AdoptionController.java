@@ -6,6 +6,7 @@ import com.sunhongbing.petadoption.backstage.entity.RequestParamsPetList;
 import com.sunhongbing.petadoption.backstage.enums.PetStatus;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
 import com.sunhongbing.petadoption.backstage.service.PetManageService;
+import com.sunhongbing.petadoption.forestage.entity.AdoptionStatus;
 import com.sunhongbing.petadoption.forestage.service.AdoptionService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -127,6 +128,38 @@ public class AdoptionController {
             vo.setCode(500);
             vo.setMsg("提交申请失败 ");
             System.out.println("提交申请失败: "+e.getMessage());
+        }
+        return vo;
+    }
+
+    //取消申请
+    @PostMapping("/cancel")
+    @RequiresPermissions("user:apply")
+    @ResponseBody
+    public ResultVO cancel(Integer petId) {
+        ResultVO vo = new ResultVO();
+        try {
+            int userId = (int) SecurityUtils.getSubject().getPrincipal();
+            int i = adoptionService.cancel(userId, petId);
+            if (i == -100) {
+                vo.setCode(500);
+                vo.setMsg("数据有误");
+            } else if (i == AdoptionStatus.REJECT.getCode()) {
+                vo.setCode(500);
+                vo.setMsg("已经过审核，不能撤销");
+            } else if (i == AdoptionStatus.ACCEPT.getCode()) {
+                vo.setCode(500);
+                vo.setMsg("已经过审核，不能撤销");
+            } else if (i == 100) {
+                vo.setCode(200);
+                vo.setMsg("取消申请成功");
+            } else {
+                vo.setCode(500);
+                vo.setMsg("取消申请失败");
+            }
+        } catch (Exception e) {
+            vo.setCode(500);
+            vo.setMsg("取消申请失败! ");
         }
         return vo;
     }

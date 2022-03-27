@@ -1,14 +1,20 @@
 package com.sunhongbing.petadoption.backstage.controller;
 
 import com.github.pagehelper.PageHelper;
-import com.sunhongbing.petadoption.backstage.entity.Animal;
-import com.sunhongbing.petadoption.backstage.entity.RequestParamsPetList;
+import com.sunhongbing.petadoption.backstage.dao.ArticleMapper;
+import com.sunhongbing.petadoption.backstage.entity.*;
+import com.sunhongbing.petadoption.backstage.enums.ApplyStatus;
+import com.sunhongbing.petadoption.backstage.enums.ArticleStatus;
+import com.sunhongbing.petadoption.backstage.enums.ArticleType;
 import com.sunhongbing.petadoption.backstage.enums.PetStatus;
+import com.sunhongbing.petadoption.backstage.service.ArticleService;
 import com.sunhongbing.petadoption.backstage.service.PetManageService;
-import com.sunhongbing.petadoption.backstage.entity.SysMenu;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
 import com.sunhongbing.petadoption.backstage.service.MenuService;
 import com.sunhongbing.petadoption.config.OSSUtil;
+import com.sunhongbing.petadoption.forestage.entity.ApplyRecord;
+import com.sunhongbing.petadoption.forestage.service.AdoptionService;
+import com.sunhongbing.petadoption.forestage.service.PersonalService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -40,6 +46,12 @@ public class BackstageController {
     private MenuService menuService;
     @Autowired
     private PetManageService petManageService;
+    @Autowired
+    private AdoptionService adoptionService;
+    @Autowired
+    private PersonalService personalService;
+    @Autowired
+    private ArticleService articleService;
 
 
 //    //登录页面
@@ -290,12 +302,68 @@ public class BackstageController {
     public String approval() {
         return "backstage/html/menu/approval";
     }
+
     //宠物领养审批
     @GetMapping("/approval/pet")
     @RequiresPermissions("approval:all")
     public String approvalPet() {
         return "backstage/html/menu/approval-pet";
     }
+    @GetMapping("/approval/pet_list")
+    @ResponseBody
+    @RequiresPermissions("approval:all")
+    public Map<String, Object> approvalPetList(RequestParamsPetList params) {
+        int status = params.getSearch_status();
+        PageHelper.startPage(params.getPageNumber(),params.getPageSize());
+        List<ApplyRecord> applyRecordList = adoptionService.getApplyListByStatus(status, params.getSort(), params.getOrder());
+        List<ApplyRecord> applyRecordList_size = adoptionService.getApplyListByStatus(ApplyStatus.ALL.getCode(), params.getSort(), params.getOrder());
+        int total = applyRecordList_size.size();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("total", total);
+        hashMap.put("rows", applyRecordList);
+        return hashMap;
+    }
+    //审批页面
+    @GetMapping("/approval/web/{petId}/{userId}")
+    @RequiresPermissions("approval:all")
+    public String approvalWeb(@PathVariable("petId") Integer petId, @PathVariable("userId") Integer userId, Model model) {
+        Animal animal = petManageService.findPetById(petId);
+        User user = personalService.queryUserInfoById(userId);
+        model.addAttribute("animal", animal);
+        model.addAttribute("user", user);
+        return "backstage/html/menu/approval-pet-web";
+    }
+    @PostMapping("/approval/edit")
+    @ResponseBody
+    @RequiresPermissions("approval:all")
+    public ResultVO approvalEdit(ApplyRecord apply) {
+        ResultVO resultVO = new ResultVO();
+        int re = 0;
+        if (apply.getStatus() == ApplyStatus.PASS.getCode()) {
+            re = adoptionService.accept(apply.getUserId(), apply.getPetId());
+        } else if (apply.getStatus() == ApplyStatus.REJECT.getCode()) {
+            re = adoptionService.reject(apply.getUserId(), apply.getPetId());
+        }
+        if (re == 1) {
+            resultVO.setCode(200);
+            resultVO.setMsg("修改成功！");
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("修改失败！");
+        }
+        return resultVO;
+    }
+
+    //查看用户信息
+    @GetMapping("/user/info/{id}")
+    @RequiresPermissions("approval:all")
+    public String userInfo(@PathVariable("id") Integer id, Model model) {
+        User user = personalService.queryUserInfoById(id);
+        model.addAttribute("user", user);
+        return "backstage/html/menu/user-info";
+    }
+
+
     //志愿者申请审批
     @GetMapping("/approval/volunteer")
     @RequiresPermissions("approval:all")
@@ -312,7 +380,9 @@ public class BackstageController {
     //新闻
     @GetMapping("/article/news-list")
     @RequiresPermissions("article:all")
-    public String news() {
+    public String news(Model model) {
+//        List<Article> articleList = articleService.queryArticles(ArticleType.NEWS.getCode(), ArticleStatus.ALL.getCode(), "id", "asc");
+//        model.addAttribute("articleList", articleList);
         return "backstage/html/menu/news";
     }
     //活动

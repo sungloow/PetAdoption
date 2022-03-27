@@ -1,0 +1,138 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>info</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/nice-select.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/odometer.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/slick.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/default.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/style.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
+</head>
+<body>
+
+<!-- Preloader -->
+<div th:replace="~{../templates/forestage/commons::commonPreloader}"></div>
+<!-- Preloader-end -->
+
+<!-- Scroll-top -->
+<button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
+<!-- Scroll-top-end-->
+
+
+<!-- main-area -->
+<main>
+
+    <section class="contact-area pt-110 pb-110">
+        <div class="container">
+            <div class="container-inner-wrap">
+                <div class="row justify-content-center justify-content-lg-between">
+                    <div class="col-lg-8 col-md-8 order-2 order-lg-0">
+                        <div class="contact-title mb-20">
+<!--                            <h5 class="sub-title" ></h5>-->
+
+                            <h2 class="title" th:text="${user.id} + ' Info'"><span>.</span></h2>
+                        </div>
+                        <div class="contact-wrap-content">
+                            <div class="form-grp">
+                                <label for="email">邮箱：</label>
+                                <span type="text" name="email" id="email" th:text="${user.email}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="tel">联系电话：</label>
+                                <span type="text" name="tel" id="tel" th:text="${user.tel}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="name">姓名：</label>
+                                <span type="text" name="name" id="name" th:text="${user.name}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="age">年龄：</label>
+                                <span type="number" name="age" id="age" th:text="${user.age}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="sex">性别：</label>
+                                <span name="sex" id="sex"  th:text="${user.sex}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="address">联系地址：</label>
+                                <span type="text" name="address" id="address" th:text="${user.address}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="experience">养宠经验：</label>
+                                <span name="experience" id="experience" th:text="${user.experience==0?'第一次养宠':'有养宠经验'}" ></span>
+                            </div>
+                            <br>
+                        </div>
+                        <button type="button" class="btn btn-warning" onclick="window.history.back()">返回</button>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+<!-- main-area-end -->
+
+
+
+<!-- JS here -->
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+<script th:src="@{/fore/js/isotope.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/imagesloaded.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/fore/js/owl.carousel.min.js}"></script>
+<script th:src="@{/fore/js/jquery.odometer.min.js}"></script>
+<script th:src="@{/fore/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/fore/js/jquery-ui.min.js}"></script>
+<script th:src="@{/fore/js/jquery.appear.js}"></script>
+<script th:src="@{/fore/js/slick.min.js}"></script>
+<script th:src="@{/fore/js/wow.min.js}"></script>
+<script th:src="@{/fore/js/plugins.js}"></script>
+<script th:src="@{/fore/js/main.js}"></script>
+
+<script type="text/javascript">
+
+    //提示框
+    function prompt(message, style, time) {
+        style = (style === undefined) ? 'alert-success' : style;
+        time = (time === undefined) ? 1500 : time;
+        $('<div></div>')
+            .appendTo('body')
+            .addClass('alert ' + style)
+            .html(message)
+            .show()
+            .delay(time)
+            .fadeOut();
+    }
+
+    $('#edit').click(function () {
+        window.location.href = '/fore/personal_info_edit';
+    });
+
+</script>
+</body>
+</html>

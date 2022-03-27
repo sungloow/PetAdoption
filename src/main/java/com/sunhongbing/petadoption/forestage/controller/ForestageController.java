@@ -169,26 +169,4 @@ public class ForestageController {
         return vo;
     }
 
-
-    // other
-    //shop.html
-    @GetMapping("/shop")
-    public String shop() {
-        return "forestage/other/shop";
-    }
-    //shop-details.html
-    @GetMapping("/shop-details")
-    public String shopDetails() {
-        return "forestage/other/shop-details";
-    }
-    // breeder.html
-    @GetMapping("/breeder")
-    public String breeder() {
-        return "forestage/other/breeder";
-    }
-    // breeder-details.html
-    @GetMapping("/breeder-details")
-    public String breederDetails() {
-        return "forestage/other/breeder-details";
-    }
 }

@@ -1,0 +1,217 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>info</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/nice-select.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/odometer.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/slick.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/default.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/style.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
+</head>
+<body>
+
+<!-- Preloader -->
+<div th:replace="~{../templates/forestage/commons::commonPreloader}"></div>
+<!-- Preloader-end -->
+
+<!-- Scroll-top -->
+<button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
+<!-- Scroll-top-end-->
+
+
+<!-- main-area -->
+<main>
+
+    <section class="contact-area pt-110 pb-110">
+
+        <div class="container">
+
+            <div class="container-inner-wrap">
+                <div class="row justify-content-center justify-content-lg-between">
+
+                    <div class="col-lg-12 col-md-12 order-2 order-lg-0">
+                        <form id="approvalForm" class="">
+                            <div class="form-group col-lg-12 col-md-12" style="margin-top:15px">
+                                <h5><label for="status">审批意见</label></h5>
+                                <div class="col-sm-8">
+                                    <select name="status" id="status"  class="form-control dropdown-toggle">
+                                        <option value="-1">拒绝</option>
+                                        <option value="1">通过</option>
+                                    </select>
+                                </div>
+                                <br>
+                                <div class="col-sm-5">
+                                    <button type="button" id="btn_sub" class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+<br>
+
+                    <div class="col-lg-6 col-md-6 order-2 order-lg-0">
+                        <div class="contact-title mb-20">
+                            <h2 class="title" >User Info<span>.</span></h2>
+                        </div>
+                        <div class="contact-wrap-content">
+                            <input type="hidden" id="userId" th:value="${user.id}">
+                            <div class="form-grp">
+                                <label for="email">邮箱：</label>
+                                <span type="text" name="email" id="email" th:text="${user.email}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="tel">联系电话：</label>
+                                <span type="text" name="tel" id="tel" th:text="${user.tel}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="name">姓名：</label>
+                                <span type="text" name="name" id="name" th:text="${user.name}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="age">年龄：</label>
+                                <span type="number" name="age" id="age" th:text="${user.age}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="sex">性别：</label>
+                                <span name="sex" id="sex"  th:text="${user.sex}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="address">联系地址：</label>
+                                <span type="text" name="address" id="address" th:text="${user.address}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="experience">养宠经验：</label>
+                                <span name="experience" id="experience" th:text="${user.experience==0?'第一次养宠':'有养宠经验'}" ></span>
+                            </div>
+                            <br>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="col-lg-6 col-md-6 order-2 order-lg-0">
+                        <div class="contact-title mb-20">
+                            <h2 class="title" >Pets Info<span>.</span></h2>
+                        </div>
+                        <div class="contact-wrap-content">
+                            <input type="hidden" id="petId" th:value="${animal.id}">
+                            <div class="form-grp">
+                                <label for="pet_id">ID：</label>
+                                <span type="text" name="pet_id" id="pet_id" th:text="${animal.id}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="pet_name">宠物名称：</label>
+                                <span type="text" name="pet_name" id="pet_name" th:text="${animal.name}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="pet_type">宠物类型：</label>
+                                <span type="text" name="pet_type" id="pet_type" th:text="${animal.type}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="pet_age">宠物年龄：</label>
+                                <span type="number" name="pet_age" id="pet_age" th:text="${animal.age}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="pet_sex">宠物性别：</label>
+                                <span type="text" name="pet_sex" id="pet_sex" th:text="${animal.sex}"></span>
+                            </div>
+                            <div class="form-grp">
+                                <label for="pet_detail">描述：</label>
+                                <span type="text" name="pet_detail" id="pet_detail" th:text="${animal.detail}"></span>
+                            </div>
+                            <div class="form-grp" >
+                                <img id="pic" alt="pic" th:src="${animal.pics}"/>
+                            </div>
+
+                    </div>
+
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+<!-- main-area-end -->
+
+
+
+<!-- JS here -->
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+<script th:src="@{/fore/js/isotope.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/imagesloaded.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/fore/js/owl.carousel.min.js}"></script>
+<script th:src="@{/fore/js/jquery.odometer.min.js}"></script>
+<script th:src="@{/fore/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/fore/js/jquery-ui.min.js}"></script>
+<script th:src="@{/fore/js/jquery.appear.js}"></script>
+<script th:src="@{/fore/js/slick.min.js}"></script>
+<script th:src="@{/fore/js/wow.min.js}"></script>
+<script th:src="@{/fore/js/plugins.js}"></script>
+<script th:src="@{/fore/js/main.js}"></script>
+
+<script type="text/javascript">
+
+    //提示框
+    function prompt(message, style, time) {
+        style = (style === undefined) ? 'alert-success' : style;
+        time = (time === undefined) ? 1500 : time;
+        $('<div></div>')
+            .appendTo('body')
+            .addClass('alert ' + style)
+            .html(message)
+            .show()
+            .delay(time)
+            .fadeOut();
+    }
+
+    $('#btn_sub').click(function () {
+        const url = '/admin/approval/edit';
+        const data = {
+            petId: $('#petId').val(),
+            userId: $('#userId').val(),
+            status: $('#status').val()
+        };
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            data: data,
+            success: function (data) {
+                if (data.code === 200) {
+                    prompt(data.msg, 'alert-success', 1500);
+                    setTimeout(function () {
+                        window.location.href = '/admin/approval/pet';
+                    }, 1500);
+                } else {
+                    prompt(data.msg, 'alert-danger', 1500);
+                }
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

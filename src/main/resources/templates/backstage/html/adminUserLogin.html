@@ -7,6 +7,8 @@
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
     <link rel='stylesheet' th:href='@{/fore/css/bootstrap-4.1.min.css}'>
     <link rel='stylesheet' th:href='@{/fore/css/loginstyle.css}'>
+    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
 </head>
 <body>
 
@@ -51,4 +53,28 @@
 <!-- partial -->
 
 </body>
+
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+
+<script type="text/javascript">
+    //提示框
+    function prompt(message, style, time) {
+        style = (style === undefined) ? 'alert-success' : style;
+        time = (time === undefined) ? 1500 : time;
+        $('<div></div>')
+            .appendTo('body')
+            .addClass('alert ' + style)
+            .html(message)
+            .show()
+            .delay(time)
+            .fadeOut();
+    }
+
+    $(document).ready(function() {
+        const msg = '[[${msg}]]';
+        if (msg !== "") {
+            prompt(msg, 'alert-warning');
+        }
+    });
+</script>
 </html>

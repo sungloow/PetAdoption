@@ -1,6 +1,7 @@
 package com.sunhongbing.petadoption.forestage.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -20,7 +21,7 @@ public class AboutUsController {
     }
 
     // contact.html
-    @RequestMapping("/contact")
+    @GetMapping("/contact")
     public String contact() {
         return "forestage/about-us/contact";
     }

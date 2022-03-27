@@ -66,5 +66,13 @@ public interface AdoptionMapper {
     @Update("update animal set status = #{status} where id = #{id}")
     int updatePetStatus(int id, int status);
 
+    @Select("<script>"
+            + "select * from animal_adoption"
+            + "<if test=\"status != -99 \">"
+            + "where status = #{status}"
+            + "</if>"
+            + "order by ${order} ${sort}"
+            + "</script>")
+    List<ApplyRecord> getApplyListByStatus(int status, String order, String sort);
 
 }

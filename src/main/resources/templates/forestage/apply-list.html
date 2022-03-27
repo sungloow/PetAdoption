@@ -23,6 +23,8 @@
         <link rel="stylesheet" th:href="@{/fore/css/default.css}">
         <link rel="stylesheet" th:href="@{/fore/css/style.css}">
         <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
 
         <style>
             .accept{
@@ -94,7 +96,10 @@
                                                 <span th:class="${animal.status==0?'apply':(animal.status==-1?'reject':'accept') }"
                                                       th:text="${animal.status==0?'申请中':(animal.status==-1?'拒绝':'已同意')}"></span>
                                             </li>
-                                            <li class="price">年龄 : <span th:text="${animal.age}"></span></li>
+                                            <li><input th:value="${animal.id}" hidden class="petId"></li>
+                                            <li class="price">
+                                                <button class="btn btn-warning" id="cancel" onclick="cancel(this)">撤回</button>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -129,5 +134,41 @@
         <script th:src="@{/fore/js/plugins.js}"></script>
         <script th:src="@{/fore/js/main.js}"></script>
 
+    <script>
+        //提示框
+        function prompt(message, style, time) {
+            style = (style === undefined) ? 'alert-success' : style;
+            time = (time === undefined) ? 1500 : time;
+            $('<div></div>')
+                .appendTo('body')
+                .addClass('alert ' + style)
+                .html(message)
+                .show()
+                .delay(time)
+                .fadeOut();
+        }
+
+        function cancel(obj) {
+            var petId = $(obj).parent().parent().find('.petId').val();
+            $.ajax({
+                url: '/adoption/cancel',
+                type: 'post',
+                data: {
+                    petId: petId
+                },
+                success: function (data) {
+                    if (data.code === 200) {
+                        prompt(data.msg, 'alert-success', 1500);
+
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        prompt(data.msg, 'alert-danger', 1500);
+                    }
+                }
+            })
+        }
+    </script>
     </body>
 </html>

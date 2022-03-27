@@ -17,7 +17,7 @@
 <div class="col-md-6">
     <div class="card">
         <div class="card-body">
-            <button type="button" class="btn btn-warning" onclick="window.location.href='/admin/pet/list'">返回</button>
+            <button type="button" class="btn btn-warning" onclick="window.history.back()">返回</button>
             <h3></h3>
             <div class="container">
                 <div class="row" >
@@ -118,8 +118,10 @@
                 status = '暂停领养';
             } else if (status === '0') {
                 status = '待领养';
-            } else {
+            } else if (status === '1') {
                 status = '已领养';
+            } else  {
+                status = '领养审批中';
             }
             $('#status').text(status);
 
