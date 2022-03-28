@@ -9,4 +9,7 @@ public interface UserMapper {
     // 通过username查找用户信息
     @Select("select * from user where email = #{email}")
     User findUserByEmail(String email);
+
+    @Select("select * from user where id = #{id}")
+    User getUserById(int id);
 }

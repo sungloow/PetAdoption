@@ -3,6 +3,7 @@ package com.sunhongbing.petadoption.forestage.dao;
 import com.sunhongbing.petadoption.backstage.entity.Animal;
 import com.sunhongbing.petadoption.forestage.entity.ApplyRecord;
 import org.apache.ibatis.annotations.*;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.Blob;
 import java.util.List;
@@ -18,8 +19,14 @@ public interface AdoptionMapper {
             + "</script>")
     List<Animal> findAll(int status, String order, String sort);
 
-
-    List<Animal> findPetByStatusAndType(String status, String type);
+    @Select("<script>"
+            + "select * from animal where type=#{type}"
+            + "<if test=\"status != -99 \">"
+            + "and status = #{status}"
+            + "</if>"
+            + "order by ${order} ${sort}"
+            + "</script>")
+    List<Animal> findPetByStatusAndType(String type, int status, String order, String sort);
 
     @Select("select * from animal where id = #{id}")
     Animal findPetById(int id);
@@ -63,6 +70,15 @@ public interface AdoptionMapper {
     @Delete("delete from animal_adoption where petId = #{petId} and userId = #{userId}")
     int cancel_adoption(int userId, int petId);
 
+    @Delete("delete from animal_adoption where petId = #{petId}")
+    int delete_adoption_ref(int petId);
+
+    @Delete("<script>" +
+            "delete from animal_adoption where petId in \n" +
+            "<foreach collection='petIds' item='petId' open='(' separator=',' close=')'>#{petId}</foreach>\n" +
+            "</script>")
+    int delete_adoption_refs(@Param("petIds") int[] petIds);
+
     @Update("update animal set status = #{status} where id = #{id}")
     int updatePetStatus(int id, int status);
 
@@ -74,5 +90,9 @@ public interface AdoptionMapper {
             + "order by ${order} ${sort}"
             + "</script>")
     List<ApplyRecord> getApplyListByStatus(int status, String order, String sort);
+
+    // 随机查找5条宠物记录
+    @Select("select * from animal where status=0 order by rand() limit 5")
+    List<Animal> getRandomPets();
 
 }

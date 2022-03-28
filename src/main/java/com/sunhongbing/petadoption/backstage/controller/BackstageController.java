@@ -277,23 +277,11 @@ public class BackstageController {
         return resultVO;
     }
 
-    //志愿者管理
-    @GetMapping("/volunteer")
-    @RequiresPermissions("volunteer:all")
-    public String volunteer() {
-        return "backstage/html/menu/volunteer";
-    }
-    //查看志愿者
-    @GetMapping("/volunteer/list")
-    @RequiresPermissions("volunteer:all")
-    public String volunteerInfo() {
-        return "backstage/html/menu/volunteer";
-    }
-    //添加志愿者
-    @GetMapping("/volunteer/add")
-    @RequiresPermissions("volunteer:all")
-    public String volunteerAdd() {
-        return "backstage/html/menu/volunteer-add";
+    //feedback管理
+    @GetMapping("/feedback")
+    @RequiresPermissions("feedback:all")
+    public String feedback() {
+        return "backstage/html/menu/feedback";
     }
 
     //审批
@@ -364,12 +352,6 @@ public class BackstageController {
     }
 
 
-    //志愿者申请审批
-    @GetMapping("/approval/volunteer")
-    @RequiresPermissions("approval:all")
-    public String approvalVolunteer() {
-        return "backstage/html/menu/approval-volunteer";
-    }
     //文章审核
     @GetMapping("/approval/article")
     @RequiresPermissions("approval:all")
@@ -397,7 +379,25 @@ public class BackstageController {
     public String science() {
         return "backstage/html/menu/feed";
     }
+    //快乐领养
+    @GetMapping("/article/happy-adoption")
+    @RequiresPermissions("article:all")
+    public String adoption() {
+        return "backstage/html/menu/happy-adoption-article";
+    }
 
+    // article/banner
+    @GetMapping("/article/banner")
+    @RequiresPermissions("article:all")
+    public String banner() {
+        return "backstage/html/menu/banner";
+    }
+    // article/about-us
+    @GetMapping("/article/about-us")
+    @RequiresPermissions("article:all")
+    public String aboutUs() {
+        return "backstage/html/menu/about-us";
+    }
 
     // 403
     @GetMapping("/unAuth")

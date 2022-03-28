@@ -5,69 +5,133 @@
     <title>宠物详情</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
-    <link rel='stylesheet' th:href='@{/fore/css/bootstrap-4.1.min.css}'>
-    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+<!--    <link rel='stylesheet' th:href='@{/fore/css/bootstrap-4.1.min.css}'>-->
+<!--    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">-->
+    <!-- CSS here -->
+    <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/fontawesome-all.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/nice-select.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/odometer.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/jquery-ui.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/slick.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/default.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/style.css}">
+    <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
     <style>
-        p{
+
+        .title {
+            text-align: right;
+        }
+        .title > span{
+            font-size: smaller;
+        }
+        .val{
             text-align: left;
+        }
+        .contact-title {
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
-<div class="col-md-6">
-    <div class="card">
-        <div class="card-body">
-            <button type="button" class="btn btn-warning" onclick="window.history.back()">返回</button>
-            <h3></h3>
-            <div class="container">
-                <div class="row" >
-                    <span class="col-sm-2">ID</span>
-                    <p class="col-sm-8" id="id" name="id" ></p>
+
+
+<!-- Preloader -->
+<div th:replace="~{../templates/forestage/commons::commonPreloader}"></div>
+<!-- Preloader-end -->
+
+<!-- Scroll-top -->
+<button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
+<!-- Scroll-top-end-->
+
+<!-- header-area -->
+<header th:replace="~{../templates/forestage/commons::commonHeader('adoption')}"></header>
+<!-- header-area-end -->
+
+<section class="contact-area pt-110 pb-110">
+    <div class="container">
+        <div class="container-inner-wrap">
+            <div class="row justify-content-center justify-content-lg-between">
+                <div class="col-lg-7 col-md-6 order-2 order-lg-0">
+                    <div class="contact-title mb-20">
+                        <h5 class="sub-title">宠物详情</h5>
+                    </div>
+                    <div class="contact-wrap-content">
+                        <div class="contact-title row" >
+                            <h2 class="title col-sm-3 "><span>名字</span></h2>
+                            <h2 class="title val col-sm-9" id="name" name="name" th:text="${animal.name}"></h2>
+                        </div>
+                        <div class="row contact-title" >
+                            <h2 class="title col-sm-3 "><span>性别</span></h2>
+                            <h2 class="title val col-sm-9" id="sex" name="sex" th:text="${animal.sex}"></h2>
+                        </div>
+                        <div class="row contact-title" >
+                            <h2 class="title col-sm-3 "><span>种别</span></h2>
+                            <h2 class="title val col-sm-9" id="type" name="type" th:text="${animal.type}"></h2>
+                        </div>
+                        <div class="row contact-title" >
+                            <h2 class="title col-sm-3 "><span>生日</span></h2>
+                            <h2 class="title val col-sm-9" id="birth" name="birth" th:text="${animal.birth}"></h2>
+                        </div>
+                        <div class="row contact-title" >
+                            <h2 class="title col-sm-3 "><span>年龄</span></h2>
+                            <h2 class="title val col-sm-9" id="age" name="age" th:text="${animal.age}"></h2>
+                        </div>
+                        <div class="row contact-title">
+                            <h2 class="title col-sm-3 "><span>描述</span></h2>
+                            <h2 class="title val col-sm-9" id="detail" name="detail" th:text="${animal.detail}"></h2>
+                        </div>
+                        <div class="row contact-title" >
+                            <h2 class="title col-sm-3 "><span>图片</span></h2>
+                            <img class="col-sm-8" id="pic" alt="pic" th:src="${animal.pics}"/>
+                        </div>
+                    </div>
                 </div>
-                <div class="row" >
-                    <span class="col-sm-2">名字</span>
-                    <p class="col-sm-8" id="name" name="name" ></p>
-                </div>
-                <div class="row" >
-                    <span class="col-sm-2">性别</span>
-                    <p class="col-sm-8" id="sex" name="sex" ></p>
-                </div>
-                <div class="row" >
-                    <span class="col-sm-2">种别</span>
-                    <p class="col-sm-8" id="type" name="type" ></p>
-                </div>
-                <div class="row" >
-                    <span class="col-sm-2">生日</span>
-                    <p class="col-sm-8" id="birth" name="birth" ></p>
-                </div>
-                <div class="row" >
-                    <span class="col-sm-2">年龄</span>
-                    <p class="col-sm-8" id="age" name="age" ></p>
-                </div>
-                <div class="row">
-                    <span class="col-sm-2">描述</span>
-                    <p  class="col-sm-8" id="detail" name="detail"></p>
-                </div>
-                <div class="row" >
-                    <span class="col-sm-2">状态</span>
-                    <p class="col-sm-8" id="status" name="status" ></p>
-                </div>
-                <div class="row" >
-                    <span class="col-sm-2">图片</span>
-                    <img class="col-sm-8" id="pic" alt="pic" th:src="${animal.pics}"/>
+                <div class="col-xl-5 col-lg-5 col-md-6" style="text-align: right">
+                    <div>
+                        <button type="button" class="btn btn-warning" onclick="window.history.back()">返回</button>
+                    </div>
+                    <br>
+                    <br>
+                    <div>
+                        <button type="button" class="btn btn-warning"  onclick="apply()">领养</button>
+                    </div>
                 </div>
             </div>
-
         </div>
     </div>
-</div>
+</section>
+
+<!-- footer-start -->
+<footer th:replace="~{../templates/forestage/commons::commonFooter}"></footer>
+<!-- footer-end -->
+
+
+
 </body>
 
-<!-- jquery -->
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
-<!-- bootstrap脚本 -->
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- JS here -->
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+<script th:src="@{/fore/js/isotope.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/imagesloaded.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/fore/js/owl.carousel.min.js}"></script>
+<script th:src="@{/fore/js/jquery.odometer.min.js}"></script>
+<script th:src="@{/fore/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/fore/js/jquery-ui.min.js}"></script>
+<script th:src="@{/fore/js/jquery.appear.js}"></script>
+<script th:src="@{/fore/js/slick.min.js}"></script>
+<script th:src="@{/fore/js/wow.min.js}"></script>
+<script th:src="@{/fore/js/plugins.js}"></script>
+<script th:src="@{/fore/js/main.js}"></script>
+
 
 <script>
 
@@ -84,48 +148,10 @@
             .fadeOut();
     }
 
-    $(document).ready(function() {
-        const msg = '[[${msg}]]';
-        if (msg !== "") {
-            const flag = '[[${msg_flag}]]';
-            if (flag === "ok") {
-                prompt(msg, 'alert-success');
-            } else {
-                prompt(msg, 'alert-danger');
-            }
-        }
-
-        const animal = '[[${animal}]]';
-        const id = '[[${animal.id}]]';
-        const name = '[[${animal.name}]]';
-        const birth = '[[${animal.birth}]]';
-        const age = '[[${animal.age}]]';
-        const detail = '[[${animal.detail}]]';
-        const sex = '[[${animal.sex}]]';
-        const type = '[[${animal.type}]]';
-        let status = '[[${animal.status}]]';
-        if (animal !== "") {
-            console.log(animal);
-
-            $('#id').text(id);
-            $('#name').text(name);
-            $('#birth').text(birth);
-            $('#age').text(age);
-            $('#detail').text(detail);
-            $('#sex').text(sex);
-            $('#type').text(type);
-            if (status === '-1') {
-                status = '暂停领养';
-            } else if (status === '0') {
-                status = '待领养';
-            } else {
-                status = '已领养';
-            }
-            $('#status').text(status);
-
-        }
-    });
-
+    //领养
+    function apply() {
+        window.location.href = '/adoption/apply/'+'[[${animal.id}]]';
+    }
 
 </script>
 </html>

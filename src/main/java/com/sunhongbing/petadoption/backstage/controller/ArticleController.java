@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.sunhongbing.petadoption.backstage.dao.ArticleMapper;
 import com.sunhongbing.petadoption.backstage.entity.Animal;
 import com.sunhongbing.petadoption.backstage.entity.Article;
+import com.sunhongbing.petadoption.backstage.entity.Banner;
 import com.sunhongbing.petadoption.backstage.entity.RequestParamsPetList;
 import com.sunhongbing.petadoption.backstage.enums.ArticleStatus;
 import com.sunhongbing.petadoption.backstage.enums.ArticleType;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,13 +45,67 @@ public class ArticleController {
     public String show(@PathVariable("id") int id, Model model){
         Article article = articleService.getArticleById(id);
         model.addAttribute("article",article);
-        return "backstage/html/menu/article";
+            return "backstage/html/menu/article";
     }
 
+    //banner detail
+    @GetMapping("/banner/{id}")
+    @RequiresPermissions("article:all")
+    public String banner(@PathVariable("id") int id, Model model){
+        Banner banner = articleService.getBannerById(id);
+        model.addAttribute("banner",banner);
+        return "backstage/html/menu/banner-detail";
+    }
+
+    @GetMapping("/feedback/detail/{id}")
+    @RequiresPermissions("article:all")
+    public String feedback_detail(@PathVariable("id") int id, Model model){
+        Article article = articleService.getArticleById(id);
+        model.addAttribute("article",article);
+        return "backstage/html/menu/feedback_detail";
+    }
+
+    //文章编辑页面
     @GetMapping("/toEditor")
     @RequiresPermissions("article:all")
     public String toEditor(){
         return "backstage/html/menu/editor";
+    }
+
+    // banner 编辑页面
+    @GetMapping("/banner/toEditor")
+    @RequiresPermissions("article:all")
+    public String toBannerEditor(){
+        return "backstage/html/menu/banner_editor";
+    }
+
+    //上传 banner 图片
+    @PostMapping("/banner/upload")
+    @ResponseBody
+    @RequiresPermissions("article:all")
+    public ResultVO petUpload(@RequestParam("cover_file") MultipartFile file) throws IOException {
+        ResultVO resultVO = new ResultVO();
+        if (file.isEmpty()) {
+            resultVO.setCode(500);
+            resultVO.setMsg("请选择图片");
+            return resultVO;
+        }
+        // 原始文件名称
+        String originalFilename = file.getOriginalFilename();
+        // 唯一的文件名称
+        String fileName = "Cover/" + UUID.randomUUID() + "." + originalFilename;
+        // 上传地址
+        OSSUtil ossUtil = new OSSUtil();
+        String url = ossUtil.uploadImg2Oss(file, fileName);
+        if (url != null) {
+            resultVO.setCode(200);
+            resultVO.setMsg("上传成功");
+            resultVO.setResult(url);
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("上传失败");
+        }
+        return resultVO;
     }
 
     @PostMapping("/addArticle")
@@ -67,7 +123,24 @@ public class ArticleController {
         return "backstage/html/menu/article";
     }
 
-    //上传图片
+    // add Banner
+    @PostMapping("/addBanner")
+    @RequiresPermissions("article:all")
+    public String addBanner(Banner banner, @RequestParam("cover_url") String cover, Model model){
+        banner.setCover(cover);
+        int i = articleService.addBanner(banner);
+        if(i == 1){
+            Date ss = new Date();
+            SimpleDateFormat format0 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time = format0.format(ss.getTime());
+            banner.setCreateTime(time);
+//            model.addAttribute("banner",banner);
+            model.addAttribute("msg","发布成功");
+        }
+        return "backstage/html/menu/banner";
+    }
+
+    //上传文章图片
     @PostMapping("/file/upload")
     @RequiresPermissions("article:all")
     @ResponseBody
@@ -132,7 +205,7 @@ public class ArticleController {
         hashMap.put("rows", articleList);
         return hashMap;
     }
-    //文章列表
+    //科学喂养
     @GetMapping("/article/list_query")
     @RequiresPermissions("article:all")
     @ResponseBody
@@ -150,6 +223,65 @@ public class ArticleController {
         hashMap.put("rows", articleList);
         return hashMap;
     }
+    //快乐领养
+    @GetMapping("/happy-adoption/list_query")
+    @RequiresPermissions("article:all")
+    @ResponseBody
+    public Map<String, Object> happy_adoption_query(RequestParamsPetList params) {
+        System.out.println(params);
+        int status = params.getSearch_status();
+        List<Article> articleList;
+        List<Article> articleList_size;
+        PageHelper.startPage(params.getPageNumber(),params.getPageSize());
+        articleList = articleService.queryArticles(ArticleType.HAPPY.getCode(), status, params.getSort(), params.getOrder());
+        articleList_size = articleService.queryArticles(ArticleType.HAPPY.getCode(), status, params.getSort(), params.getOrder());
+        int total = articleList_size.size();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("total", total);
+        hashMap.put("rows", articleList);
+        return hashMap;
+    }
+    //banner
+    @GetMapping("/banner/list_query")
+    @RequiresPermissions("article:all")
+    @ResponseBody
+    public Map<String, Object> bannerList_query(RequestParamsPetList params) {
+        System.out.println(params);
+        List<Banner> articleList;
+        List<Banner> articleList_size;
+        PageHelper.startPage(params.getPageNumber(),params.getPageSize());
+        articleList = articleService.queryBanners(params.getSort(), params.getOrder());
+        articleList_size = articleService.queryBanners(params.getSort(), params.getOrder());
+        int total = articleList_size.size();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("total", total);
+        hashMap.put("rows", articleList);
+        return hashMap;
+    }
+
+
+    // feedback 列表
+    @GetMapping("/feedback/list_query")
+    @RequiresPermissions("feedback:all")
+    @ResponseBody
+    public Map<String, Object> feedbackList_query(RequestParamsPetList params) {
+        System.out.println(params);
+        int status = params.getSearch_status();
+        List<Article> articleList;
+        List<Article> articleList_size;
+        int[] types = new int[]{
+                ArticleType.FEEDBACK_GENERAL.getCode(), ArticleType.FEEDBACK_ADOPTION.getCode(),
+                ArticleType.FEEDBACK_COMPLAINT.getCode(), ArticleType.FEEDBACK_OTHER.getCode()
+        };
+        PageHelper.startPage(params.getPageNumber(),params.getPageSize());
+        articleList = articleService.queryArticlesByTypes(types, status, params.getSort(), params.getOrder());
+        articleList_size = articleService.queryArticlesByTypes(types, status, params.getSort(), params.getOrder());
+        int total = articleList_size.size();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("total", total);
+        hashMap.put("rows", articleList);
+        return hashMap;
+    }
     //all
     @GetMapping("/all/list_query")
     @RequiresPermissions("approval:all")
@@ -159,9 +291,13 @@ public class ArticleController {
         int status = params.getSearch_status();
         List<Article> articleList;
         List<Article> articleList_size;
+        int[] types = new int[]{
+                ArticleType.NEWS.getCode(), ArticleType.ACTIVITY.getCode(),
+                ArticleType.NOTICE.getCode(), ArticleType.ARTICLE.getCode(), ArticleType.HAPPY.getCode()
+        };
         PageHelper.startPage(params.getPageNumber(),params.getPageSize());
-        articleList = articleService.queryArticles(status, params.getSort(), params.getOrder());
-        articleList_size = articleService.queryArticles(status, params.getSort(), params.getOrder());
+        articleList = articleService.queryArticlesByTypes(types, status, params.getSort(), params.getOrder());
+        articleList_size = articleService.queryArticlesByTypes(types, status, params.getSort(), params.getOrder());
         int total = articleList_size.size();
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("total", total);
@@ -177,6 +313,23 @@ public class ArticleController {
     public ResultVO deleteArticles(int[] ids) {
         ResultVO resultVO = new ResultVO();
         int i = articleService.deleteArticleByIds(ids);
+        if (i == ids.length) {
+            resultVO.setCode(200);
+            resultVO.setMsg("删除成功！");
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("删除失败！");
+        }
+        return resultVO;
+    }
+
+    //删除banner
+    @PostMapping("/banner/delete")
+    @RequiresPermissions("article:all")
+    @ResponseBody
+    public ResultVO deleteBanner(int[] ids) {
+        ResultVO resultVO = new ResultVO();
+        int i = articleService.deleteBannerByIds(ids);
         if (i == ids.length) {
             resultVO.setCode(200);
             resultVO.setMsg("删除成功！");
@@ -205,19 +358,19 @@ public class ArticleController {
             int i = articleService.pass(id);
             if (i == 1) {
                 resultVO.setCode(200);
-                resultVO.setMsg("审核成功！");
+                resultVO.setMsg("OK！");
             } else {
                 resultVO.setCode(500);
-                resultVO.setMsg("审核失败！");
+                resultVO.setMsg("出现了错误！");
             }
         } else if (status == ArticleStatus.REJECT.getCode()) {
             int i = articleService.reject(id);
             if (i == 1) {
                 resultVO.setCode(200);
-                resultVO.setMsg("审核成功！");
+                resultVO.setMsg("OK！");
             } else {
                 resultVO.setCode(500);
-                resultVO.setMsg("审核失败！");
+                resultVO.setMsg("出现了错误！");
             }
         } else {
             resultVO.setCode(500);
@@ -225,6 +378,7 @@ public class ArticleController {
         }
         return resultVO;
     }
+
 
 
 

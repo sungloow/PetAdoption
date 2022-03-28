@@ -2,9 +2,13 @@ package com.sunhongbing.petadoption.forestage.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.sunhongbing.petadoption.backstage.entity.Animal;
+import com.sunhongbing.petadoption.backstage.entity.Article;
 import com.sunhongbing.petadoption.backstage.entity.RequestParamsPetList;
+import com.sunhongbing.petadoption.backstage.enums.ArticleStatus;
+import com.sunhongbing.petadoption.backstage.enums.ArticleType;
 import com.sunhongbing.petadoption.backstage.enums.PetStatus;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
+import com.sunhongbing.petadoption.backstage.service.ArticleService;
 import com.sunhongbing.petadoption.backstage.service.PetManageService;
 import com.sunhongbing.petadoption.forestage.entity.AdoptionStatus;
 import com.sunhongbing.petadoption.forestage.service.AdoptionService;
@@ -32,6 +36,8 @@ public class AdoptionController {
     private PetManageService petManageService;
     @Autowired
     private AdoptionService adoptionService;
+    @Autowired
+    private ArticleService articleService;
 
     // adoption-list.html
     @RequestMapping("/list")
@@ -44,11 +50,18 @@ public class AdoptionController {
 
     @RequestMapping("/list_page")
     @ResponseBody
-    public ResultVO list_page(RequestParamsPetList params) throws ParseException {
+    public ResultVO list_page(RequestParamsPetList params, String type) throws ParseException {
         ResultVO vo = new ResultVO();
+        List<Animal> animalList;
+        List<Animal> animalList_size;
         PageHelper.startPage(params.getPageNumber(), params.getPageSize());
-        List<Animal> animalList = petManageService.findAll(PetStatus.WAIT.getCode(), params.getSort(), params.getOrder());
-        List<Animal> animalList_size = petManageService.findAll(PetStatus.WAIT.getCode(), params.getSort(), params.getOrder());
+        if (type.equals("all")) {
+            animalList = petManageService.findAll(PetStatus.WAIT.getCode(), params.getSort(), params.getOrder());
+            animalList_size = petManageService.findAll(PetStatus.WAIT.getCode(), params.getSort(), params.getOrder());
+        } else {
+            animalList = petManageService.findPetByStatusAndType(type, PetStatus.WAIT.getCode(), params.getSort(), params.getOrder());
+            animalList_size = petManageService.findPetByStatusAndType(type, PetStatus.WAIT.getCode(), params.getSort(), params.getOrder());
+        }
         if (animalList.size() > 0) {
             int pages=0;
             if ((animalList_size.size() % params.getPageSize()) == 0) {
@@ -64,7 +77,7 @@ public class AdoptionController {
             vo.setResult(hashMap);
         } else {
             vo.setCode(500);
-            vo.setMsg("no data");
+            vo.setMsg("没有更多数据了");
         }
         return vo;
     }
@@ -77,8 +90,17 @@ public class AdoptionController {
 
     // happy-adoption.html
     @RequestMapping("/happy")
-    public String happy() {
+    public String happy(Model model) {
+        List<Article> articleList = articleService.queryArticles(ArticleType.HAPPY.getCode(), ArticleStatus.PASS.getCode(), "id", "asc");
+        model.addAttribute("articleList", articleList);
         return "forestage/adoption/happy-adoption";
+    }
+    //science-feed
+    @RequestMapping("/science-feed")
+    public String science(Model model) {
+        List<Article> articleList = articleService.queryArticles(ArticleType.ARTICLE.getCode(), ArticleStatus.PASS.getCode(), "id", "asc");
+        model.addAttribute("articleList", articleList);
+        return "forestage/adoption/science-feed";
     }
 
     // 宠物详细信息

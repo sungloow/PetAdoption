@@ -20,7 +20,16 @@ public enum ArticleType {
     //文章
     ARTICLE(3, "文章"),
     //快乐领养
-    HAPPY(4, "快乐领养");
+    HAPPY(4, "快乐领养"),
+    // 反馈 - 一般问题
+    FEEDBACK_GENERAL(5,"反馈-一般问题"),
+    // 反馈 - 领养问题
+    FEEDBACK_ADOPTION(6,"反馈-领养问题"),
+    // 反馈 - 投诉问题
+    FEEDBACK_COMPLAINT(7,"反馈-投诉"),
+    // 反馈 - 其他问题
+    FEEDBACK_OTHER(8,"反馈-其他问题");
+
 
 
     private int code;

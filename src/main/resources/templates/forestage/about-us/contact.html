@@ -24,6 +24,8 @@
         <link rel="stylesheet" th:href="@{/fore/css/default.css}">
         <link rel="stylesheet" th:href="@{/fore/css/style.css}">
         <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
     </head>
     <body>
 
@@ -44,7 +46,7 @@
         <main>
 
             <!-- breadcrumb-area -->
-            <section class="breadcrumb-area breadcrumb-bg" data-background="img/bg/breadcrumb_bg.jpg">
+            <section class="breadcrumb-area breadcrumb-bg" th:data-background="@{/fore/img/bg/breadcrumb_bg.jpg}">
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
@@ -77,45 +79,41 @@
                                     <p>请告知我们您联系服务中心的理由，您的问题将会被发送至适合的团体。
                                         如果您的问题与下列目录无关， 请选择“一般性问题”作为您的理由。
                                     </p>
-                                    <form action="#" class="contact-form">
+                                    <form action="#" id="contactForm" class="contact-form">
+<!--                                        <div class="form-grp">-->
+<!--                                            <label for="name">姓名 <span>*</span></label>-->
+<!--                                            <input type="text" id="name" placeholder="Jon Deo...">-->
+<!--                                        </div>-->
+<!--                                        <div class="form-grp">-->
+<!--                                            <label for="email">邮箱 <span>*</span></label>-->
+<!--                                            <input type="text" id="email" placeholder="info.example@.com">-->
+<!--                                        </div>-->
+
                                         <div class="form-grp">
-                                            <label for="name">姓名 <span>*</span></label>
-                                            <input type="text" id="name" placeholder="Jon Deo...">
-                                        </div>
-                                        <div class="form-grp">
-                                            <label for="email">邮箱 <span>*</span></label>
-                                            <input type="text" id="email" placeholder="info.example@.com">
-                                        </div>
-                                        <div class="form-grp">
-                                            <label for="email">手机号 <span>*</span></label>
-                                            <input type="text" id="phone" placeholder="130****5543">
-                                        </div>
-                                        <div class="form-grp">
-                                            <label for="categories">类别 <span>*</span></label>
-                                            <select name="categories" id="categories"  class="form-control dropdown-toggle">
-                                                <option value="">一般性问题</option>
-                                                <option value="">领养</option>
-                                                <option value="">快乐领养故事</option>
-                                                <option value="">志愿者工作</option>
-                                                <option value="">服务投诉</option>
+                                            <label for="type">类别 <span>*</span></label>
+                                            <select name="type" id="type"  class="form-control dropdown-toggle">
+                                                <option value="5">一般性问题</option>
+                                                <option value="6">领养问题</option>
+                                                <option value="4">快乐领养故事</option>
+                                                <option value="7">服务投诉</option>
                                             </select>
                                         </div>
+                                        <div class="form-grp" id="title_div">
+                                            <label for="title">标题 <span>*</span></label>
+                                            <input type="text" id="title" name="title" required>
+                                        </div>
                                         <div class="form-grp">
-                                            <label for="message">信息 <span>*</span></label>
-                                            <textarea name="message" id="message" placeholder="Opinion..."></textarea>
+                                            <label for="content">信息 <span>*</span></label>
+                                            <textarea name="content" required id="content" placeholder="Opinion..."></textarea>
                                         </div>
-                                        <div class="form-grp checkbox-grp">
-                                            <input type="checkbox" id="checkbox">
-                                            <label for="checkbox">隐藏隐私信息</label>
-                                        </div>
-                                        <button type="button" class="btn rounded-btn">提交</button>
+                                        <button type="button" id="sub" class="btn rounded-btn">提交</button>
                                     </form>
                                 </div>
                             </div>
                             <div class="col-xl-5 col-lg-6 col-md-8">
                                 <div class="contact-info-wrap">
                                     <div class="contact-img">
-                                        <img src="img/images/contact_img.png" alt="">
+                                        <img th:src="@{/fore/img/images/contact_img.png}" alt="">
                                     </div>
                                     <div class="contact-info-list">
                                         <ul>
@@ -185,5 +183,47 @@
         <script th:src="@{/fore/js/wow.min.js}"></script>
         <script th:src="@{/fore/js/plugins.js}"></script>
         <script th:src="@{/fore/js/main.js}"></script>
+
+    <script>
+        //提示框
+        function prompt(message, style, time) {
+            style = (style === undefined) ? 'alert-success' : style;
+            time = (time === undefined) ? 1500 : time;
+            $('<div></div>')
+                .appendTo('body')
+                .addClass('alert ' + style)
+                .html(message)
+                .show()
+                .delay(time)
+                .fadeOut();
+        }
+        //submit form
+        $('#sub').click(function(){
+            //ajax
+            $.ajax({
+                url: '/about-us/contact',
+                type: 'POST',
+                dataType: 'json',
+                data: $('#contactForm').serialize(),
+                success: function(data){
+                    if (data.code===200){
+                        prompt(data.msg, 'alert-success', 1500);
+                    } else {
+                        prompt(data.msg, 'alert-danger', 1500);
+                    }
+                }
+            });
+        });
+
+        //title_div默认隐藏,如果选择 快乐领养，则显示title_div
+        $('#title_div').hide();
+        $('#type').change(function(){
+            if ($(this).val()==='4'){
+                $('#title_div').show();
+            } else {
+                $('#title_div').hide();
+            }
+        });
+    </script>
     </body>
 </html>

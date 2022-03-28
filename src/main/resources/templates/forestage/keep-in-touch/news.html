@@ -73,18 +73,18 @@
                                     <div class="blog-post-meta">
                                         <ul>
                                             <li class="tags"><i class="flaticon-bookmark-1"></i>
-                                                <a href="#" th:text="${article.type==0?'新闻':(article.type==1?'活动':'文章')}"></a>
+                                                <a href="#" th:text="${article.type==0?'新闻':(article.type==1?'活动':'科学喂养')}"></a>
                                             </li>
                                             <li><i class="far fa-user"></i><a href="#" th:text="${article.author}"></a></li>
                                             <li><i class="far fa-bell"></i> <span th:text="${article.createTime}"></span></li>
                                         </ul>
                                     </div>
                                     <h2 class="title">
-                                        <a th:href="@{'/keep-in-touch/article/' + ${article.id}}" th:text="${article.title}"></a>
+                                        <a th:href="@{'/fore/article/' + ${article.id}}" th:text="${article.title}"></a>
                                     </h2>
                                     <p th:text="${article.title} + ' ......'"></p>
-                                    <a th:href="@{'/keep-in-touch/article/' + ${article.id}}"
-                                       class="read-more">Read More <img th:src="@{/fore/img/icon/pawprint.png}" alt=""></a>
+                                    <a th:href="@{'/fore/article/' + ${article.id}}"
+                                       class="read-more">阅读更多 <img th:src="@{/fore/img/icon/pawprint.png}" alt=""></a>
                                 </div>
                             </div>
 

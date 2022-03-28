@@ -23,6 +23,8 @@
         <link rel="stylesheet" th:href="@{/fore/css/default.css}">
         <link rel="stylesheet" th:href="@{/fore/css/style.css}">
         <link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+        <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
     </head>
     <body>
 
@@ -75,37 +77,54 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-center" id="pets_list" >
-
-                        <div class="col-lg-4 col-md-6" th:each="animal,animalStat : ${animalList}">
-                            <div class="adoption-shop-item">
-                                <div class="adoption-shop-thumb">
-                                    <img th:src="${animal.pics}" alt="" >
-                                    <a th:href="@{${'/adoption/apply/'+animal.id}}" class="btn">领养 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt=""></a>
-                                </div>
-                                <div class="adoption-shop-content">
-                                    <h4 class="title"><a th:href="@{${'/adoption/detail/'+animal.id}}" th:text="${animal.name}"></a></h4>
-                                    <div class="adoption-meta">
-                                        <ul>
-                                            <li><i class="fas fa-cog"></i><span th:text="${animal.type}"></span></li>
-                                            <li><i class="far fa-calendar-alt"></i> Birth : <span th:text="${animal.birth}"></span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="adoption-rating">
-                                        <ul>
-                                            <li class="rating">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                            </li>
-                                            <li class="price">年龄 : <span th:text="${animal.age}"></span></li>
-                                        </ul>
-                                    </div>
-                                </div>
+<!--                    切换类型控件-->
+                    <div class="row justify-content-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" data-display="static" aria-expanded="false">
+                                选择种类
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-lg-right">
+                                <input type="text" id="type_val" hidden value="all">
+                                <button class="dropdown-item" type="button" id="type_all">全部</button>
+                                <button class="dropdown-item" type="button" id="type_cat">猫</button>
+                                <button class="dropdown-item" type="button" id="type_dog">狗</button>
+                                <button class="dropdown-item" type="button" id="type_rabbit">兔</button>
                             </div>
                         </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row justify-content-center" id="pets_list" >
+
+<!--                        <div class="col-lg-4 col-md-6" th:each="animal,animalStat : ${animalList}">-->
+<!--                            <div class="adoption-shop-item">-->
+<!--                                <div class="adoption-shop-thumb">-->
+<!--                                    <img th:src="${animal.pics}" alt="" >-->
+<!--                                    <a th:href="@{${'/adoption/apply/'+animal.id}}" class="btn">领养 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt=""></a>-->
+<!--                                </div>-->
+<!--                                <div class="adoption-shop-content">-->
+<!--                                    <h4 class="title"><a th:href="@{${'/adoption/detail/'+animal.id}}" th:text="${animal.name}"></a></h4>-->
+<!--                                    <div class="adoption-meta">-->
+<!--                                        <ul>-->
+<!--                                            <li><i class="fas fa-cog"></i><span th:text="${animal.type}"></span></li>-->
+<!--                                            <li><i class="far fa-calendar-alt"></i> Birth : <span th:text="${animal.birth}"></span></li>-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
+<!--                                    <div class="adoption-rating">-->
+<!--                                        <ul>-->
+<!--                                            <li class="rating">-->
+<!--                                                <i class="fas fa-star"></i>-->
+<!--                                                <i class="fas fa-star"></i>-->
+<!--                                                <i class="fas fa-star"></i>-->
+<!--                                                <i class="fas fa-star"></i>-->
+<!--                                                <i class="fas fa-star"></i>-->
+<!--                                            </li>-->
+<!--                                            <li class="price">年龄 : <span th:text="${animal.age}"></span></li>-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
 
 
 
@@ -148,8 +167,54 @@
         <script th:src="@{/fore/js/main.js}"></script>
 
     <script>
-        let pages = 2;
-        let page = 2;
+        //提示框
+        function prompt(message, style, time) {
+            style = (style === undefined) ? 'alert-success' : style;
+            time = (time === undefined) ? 1500 : time;
+            $('<div></div>')
+                .appendTo('body')
+                .addClass('alert ' + style)
+                .html(message)
+                .show()
+                .delay(time)
+                .fadeOut();
+        }
+
+        $('#type_all').click(function(){
+            pages = 1;
+            page = 1;
+            $("#pets_list").empty();
+            $('#type_val').val('all');
+            lod()
+        });
+        $('#type_cat').click(function(){
+            pages = 1;
+            page = 1;
+            $("#pets_list").empty();
+            $('#type_val').val('猫');
+            lod()
+        });
+        $('#type_dog').click(function(){
+            pages = 1;
+            page = 1;
+            $("#pets_list").empty();
+            $('#type_val').val('狗');
+            lod()
+        });
+        $('#type_rabbit').click(function(){
+            pages = 1;
+            page = 1;
+            $("#pets_list").empty();
+            $('#type_val').val('兔');
+            lod()
+        });
+
+
+
+
+
+        let pages = 1;
+        let page = 1;
         let isloding = false;
 
         $(document).on('scroll', function () {
@@ -168,7 +233,8 @@
                 sort:'id',
                 order:'asc',
                 pageNumber:page,
-                pageSize:9
+                pageSize:9,
+                type: $('#type_val').val()
             }
             if (page > pages) {
                 return
@@ -220,16 +286,13 @@
                             `
                             $("#pets_list").append(html)
                         });
-                        isloding = false
                     }else{
-                        prompt(res.msg, 'alert-danger', 1500);
+                        prompt(res.msg, 'alert-warning', 1500);
                     }
+                    isloding = false
                 },
                 error: function(err){
                     console.log(err);
-                },
-                complete: function () {
-
                 }
 
             });

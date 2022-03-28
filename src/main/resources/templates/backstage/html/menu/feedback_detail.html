@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title th:text="${article.title}"></title>
+
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+	<!-- Place favicon.ico in the root directory -->
+
+	<!-- CSS here -->
+	<link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/animate.min.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/magnific-popup.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/fontawesome-all.min.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/owl.carousel.min.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/nice-select.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/flaticon.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/odometer.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/jquery-ui.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/slick.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/default.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/style.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
+</head>
+<body>
+<!-- Scroll-top -->
+<button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
+<!-- Scroll-top-end-->
+
+<main>
+	<!-- article-details-area -->
+	<section class="blog-details-area">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-lg-12 col-md-12 ">
+					<div class="standard-blog-item mb-50">
+						<div class="standard-blog-content blog-details-content">
+							<div class="blog-post-meta">
+								<ul>
+									<li class="tags"><i class="flaticon-bookmark-1"></i>
+										<a href="#"
+										   th:text="${article.type==5?'一般问题':(article.type==5?'领养问题':(article.type==7?'投诉':'其它'))}"></a>
+									</li>
+									<li><i class="far fa-user"></i><a href="#" th:text="${article.author}"></a></li>
+									<li><i class="far fa-bell"></i> <span th:text="${article.createTime}"></span></li>
+								</ul>
+							</div>
+							<h4 class="title" th:text="${article.title}"></h4>
+							<div id="doc-content">
+								<textarea style="display:none;" placeholder="markdown" th:text="${article.content}"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-12 col-md-12 ">
+					<form id="approvalForm" class="">
+						<div class="form-group col-lg-12 col-md-12" style="margin-top:15px">
+
+							<div class="col-sm-6">
+								<label for="status"><b>处理结果</b></label>
+								<select name="status" id="status"  class="form-control dropdown-toggle">
+<!--									<option value="-1">拒绝</option>-->
+									<option value="1">已解决</option>
+								</select>
+							</div>
+							<br>
+							<input type="hidden" name="id" th:value="${article.id}">
+							<div class="col-sm-3">
+								<button type="button" id="btn_sub" class="btn btn-primary">提交</button>
+								<button type="button" class="btn btn-info" onclick="window.history.back()">返回</button>
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	<!-- article-details-area-end -->
+</main>
+
+
+</body>
+
+<link rel="stylesheet" th:href="@{/back/editormd/css/editormd.preview.css}" />
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/back/editormd/lib/marked.min.js}"></script>
+<script th:src="@{/back/editormd/lib/prettify.min.js}"></script>
+<script th:src="@{/back/editormd/lib/raphael.min.js}"></script>
+<script th:src="@{/back/editormd/lib/underscore.min.js}"></script>
+<script th:src="@{/back/editormd/lib/sequence-diagram.min.js}"></script>
+<script th:src="@{/back/editormd/lib/flowchart.min.js}"></script>
+<script th:src="@{/back/editormd/lib/jquery.flowchart.min.js}"></script>
+<script th:src="@{/back/editormd/editormd.js}"></script>
+
+<script type="text/javascript">
+	var testEditor;
+	$(function () {
+		testEditor = editormd.markdownToHTML("doc-content", {//注意：这里是上面DIV的id
+			htmlDecode: "style,script,iframe",
+			emoji: true,
+			taskList: true,
+			tocm: true,
+			tex: true, // 默认不解析
+			flowChart: true, // 默认不解析
+			sequenceDiagram: true, // 默认不解析
+			codeFold: true
+		});});
+
+	//提示框
+	function prompt(message, style, time) {
+		style = (style === undefined) ? 'alert-success' : style;
+		time = (time === undefined) ? 1500 : time;
+		$('<div></div>')
+				.appendTo('body')
+				.addClass('alert ' + style)
+				.html(message)
+				.show()
+				.delay(time)
+				.fadeOut();
+	}
+
+	$(document).ready(function() {
+		const msg = '[[${msg}]]';
+		if (msg !== "") {
+			prompt(msg, 'alert-success');
+		}
+	});
+
+	$('#btn_sub').click(function () {
+		const url = '/article/approve_post';
+		const data = $('#approvalForm').serialize();
+		$.ajax({
+			url: url,
+			type: 'post',
+			dataType: 'json',
+			data: data,
+			success: function (data) {
+				if (data.code === 200) {
+					prompt(data.msg, 'alert-success', 1500);
+					setTimeout(function () {
+						window.location.href = '/admin/feedback';
+					}, 1000);
+				} else {
+					prompt(data.msg, 'alert-danger', 1500);
+				}
+			}
+		});
+	});
+</script>
+
+</html>

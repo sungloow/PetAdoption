@@ -11,6 +11,8 @@
     <!--Editor.md-->
     <link rel="stylesheet" th:href="@{/back/editormd/css/editormd.css}"/>
     <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
 </head>
 
 <body>
@@ -24,17 +26,15 @@
         <div class="form-row">
             <div class="col">
                 <label for="author"><b>作者</b></label>
-                <input type="text" class="form-control"  name="author" id="author" aria-describedby="Help">
+                <input type="text" class="form-control"  name="author" id="author">
             </div>
+
             <div class="col">
-                <label for="type"><b>类型</b></label>
-                <select name="type" id="type" class="form-control ">
-                    <option value="0">新闻</option>
-                    <option value="1">活动</option>
-                    <option value="3">文章</option>
-                    <option value="4">快乐领养</option>
-                </select>
+                <label for="upload_pic_ipt"><b>封面图片</b></label>
+                <input type="text" class="form-control"  name="cover_url" id="cover_url" hidden>
+                <input type="file" class="form-control"  name="cover_file" id="upload_pic_ipt" onchange="uploadCover()" >
             </div>
+
         </div>
         <div class="form-group">
             <label for="content"></label>
@@ -53,6 +53,46 @@
 <script th:src="@{/back/editormd/editormd.js}"></script>
 
 <script type="text/javascript">
+
+
+    //提示框
+    function prompt(message, style, time) {
+        style = (style === undefined) ? 'alert-success' : style;
+        time = (time === undefined) ? 1500 : time;
+        $('<div></div>')
+            .appendTo('body')
+            .addClass('alert ' + style)
+            .html(message)
+            .show()
+            .delay(time)
+            .fadeOut();
+    }
+
+    function uploadCover() {
+        var formData = new FormData();
+        formData.append("cover_file", $("#upload_pic_ipt")[0].files[0]);
+        $.ajax({
+            url: "/article/banner/upload",
+            type: "post",
+            data: formData,
+            processData: false, // 告诉jQuery不要去处理发送的数据
+            contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+            dataType: 'json',
+            success: function (data) {
+                if (data.code === 200) {
+                    prompt(data.msg, 'alert-success');
+                    $("#cover_url").val(data.result);
+                } else {
+                    prompt(data.msg, 'alert-danger');
+                }
+            },
+            error: function(data) {
+
+            }
+        });
+    }
+
+
     var testEditor;
 
     //window.onload = function(){ }
@@ -61,7 +101,7 @@
             width : "95%",	//宽
             height : 600,	//高
             syncScrolling : "single",
-            path : "../back/editormd/lib/",	//加载编辑器lib路径
+            path : "/back/editormd/lib/",	//加载编辑器lib路径
             saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
             emoji: true,		//功能开启表情
             theme: "light",//工具栏主题
@@ -100,11 +140,11 @@
                 releaseIcon : function(cm, icon, cursor, selection) {
                     //表单提交
                     mdEditorForm.method = "post";
-                    mdEditorForm.action = "/article/addArticle";//提交至服务器的路径
+                    mdEditorForm.action = "/article/addBanner";//提交至服务器的路径
                     mdEditorForm.submit();
                 },
                 back : function(){
-                    window.location.href = "/admin/article/news-list";
+                    window.location.href = "/admin/article/banner";
                 },
             }
         });

@@ -41,11 +41,4 @@ public class KeepInTouchController {
         return "forestage/keep-in-touch/activity";
     }
 
-    //article detail
-    @GetMapping("/article/{id}")
-    public String articleDetail(@PathVariable Integer id, Model model) {
-        Article article = articleService.getArticleById(id);
-        model.addAttribute("article", article);
-        return "forestage/keep-in-touch/article";
-    }
 }

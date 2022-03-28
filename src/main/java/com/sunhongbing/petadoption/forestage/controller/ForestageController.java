@@ -1,7 +1,12 @@
 package com.sunhongbing.petadoption.forestage.controller;
 
+import com.sunhongbing.petadoption.backstage.entity.Animal;
+import com.sunhongbing.petadoption.backstage.entity.Article;
+import com.sunhongbing.petadoption.backstage.entity.Banner;
 import com.sunhongbing.petadoption.backstage.entity.User;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
+import com.sunhongbing.petadoption.backstage.service.ArticleService;
+import com.sunhongbing.petadoption.backstage.service.PetManageService;
 import com.sunhongbing.petadoption.forestage.entity.ApplyAnimal;
 import com.sunhongbing.petadoption.forestage.entity.EditParam;
 import com.sunhongbing.petadoption.forestage.entity.EditPasswordParam;
@@ -14,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,14 +36,35 @@ public class ForestageController {
 
     @Autowired
     private PersonalService personalService;
+    @Autowired
+    private ArticleService articleService;
+    @Autowired
+    private PetManageService petManageService;
+
+
     //logback
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     // 访问首页
     @GetMapping("/")
-    public String index2() {
+    public String index2(Model model) {
         logger.info("访问首页");
+        List<Animal> randomPets = petManageService.getRandomPets();
+        Animal bannerPet = randomPets.get(0);
+        List<Banner> bannerList = articleService.queryBanners("id", "asc");
+        model.addAttribute("bannerList", bannerList);
+        model.addAttribute("bannerPet", bannerPet);
+        model.addAttribute("randomPets", randomPets);
+        System.out.println(randomPets);
         return "forestage/index";
+    }
+
+    //fore banner detail
+    @GetMapping("/banner/{id}")
+    public String banner(@PathVariable("id") int id, Model model){
+        Banner banner = articleService.getBannerById(id);
+        model.addAttribute("banner",banner);
+        return "forestage/keep-in-touch/banner-detail";
     }
 
     //home
@@ -167,6 +190,17 @@ public class ForestageController {
             vo.setMsg("修改失败");
         }
         return vo;
+    }
+
+
+
+
+    //fore article detail
+    @GetMapping("/article/{id}")
+    public String articleDetail(@PathVariable Integer id, Model model) {
+        Article article = articleService.getArticleById(id);
+        model.addAttribute("article", article);
+        return "forestage/article";
     }
 
 }

@@ -1,8 +1,18 @@
 package com.sunhongbing.petadoption.forestage.controller;
 
+import com.sunhongbing.petadoption.backstage.entity.Article;
+import com.sunhongbing.petadoption.backstage.entity.User;
+import com.sunhongbing.petadoption.backstage.result.ResultVO;
+import com.sunhongbing.petadoption.backstage.service.ArticleService;
+import com.sunhongbing.petadoption.backstage.service.UserService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @className: AboutUsController
@@ -13,6 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/about-us")
 public class AboutUsController {
+    @Autowired
+    private ArticleService articleService;
+    @Autowired
+    private UserService userService;
 
     // introduction.html
     @RequestMapping("/introduction")
@@ -24,6 +38,31 @@ public class AboutUsController {
     @GetMapping("/contact")
     public String contact() {
         return "forestage/about-us/contact";
+    }
+    //contact post
+    @PostMapping("/contact")
+    @ResponseBody
+    public ResultVO contactPost(Article article) {
+        ResultVO vo = new ResultVO();
+        int userId;
+        try {
+            userId = (int) SecurityUtils.getSubject().getPrincipal();
+        } catch (Exception e) {
+            vo.setCode(500);
+            vo.setMsg("请先登录");
+            return vo;
+        }
+        User user = userService.getUserById(userId);
+        article.setAuthor(user.getName());
+        int i = articleService.addArticle(article);
+        if (i == 1) {
+            vo.setCode(200);
+            vo.setMsg("提交成功");
+        } else {
+            vo.setCode(500);
+            vo.setMsg("提交失败");
+        }
+        return vo;
     }
 
     // working-time.html

@@ -49,8 +49,17 @@ public class PetManageServiceImpl implements PetManageService {
     }
 
     @Override
-    public List<Animal> findPetByStatusAndType(String status, String type) {
-        return null;
+    public List<Animal> findPetByStatusAndType(String type, int status, String order, String sort) throws ParseException {
+        List<Animal> animalList = adoptionMapper.findPetByStatusAndType(type, status, order, sort);
+        for (Animal animal : animalList) {
+            // animal.getBirth() 转 Date
+            DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
+            Date date = fmt.parse(animal.getBirth());
+
+            animal.setAge(calculatingAge(date));
+        }
+
+        return animalList;
     }
 
     @Override
@@ -60,6 +69,13 @@ public class PetManageServiceImpl implements PetManageService {
 
     @Override
     public int updatePet(Animal animal) {
+        //如果已领养状态,修改为未领养需要删除领养记录
+        if (animal.getStatus() == 0) {
+            Animal pet = adoptionMapper.findPetById(animal.getId());
+            if (pet.getStatus() == 1) {
+                adoptionMapper.delete_adoption_ref(animal.getId());
+            }
+        }
         return adoptionMapper.updatePet(animal);
     }
 
@@ -101,6 +117,12 @@ public class PetManageServiceImpl implements PetManageService {
 
     @Override
     public int deletePets(int[] ids) {
+        adoptionMapper.delete_adoption_refs(ids);
         return adoptionMapper.deletePets(ids);
+    }
+
+    @Override
+    public List<Animal> getRandomPets() {
+        return adoptionMapper.getRandomPets();
     }
 }

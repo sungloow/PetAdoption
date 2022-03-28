@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<title th:text="${article.title}"></title>
+	<title th:text="${banner.title}"></title>
 
 	<link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
 	<!-- Place favicon.ico in the root directory -->
@@ -22,9 +22,14 @@
 	<link rel="stylesheet" th:href="@{/fore/css/default.css}">
 	<link rel="stylesheet" th:href="@{/fore/css/style.css}">
 	<link rel="stylesheet" th:href="@{/fore/css/responsive.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/alert.css}">
 
 </head>
 <body>
+
+<!-- Preloader -->
+<div th:replace="~{../templates/forestage/commons::commonPreloader}"></div>
+<!-- Preloader-end -->
 
 <!-- Scroll-top -->
 <button th:replace="~{../templates/forestage/commons::commonScrollTop}"></button>
@@ -34,8 +39,9 @@
 <header th:replace="~{../templates/forestage/commons::commonHeader('keep-in-touch')}"></header>
 <!-- header-area-end -->
 
-<main>
 
+
+<main>
 	<!-- article-details-area -->
 	<section class="blog-details-area">
 		<div class="container">
@@ -46,15 +52,20 @@
 							<div class="blog-post-meta">
 								<ul>
 									<li class="tags"><i class="flaticon-bookmark-1"></i>
-										<a href="#" th:text="${article.type==0?'新闻':(article.type==1?'活动':'文章')}"></a>
+										<a href="#" >Banner</a>
 									</li>
-									<li><i class="far fa-user"></i><a href="#" th:text="${article.author}"></a></li>
-									<li><i class="far fa-bell"></i> <span th:text="${article.createTime}"></span></li>
+									<li><i class="far fa-user"></i><a href="#" th:text="${banner.author}"></a></li>
+									<li><i class="far fa-bell"></i> <span th:text="${banner.createTime}"></span></li>
 								</ul>
 							</div>
-							<h4 class="title" th:text="${article.title}"></h4>
+
+							<div style="display: table-cell; vertical-align: middle; text-align: center;" >
+								<img width="70%" th:src="${banner.cover}">
+							</div>
+
+							<h4 class="title" th:text="${banner.title}"></h4>
 							<div id="doc-content">
-								<textarea style="display:none;" placeholder="markdown" th:text="${article.content}"></textarea>
+								<textarea style="display:none;" placeholder="markdown" th:text="${banner.content}"></textarea>
 							</div>
 						</div>
 					</div>
@@ -63,7 +74,15 @@
 		</div>
 	</section>
 	<!-- article-details-area-end -->
+
+	<!-- newsletter-area -->
+	<div th:replace="~{../templates/forestage/commons::newsletter}"></div>
+	<!-- newsletter-area-end -->
+
 </main>
+<!-- main-area-end -->
+
+
 <!-- footer-start -->
 <footer th:replace="~{../templates/forestage/commons::commonFooter}"></footer>
 <!-- footer-end -->
@@ -82,6 +101,20 @@
 <script th:src="@{/back/editormd/lib/jquery.flowchart.min.js}"></script>
 <script th:src="@{/back/editormd/editormd.js}"></script>
 
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+<script th:src="@{/fore/js/isotope.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/imagesloaded.pkgd.min.js}"></script>
+<script th:src="@{/fore/js/jquery.magnific-popup.min.js}"></script>
+<script th:src="@{/fore/js/owl.carousel.min.js}"></script>
+<script th:src="@{/fore/js/jquery.odometer.min.js}"></script>
+<script th:src="@{/fore/js/jquery.nice-select.min.js}"></script>
+<script th:src="@{/fore/js/jquery-ui.min.js}"></script>
+<script th:src="@{/fore/js/jquery.appear.js}"></script>
+<script th:src="@{/fore/js/slick.min.js}"></script>
+<script th:src="@{/fore/js/wow.min.js}"></script>
+<script th:src="@{/fore/js/plugins.js}"></script>
+<script th:src="@{/fore/js/main.js}"></script>
+
 <script type="text/javascript">
 	var testEditor;
 	$(function () {
@@ -95,6 +128,26 @@
 			sequenceDiagram: true, // 默认不解析
 			codeFold: true
 		});});
+
+	//提示框
+	function prompt(message, style, time) {
+		style = (style === undefined) ? 'alert-success' : style;
+		time = (time === undefined) ? 1500 : time;
+		$('<div></div>')
+				.appendTo('body')
+				.addClass('alert ' + style)
+				.html(message)
+				.show()
+				.delay(time)
+				.fadeOut();
+	}
+
+	$(document).ready(function() {
+		const msg = '[[${msg}]]';
+		if (msg !== "") {
+			prompt(msg, 'alert-success');
+		}
+	});
 </script>
 
 </html>

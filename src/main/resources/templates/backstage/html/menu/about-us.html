@@ -25,8 +25,8 @@
                         <select name="txt_search_status" id="txt_search_status"  class="form-control dropdown-toggle">
                             <option value="-99">全部</option>
                             <option value="-1">未通过</option>
-                            <option value="0">待处理</option>
-                            <option value="1">已通过</option>
+                            <option value="0">审核中</option>
+                            <option value="1">已发布</option>
                         </select>
                     </div>
                     <div class="col-sm-4" style="text-align:left;">
@@ -37,6 +37,17 @@
         </div>
     </div>
 
+    <div id="toolbar" class="btn-group">
+        <button id="btn_add" type="button" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        </button>
+<!--        <button id="btn_edit" type="button" class="btn btn-primary">-->
+<!--            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改-->
+<!--        </button>-->
+        <button id="btn_delete" type="button" class="btn btn-danger">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+        </button>
+    </div>
 
     <table id="tb_pet"></table>
 </div>
@@ -60,27 +71,13 @@
 
     let statusFormatter = function statusFormatter(value, row, index) {
         if (value === 1) {
-            return '<span class="label label-success">已通过</span>';
+            return '<span class="label label-success">已发布</span>';
         } else if (value === 0) {
-            return '<span class="label label-warning">待处理</span>';
+            return '<span class="label label-warning">审核中</span>';
         } else if (value === -1) {
             return '<span class="label label-danger">未通过</span>';
         } else {
             return '<span class="label label-default">未知</span>';
-        }
-    };
-
-    let typeFormatter = function typeFormatter(value, row, index) {
-        if (value === 0) {
-            return '<span class="label label-default">新闻</span>';
-        } else if (value === 1) {
-            return '<span class="label label-primary">活动</span>';
-        } else if (value === 3) {
-            return '<span class="label label-danger">科学喂养</span>';
-        } else if (value === 4) {
-            return '<span class="label label-info">快乐领养</span>';
-        } else {
-            return '<span class="label label-danger">未知</span>';
         }
     };
 
@@ -94,12 +91,12 @@
 
     function toDetail(obj) {
         let id = $(obj).parent().parent().children().eq(1).text();
-        window.location.href = '/article/approve/' + id;
+        window.location.href = '/article/' + id;
     }
 
 
     $('#tb_pet').bootstrapTable({
-        url: '/article/all/list_query',         //请求后台的URL（*）
+        url: '/article/news/list_query',         //请求后台的URL（*）
         method: 'get',                      //请求方式（*）
         dataType: 'json',
         toolbar: '#toolbar',                //工具按钮用哪个容器
@@ -148,11 +145,6 @@
             sortable: true,
             formatter: titleFormatter
         }, {
-            field: 'type',
-            title: 'Tags',
-            sortable: true,
-            formatter: typeFormatter
-        }, {
             field: 'createTime',
             title: '时间',
             sortable: true
@@ -173,6 +165,52 @@
         };
     }
 
+    $("#btn_add").click(function () {
+        window.location.href = "/article/toEditor";
+    })
+
+
+    $("#btn_delete").click(function () {
+        var arrselections = $("#tb_pet").bootstrapTable('getSelections');
+        var id_map = {};
+        var ids = [];
+        if (arrselections.length <= 0) {
+            prompt('请选择有效数据', 'alert-danger')
+            return;
+        } else {
+            console.log(arrselections)
+            for (let i = 0; i < arrselections.length; i++) {
+                console.log(arrselections[i].id);
+                id_map[i] = arrselections[i].id;
+                ids.push(arrselections[i].id)
+            }
+        }
+        if(!confirm('确认删除？')){
+            return;
+        }
+        console.log(id_map)
+        $.ajax({
+            type: "post",
+            url: "/article/delete",
+            dataType: 'json',
+            data: {ids:ids+""},
+            success: function(res){
+                if(res.code === 200){
+                    $("#tb_pet").bootstrapTable('refresh');
+                    prompt(res.msg, 'alert-success', 1500);
+                }else{
+                    prompt(res.msg, 'alert-danger', 1500);
+                }
+            },
+            error: function(err){
+                console.log(err);
+            },
+            complete: function () {
+
+            }
+
+        });
+    });
 
     $("#btn_query").click(function () {
         $("#tb_pet").bootstrapTable('refresh');
