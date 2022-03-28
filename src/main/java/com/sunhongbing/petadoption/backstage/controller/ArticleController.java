@@ -258,6 +258,28 @@ public class ArticleController {
         hashMap.put("rows", articleList);
         return hashMap;
     }
+    //about-us
+    @GetMapping("/about-us/list_query")
+    @RequiresPermissions("article:all")
+    @ResponseBody
+    public Map<String, Object> about_usList_query(RequestParamsPetList params) {
+        System.out.println(params);
+        int status = params.getSearch_status();
+        List<Article> articleList;
+        List<Article> articleList_size;
+        int[] types = new int[]{
+                ArticleType.ADOPTION_METHOD.getCode(), ArticleType.ABOUT_ORGANIZATION.getCode(),
+                ArticleType.ABOUT_TIME_PLACE.getCode(), ArticleType.ABOUT_QUESTION.getCode()
+        };
+        PageHelper.startPage(params.getPageNumber(),params.getPageSize());
+        articleList = articleService.queryArticlesByTypes(types, status, params.getSort(), params.getOrder());
+        articleList_size = articleService.queryArticlesByTypes(types, status, params.getSort(), params.getOrder());
+        int total = articleList_size.size();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("total", total);
+        hashMap.put("rows", articleList);
+        return hashMap;
+    }
 
 
     // feedback 列表
@@ -282,7 +304,7 @@ public class ArticleController {
         hashMap.put("rows", articleList);
         return hashMap;
     }
-    //all
+    //all, 审批列表查询
     @GetMapping("/all/list_query")
     @RequiresPermissions("approval:all")
     @ResponseBody
@@ -293,7 +315,9 @@ public class ArticleController {
         List<Article> articleList_size;
         int[] types = new int[]{
                 ArticleType.NEWS.getCode(), ArticleType.ACTIVITY.getCode(),
-                ArticleType.NOTICE.getCode(), ArticleType.ARTICLE.getCode(), ArticleType.HAPPY.getCode()
+                ArticleType.NOTICE.getCode(), ArticleType.ARTICLE.getCode(), ArticleType.HAPPY.getCode(),
+                ArticleType.ADOPTION_METHOD.getCode(), ArticleType.ABOUT_ORGANIZATION.getCode(),
+                ArticleType.ABOUT_TIME_PLACE.getCode(), ArticleType.ABOUT_QUESTION.getCode()
         };
         PageHelper.startPage(params.getPageNumber(),params.getPageSize());
         articleList = articleService.queryArticlesByTypes(types, status, params.getSort(), params.getOrder());

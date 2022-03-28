@@ -28,7 +28,16 @@ public enum ArticleType {
     // 反馈 - 投诉问题
     FEEDBACK_COMPLAINT(7,"反馈-投诉"),
     // 反馈 - 其他问题
-    FEEDBACK_OTHER(8,"反馈-其他问题");
+    FEEDBACK_OTHER(8,"反馈-其他问题"),
+    // 领养-领养方法
+    ADOPTION_METHOD(9,"领养-领养方法"),
+    // 关于我们-组织介绍
+    ABOUT_ORGANIZATION(10,"关于我们-组织介绍"),
+    // 关于我们-时间地点
+    ABOUT_TIME_PLACE(11,"关于我们-时间地点"),
+    // 关于我们-常见问答
+    ABOUT_QUESTION(12,"关于我们-常见问答");
+
 
 
 

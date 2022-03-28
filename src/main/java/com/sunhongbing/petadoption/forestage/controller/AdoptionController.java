@@ -10,6 +10,7 @@ import com.sunhongbing.petadoption.backstage.enums.PetStatus;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
 import com.sunhongbing.petadoption.backstage.service.ArticleService;
 import com.sunhongbing.petadoption.backstage.service.PetManageService;
+import com.sunhongbing.petadoption.forestage.Utils;
 import com.sunhongbing.petadoption.forestage.entity.AdoptionStatus;
 import com.sunhongbing.petadoption.forestage.service.AdoptionService;
 import org.apache.shiro.SecurityUtils;
@@ -84,7 +85,10 @@ public class AdoptionController {
 
     // adoption-method.html
     @RequestMapping("/method")
-    public String method() {
+    public String method(Model model) {
+        List<Article> articleList = articleService.queryArticles(ArticleType.ADOPTION_METHOD.getCode(), AdoptionStatus.ACCEPT.getCode(), "id", "asc");
+        Article article = Utils.handlerAboutUsArticle(articleList);
+        model.addAttribute("article", article);
         return "forestage/adoption/adoption-method";
     }
 

@@ -2,17 +2,23 @@ package com.sunhongbing.petadoption.forestage.controller;
 
 import com.sunhongbing.petadoption.backstage.entity.Article;
 import com.sunhongbing.petadoption.backstage.entity.User;
+import com.sunhongbing.petadoption.backstage.enums.ArticleType;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
 import com.sunhongbing.petadoption.backstage.service.ArticleService;
 import com.sunhongbing.petadoption.backstage.service.UserService;
+import com.sunhongbing.petadoption.forestage.Utils;
+import com.sunhongbing.petadoption.forestage.entity.AdoptionStatus;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * @className: AboutUsController
@@ -30,7 +36,10 @@ public class AboutUsController {
 
     // introduction.html
     @RequestMapping("/introduction")
-    public String index() {
+    public String index(Model model) {
+        List<Article> articleList = articleService.queryArticles(ArticleType.ABOUT_ORGANIZATION.getCode(), AdoptionStatus.ACCEPT.getCode(), "id", "asc");
+        Article article = Utils.handlerAboutUsArticle(articleList);
+        model.addAttribute("article", article);
         return "forestage/about-us/introduction";
     }
 
@@ -53,7 +62,7 @@ public class AboutUsController {
             return vo;
         }
         User user = userService.getUserById(userId);
-        article.setAuthor(user.getName());
+        article.setAuthor(user.getEmail());
         int i = articleService.addArticle(article);
         if (i == 1) {
             vo.setCode(200);
@@ -67,13 +76,19 @@ public class AboutUsController {
 
     // working-time.html
     @RequestMapping("/working-time")
-    public String workingTime() {
+    public String workingTime(Model model) {
+        List<Article> articleList = articleService.queryArticles(ArticleType.ABOUT_TIME_PLACE.getCode(), AdoptionStatus.ACCEPT.getCode(), "id", "asc");
+        Article article = Utils.handlerAboutUsArticle(articleList);
+        model.addAttribute("article", article);
         return "forestage/about-us/working-time";
     }
 
     // faq.html
     @RequestMapping("/faq")
-    public String faq() {
+    public String faq(Model model) {
+        List<Article> articleList = articleService.queryArticles(ArticleType.ABOUT_QUESTION.getCode(), AdoptionStatus.ACCEPT.getCode(), "id", "asc");
+        Article article = Utils.handlerAboutUsArticle(articleList);
+        model.addAttribute("article", article);
         return "forestage/about-us/faq";
     }
 }
