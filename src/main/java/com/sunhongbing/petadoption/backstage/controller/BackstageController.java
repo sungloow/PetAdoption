@@ -1,34 +1,28 @@
 package com.sunhongbing.petadoption.backstage.controller;
 
 import com.github.pagehelper.PageHelper;
-import com.sunhongbing.petadoption.backstage.dao.ArticleMapper;
 import com.sunhongbing.petadoption.backstage.entity.*;
 import com.sunhongbing.petadoption.backstage.enums.ApplyStatus;
-import com.sunhongbing.petadoption.backstage.enums.ArticleStatus;
-import com.sunhongbing.petadoption.backstage.enums.ArticleType;
 import com.sunhongbing.petadoption.backstage.enums.PetStatus;
-import com.sunhongbing.petadoption.backstage.service.ArticleService;
-import com.sunhongbing.petadoption.backstage.service.PetManageService;
+import com.sunhongbing.petadoption.backstage.service.*;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
-import com.sunhongbing.petadoption.backstage.service.MenuService;
 import com.sunhongbing.petadoption.config.OSSUtil;
 import com.sunhongbing.petadoption.forestage.entity.ApplyRecord;
 import com.sunhongbing.petadoption.forestage.service.AdoptionService;
 import com.sunhongbing.petadoption.forestage.service.PersonalService;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
-import java.sql.Blob;
 import java.text.ParseException;
 import java.util.*;
 
@@ -52,35 +46,14 @@ public class BackstageController {
     private PersonalService personalService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private PermissionService permissionService;
+    @Autowired
+    private AdminManageService adminManageService;
 
 
-//    //登录页面
-//    @GetMapping("/login")
-//    public String login() {
-//        return "backstage/html/login";
-//    }
-//
-//    //登录提交请求
-//    @PostMapping("/login")
-//    public String login_auth(LoginParam loginParam, Model model) {
-//        //验证用户名和密码
-//        org.apache.shiro.subject.Subject subject = SecurityUtils.getSubject();
-//        UsernamePasswordToken token = new UsernamePasswordToken(loginParam.getUsername(), loginParam.getPassword());
-//        String msg = "";
-//        try {
-//            subject.login(token);
-//        } catch (UnknownAccountException e) {
-//            msg = "账号不存在！";
-//        } catch (IncorrectCredentialsException e) {
-//            msg = "密码不正确！";
-//        } catch (LockedAccountException e) {
-//            msg = "账号被锁定！请联系管理员。";
-//        } catch (Exception e) {
-//            msg = "发生了一些错误！请联系管理员。";
-//        }
-//        model.addAttribute("msg", msg);
-//        return "backstage/html/login";
-//    }
 
 
     // 后台首页
@@ -91,24 +64,290 @@ public class BackstageController {
 
     // 仪表盘
     @GetMapping("/dashboard")
-    @RequiresPermissions("admin:dashboard")
+    @RequiresPermissions("root")
     public String home() {
         return "backstage/html/menu/home";
     }
 
+
     //人员管理
     @GetMapping("/staff")
-    @RequiresPermissions("staff:list")
+    @RequiresPermissions(value = {"root", "staff:manage"}, logical = Logical.OR)
     public String user() {
         return "backstage/html/menu/user";
     }
+    //staff/list_query
+    @GetMapping("/staff/list_query")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "staff:manage"}, logical = Logical.OR)
+    public Map<String, Object> staffList_query(RequestParamsPetList params) {
+        int status = params.getSearch_status();
+        PageHelper.startPage(params.getPageNumber(),params.getPageSize());
+        List<Admin> adminList = adminManageService.queryAllUsers(status, params.getSort(),params.getOrder());
+        List<Admin> adminList_size = adminManageService.queryAllUsers(status, params.getSort(),params.getOrder());
+        int total = adminList_size.size();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("total", total);
+        hashMap.put("rows", adminList);
+        return hashMap;
+    }
+    //staff/add
+    @GetMapping("/staff/add")
+    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    public String userAdd() {
+        return "backstage/html/menu/user-add";
+    }
+    //staff/add post
+    @PostMapping("/staff/add")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    public ResultVO userAdd_post(Admin admin) {
+        ResultVO resultVO = new ResultVO();
+        int addUser = adminManageService.addUser(admin);
+        if (addUser == 1) {
+            resultVO.setCode(200);
+            resultVO.setMsg("添加成功");
+        } else if (addUser == -1){
+            resultVO.setCode(500);
+            resultVO.setMsg("用户名只能是字母、数字、下划线组成");
+        } else if (addUser == -2) {
+            resultVO.setCode(500);
+            resultVO.setMsg("用户名已被占用");
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("发生了错误,请联系管理员");
+        }
+        return resultVO;
+    }
+    //staff/edit
+    @GetMapping("/staff/edit/{id}")
+    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    public String userEdit(@PathVariable("id") Integer id, Model model) {
+        Admin admin = adminManageService.queryUserById(id);
+        model.addAttribute("admin", admin);
+        return "backstage/html/menu/user-edit";
+    }
+    //staff/edit post
+    @PostMapping("/staff/edit")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    public ResultVO userEdit(Admin admin) {
+        ResultVO resultVO = new ResultVO();
+        int modifyUser = adminManageService.modifyUser(admin);
+        if (modifyUser == 1) {
+            resultVO.setCode(200);
+            resultVO.setMsg("修改成功");
+        } else if (modifyUser == -1) {
+            resultVO.setCode(500);
+            resultVO.setMsg("用户名只能是字母、数字、下划线组成");
+        } else if (modifyUser == -2) {
+            resultVO.setCode(500);
+            resultVO.setMsg("用户名已被占用");
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("发生了错误,请联系管理员");
+        }
+        return resultVO;
+    }
+    //staff/disable
+    @PostMapping("/staff/disable")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    public ResultVO userBlock(@RequestParam List<Integer> ids) {
+        ResultVO resultVO = new ResultVO();
+        int blockUser = adminManageService.disableUser(ids);
+        if (blockUser == ids.size()) {
+            resultVO.setCode(200);
+            resultVO.setMsg("禁用成功");
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("封禁失败");
+        }
+        return resultVO;
+    }
+    //staff/enable
+    @PostMapping("/staff/enable")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    public ResultVO userEnable(@RequestParam List<Integer> ids) {
+        ResultVO resultVO = new ResultVO();
+        int enableUser = adminManageService.enableUser(ids);
+        if (enableUser == ids.size()) {
+            resultVO.setCode(200);
+            resultVO.setMsg("启用成功");
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("启用失败");
+        }
+        return resultVO;
+    }
+    //staff/delete
+    @PostMapping("/staff/delete")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "staff:del"}, logical = Logical.OR)
+    public ResultVO userDelete(@RequestParam List<Integer> ids) {
+        ResultVO resultVO = new ResultVO();
+        int deleteUserByIds = adminManageService.deleteUserByIds(ids);
+        if (deleteUserByIds == ids.size()) {
+            resultVO.setCode(200);
+            resultVO.setMsg("删除成功");
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("删除失败");
+        }
+        return resultVO;
+    }
+
+
 
     //角色管理
     @GetMapping("/role")
-    @RequiresPermissions("role:list")
+    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
     public String role() {
         return "backstage/html/menu/role";
     }
+    @GetMapping("/role/list_query")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    public Map<String, Object> roleList_query(RequestParamsPetList params) {
+        PageHelper.startPage(params.getPageNumber(),params.getPageSize());
+        List<SysRole> roleList = roleService.getAllRole(params.getSort(),params.getOrder());
+        List<SysRole> roleList_size = roleService.getAllRole(params.getSort(),params.getOrder());
+        int total = roleList_size.size();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("total", total);
+        hashMap.put("rows", roleList);
+        return hashMap;
+    }
+    @GetMapping("/role/detail/{id}")
+    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    public String roleDetail(Model model, @PathVariable int id) {
+        SysRole role = roleService.getRoleById(id);
+        //获取角色对应的菜单
+        List<SysMenu> menuListByRole = menuService.getMenuListByRole(role.getRole());
+        //获取角色对应的权限
+        List<SysPermission> permissionListByRole = permissionService.getPermissionListByRoleId(id);
+
+        model.addAttribute("role", role);
+        model.addAttribute("menuList", menuListByRole);
+        model.addAttribute("permissionList", permissionListByRole);
+        return "backstage/html/menu/role-detail";
+    }
+    //role modify
+    @GetMapping("/role/modify/{id}")
+    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    public String roleModify(Model model, @PathVariable int id) {
+        SysRole role = roleService.getRoleById(id);
+        //获取角色对应的菜单
+        List<SysMenu> menuListByRole = menuService.getMenuListByRole(role.getRole());
+        //取出id
+        List<Integer> menuIdList = new ArrayList<>();
+        for (SysMenu menu : menuListByRole) {
+            menuIdList.add(menu.getId());
+            if (menu.getChildMenu() != null) {
+                for (SysMenu childMenu : menu.getChildMenu()) {
+                    menuIdList.add(childMenu.getId());
+                }
+            }
+        }
+        //获取角色对应的权限
+        List<SysPermission> permissionListByRole = permissionService.getPermissionListByRoleId(id);
+        //取出id
+        List<Integer> permissionIdList = new ArrayList<>();
+        for (SysPermission permission : permissionListByRole) {
+            permissionIdList.add(permission.getId());
+        }
+
+        //获取所有菜单
+        List<SysMenu> menuList = menuService.getAllMenuList();
+        //获取所有权限
+        List<SysPermission> permissionList = permissionService.getAllPermission();
+        model.addAttribute("role", role);
+        model.addAttribute("menuList", menuList);
+        model.addAttribute("permissionList", permissionList);
+        model.addAttribute("menuIdList", menuIdList);
+        model.addAttribute("permissionIdList", permissionIdList);
+        System.out.println("menuIdList:"+menuIdList);
+        System.out.println("permissionIdList:"+permissionIdList);
+        return "backstage/html/menu/role-modify";
+    }
+    @PostMapping("/role/modify")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    public ResultVO roleModify_post(int id, @RequestParam List<Integer> menu_ids, @RequestParam List<Integer> permission_ids) {
+        ResultVO vo = new ResultVO();
+        int modifyRole = roleService.modifyRole(id, menu_ids, permission_ids);
+        if (modifyRole == 1) {
+            vo.setCode(200);
+            vo.setMsg("修改成功");
+        } else {
+            vo.setCode(500);
+            vo.setMsg("修改失败");
+        }
+        return vo;
+    }
+    //role add
+    @GetMapping("/role/add")
+    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    public String roleAdd(Model model) {
+        //获取所有菜单
+        List<SysMenu> menuList = menuService.getAllMenuList();
+        //获取所有权限
+        List<SysPermission> permissionList = permissionService.getAllPermission();
+        model.addAttribute("menuList", menuList);
+        model.addAttribute("permissionList", permissionList);
+        return "backstage/html/menu/role-add";
+    }
+    @PostMapping("/role/add")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    @Transactional(isolation = Isolation.DEFAULT)
+    public ResultVO roleAdd_post(String description, String role, @RequestParam List<Integer> menu_ids, @RequestParam List<Integer> permission_ids) {
+        SysRole sysRole = new SysRole();
+        sysRole.setDescription(description);
+        sysRole.setRole(role);
+        ResultVO vo = new ResultVO();
+        int addRole = roleService.addRole(sysRole);
+        if (addRole == 1) {
+            int roleId = roleService.getMaxRoleId();
+            int bindMenus = 0;
+            int bindPermissions = 0;
+            if (menu_ids.size() != 0) {
+                bindMenus = roleService.bindMenus(roleId, menu_ids);
+            }
+            if (permission_ids.size() != 0) {
+                bindPermissions = roleService.bindPermissions(roleId, permission_ids);
+            }
+            if (bindMenus == menu_ids.size() && bindPermissions == permission_ids.size()) {
+                vo.setCode(200);
+                vo.setMsg("添加成功");
+            } else {
+                vo.setCode(500);
+                vo.setMsg("添加失败");
+            }
+        } else {
+            vo.setCode(500);
+            vo.setMsg("添加失败");
+        }
+        return vo;
+    }
+    //role delete
+    @PostMapping("/role/delete")
+    @ResponseBody
+    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    public ResultVO roleDelete(@RequestParam List<Integer> ids) {
+        ResultVO resultVO = new ResultVO();
+        int i = roleService.deleteRoles(ids);
+        if (i == 1) {
+            resultVO.setCode(200);
+            resultVO.setMsg("删除成功！");
+        } else {
+            resultVO.setCode(500);
+            resultVO.setMsg("删除失败！");
+        }
+        return resultVO;
+    }
+
 
     //文章管理
     @GetMapping("/article")
@@ -348,7 +587,7 @@ public class BackstageController {
     public String userInfo(@PathVariable("id") Integer id, Model model) {
         User user = personalService.queryUserInfoById(id);
         model.addAttribute("user", user);
-        return "backstage/html/menu/user-info";
+        return "user-detail";
     }
 
 
@@ -413,22 +652,14 @@ public class BackstageController {
         Subject subject = SecurityUtils.getSubject();
         //2、根据角色查询菜单
         List<SysMenu> result = new ArrayList<>();
-        if(subject.hasRole("root")) {
-            //超级管理员
-            result = menuService.getMenuListByRole("root");
-        } else if (subject.hasRole("article")) {
-            //article
-            result = menuService.getMenuListByRole("article");
-        } else if (subject.hasRole("volunteer")) {
-            //volunteer
-            result = menuService.getMenuListByRole("volunteer");
-        } else if (subject.hasRole("pet")) {
-            //pet
-            result = menuService.getMenuListByRole("pet");
-        } else if (subject.hasRole("approval")) {
-            //approval
-            result = menuService.getMenuListByRole("approval");
+        //取出当前用户的id
+        int id = (int) subject.getPrincipal();
+        List<SysRole> roleList = roleService.getRoleListById(id);
+        String[] roles = new String[roleList.size()];
+        for (int i = 0; i < roleList.size(); i++) {
+            roles[i] = roleList.get(i).getRole();
         }
+        result = menuService.getMenuListByRoles(roles);
         if(result == null || result.size() == 0) {
             return ResultVO.error("菜单为空！");
         }

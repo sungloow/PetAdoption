@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>BootStrap Table使用</title>
+	<link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+
+	<!-- CSS here -->
+	<link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+	<style>
+		input[type="checkbox"]{
+			outline: 0;
+			font-size: 0;
+			background-color: #FFFFFF;
+			border-radius: 3px;
+			width: 15px ;
+			height: 15px ;
+			position: relative ;
+			vertical-align: 0 ;
+			top: 2px ;
+		}
+		.first-list{
+			margin-bottom: 10px;
+		}
+		.second-list{
+			margin-left: 30px;
+		}
+	</style>
+</head>
+<body>
+<div class="card">
+	<div class="card-body">
+		编辑角色权限
+	</div>
+	<div class="card-body">
+		<div class="form-group">
+			<label for="id">id</label>
+			<input type="text" class="form-control" id="id" th:value="${role.id}" disabled>
+		</div>
+		<div class="form-group">
+			<label for="description">description</label>
+			<input type="text" class="form-control" id="description" th:value="${role.description}" disabled>
+		</div>
+		<div class="form-group">
+			<label for="role">role</label>
+			<input type="text" class="form-control" id="role" th:value="${role.role}" disabled>
+		</div>
+	</div>
+</div>
+<div class="card">
+	<div class="card-body">
+		菜单列表
+	</div>
+	<div class="container" id="menu">
+		<div class="first-list" th:each="menu,menuStat : ${menuList}" >
+			<label>
+				<input class="first-title" type="checkbox" th:id="'menu-'+${menu.id}" th:value="${menu.id}" th:text="${menu.name}" >
+			</label>
+			<div class="second-list" th:each="second_menu,second_menuStat : ${menu.childMenu}">
+				<label>
+					<input class="second-title" type="checkbox" th:id="'menu-'+${second_menu.id}"  th:value="${second_menu.id}" th:text="${second_menu.name}">
+				</label>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card">
+	<div class="card-body">
+		权限列表
+	</div>
+	<div class="container" id="permission">
+		<div class="first-list" th:each="permission,permissionStat : ${permissionList}">
+			<label>
+				<input class="first-title" type="checkbox" th:id="'permission-'+${permission.id}"  th:value="${permission.id}" th:text="${permission.name}">
+			</label>
+		</div>
+	</div>
+</div>
+
+<button class="btn btn-primary" onclick="submit()">提交</button>
+
+</body>
+
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+
+<script>
+
+	//提示框
+	function prompt(message, style, time) {
+		style = (style === undefined) ? 'alert-success' : style;
+		time = (time === undefined) ? 1500 : time;
+		$('<div></div>')
+				.appendTo('body')
+				.addClass('alert ' + style)
+				.html(message)
+				.show()
+				.delay(time)
+				.fadeOut();
+	}
+
+
+	function submit(){
+		//获取表单中所有选中的checkbox的值
+		const menu_ids = $("#menu input:checked").map(function () {
+			return $(this).val();
+		}).get().join(",");
+		const permission_ids = $("#permission input:checked").map(function(){
+			return $(this).val();
+		}).get().join(",");
+		const id = $("#id").val();
+		//ajax提交
+		$.ajax({
+			url: "/admin/role/modify",
+			type: "POST",
+			dataType: "json",
+			data: {
+				"id": id,
+				"menu_ids": menu_ids,
+				"permission_ids": permission_ids
+			},
+			success: function (data) {
+				if (data.code === 200) {
+					prompt(data.msg, 'alert-success', 1500);
+					//延迟1.5秒跳转
+					setTimeout(function () {
+						window.location.href = "/admin/role";
+					}, 1500);
+				} else {
+					prompt(data.msg, 'alert-danger', 1500);
+				}
+			}
+		});
+	}
+
+	$('input[type="checkbox"]').off('change').on('change', function() {
+		const $this = $(this);
+		searchUp($this);
+		//如果父级菜单当前是选中状态，则子级菜单也默认选中
+		if($this.is(':checked')){
+			$this.parent().siblings().find('input[type="checkbox"]').prop('checked', true);
+		}
+		//如果父级菜单当前是未选中状态，则子级菜单也默认未选中
+		if(!$this.is(':checked')){
+			$this.parent().siblings().find('input[type="checkbox"]').prop('checked', false);
+		}
+	});
+	//往上查找
+	function searchUp($this) {
+		const cls = $this.attr('class'),
+				$par = $this.parent().parent().parent(),
+				first = '.first-title',
+				second = '.second-title';
+		if (cls === 'second-title') {
+			checkUp($par, second, first);
+		}
+	}
+	//选择上层元素
+	function checkUp($par, lower, superior) {
+		const length = $par.find(lower + ':checked').length;
+		//如果选中任意一个，则选中上层
+		if (length > 0) {
+			$par.find(superior).prop('checked', true);
+		} else {
+			//如果没有选中，则取消上层
+			$par.find(superior).prop('checked', false);
+		}
+	}
+
+	//网页加载完成后执行
+	$(document).ready(function(){
+		let menuIdList = '[[${menuIdList}]]';
+		// menuIdList 转数组
+		menuIdList = menuIdList.substr(1); //删除第一个字符
+		menuIdList = menuIdList.substr(0, menuIdList.length-1); //删除最后一个字符
+		menuIdList = menuIdList.replace(/\s+/g,"");	//去掉空格
+		menuIdList = menuIdList.split(",");
+		for (let i = 0; i < menuIdList.length; i++) {
+			$("#menu-"+menuIdList[i]).prop('checked', true)
+		}
+
+		let permissionIdList = '[[${permissionIdList}]]';
+		permissionIdList = permissionIdList.substr(1); //删除第一个字符
+		permissionIdList = permissionIdList.substr(0, permissionIdList.length-1); //删除最后一个字符
+		permissionIdList = permissionIdList.replace(/\s+/g,"");
+		permissionIdList = permissionIdList.split(",");
+		console.log("permissionIdList:"+permissionIdList);
+		for (let i = 0; i < permissionIdList.length; i++) {
+			$("#permission-"+permissionIdList[i]).prop('checked', true)
+		}
+	});
+
+</script>
+
+</html>

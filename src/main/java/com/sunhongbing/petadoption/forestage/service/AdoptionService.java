@@ -1,12 +1,9 @@
 package com.sunhongbing.petadoption.forestage.service;
 
 import com.sunhongbing.petadoption.forestage.entity.ApplyRecord;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(isolation = Isolation.DEFAULT)
 public interface AdoptionService {
 
     //apply

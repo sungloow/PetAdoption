@@ -22,4 +22,9 @@ public class PermissionServiceImpl implements PermissionService {
     public List<SysPermission> getPermissionListByRoleId(int roleId) {
         return permissionMapper.getPermissionListByRoleId(roleId);
     }
+
+    @Override
+    public List<SysPermission> getAllPermission() {
+        return permissionMapper.getAllPermission();
+    }
 }

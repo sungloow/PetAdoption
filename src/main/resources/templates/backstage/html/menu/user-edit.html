@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>edit Staff</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+    <link rel='stylesheet' th:href='@{/fore/css/bootstrap-4.1.min.css}'>
+    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+</head>
+<body>
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-body">
+
+            <form id="staffForm" >
+                <div class="form-group" hidden>
+                    <label for="id">id</label>
+                    <input class="form-control" type="text" id="id" name="id" th:value="${admin.id}">
+                </div>
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input class="form-control" type="text" id="username" name="username" th:value="${admin.username}">
+                </div>
+                <div class="form-group">
+                    <label for="name">姓名</label>
+                    <input class="form-control" type="text" id="name" name="name" th:value="${admin.name}">
+                </div>
+                <div class="form-group">
+                    <label for="sex">性别</label>
+                    <select name="sex" id="sex"  class="form-control dropdown-toggle">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tel">电话</label>
+                    <input  class="form-control" type="number"  id="tel" name="tel" th:value="${admin.tel}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input  class="form-control" type="email" id="email" name="email" th:value="${admin.email}">
+                </div>
+                <div class="form-group">
+                    <label for="address">地址</label>
+                    <input  class="form-control" type="text" id="address" name="address" th:value="${admin.address}">
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary" type="button" id="submit">提交</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+</body>
+
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+<script >
+
+    //提示框
+    function prompt(message, style, time) {
+        style = (style === undefined) ? 'alert-success' : style;
+        time = (time === undefined) ? 1500 : time;
+        $('<div></div>')
+            .appendTo('body')
+            .addClass('alert ' + style)
+            .html(message)
+            .show()
+            .delay(time)
+            .fadeOut();
+    }
+    $(document).ready(function() {
+        const sex = '[[${admin.sex}]]';
+        if (sex !== "") {
+            if (sex === '男') {
+                document.getElementById('sex')[0].selected = true;
+            } else {
+                document.getElementById('sex')[1].selected = true;
+            }
+        }
+
+    });
+
+    $('#submit').click(function () {
+        if ($('#username').val() === '') {
+            prompt('用户名不能为空', 'alert-danger');
+            return false;
+        }
+        if ($('#name').val() === '') {
+            prompt('姓名不能为空', 'alert-danger');
+            return false;
+        }
+        if ($('#tel').val() === '') {
+            prompt('电话不能为空', 'alert-danger');
+            return false;
+        }
+        if ($('#email').val() === '') {
+            prompt('Email不能为空', 'alert-danger');
+            return false;
+        }
+        //用户名验证,用户名只能是字母、数字、下划线组成
+        var reg = /^[a-zA-Z0-9_]{6,16}$/;
+        if (!reg.test($('#username').val())) {
+            prompt('用户名只能是字母、数字、下划线组成', 'alert-warning');
+            return false;
+        }
+        //电话验证
+        var reg = /^1[3456789]\d{9}$/;
+        if (!reg.test($('#tel').val())) {
+            prompt('电话格式不正确', 'alert-warning');
+            return false;
+        }
+        //Email验证
+        var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+        if (!reg.test($('#email').val())) {
+            prompt('Email格式不正确', 'alert-warning');
+            return false;
+        }
+        $.ajax({
+            url: '/admin/staff/edit',
+            type: 'POST',
+            dataType: 'json',
+            data: $('#staffForm').serialize(),
+            success: function (data) {
+                if (data.code === 200) {
+                    prompt(data.msg, 'alert-success', 1500);
+                    setTimeout(function () {
+                        window.location.href = '/admin/staff';
+                    }, 1500);
+                } else {
+                    prompt(data.msg, 'alert-danger', 1500);
+                }
+            },
+            error: function (data) {
+                prompt('服务器错误', 'alert-danger', 1500);
+            }
+        });
+    });
+
+
+
+</script>
+</html>

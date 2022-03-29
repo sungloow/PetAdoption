@@ -5,6 +5,7 @@ import com.sunhongbing.petadoption.backstage.entity.Admin;
 import com.sunhongbing.petadoption.backstage.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 /**
  * @className: AdminInfoServiceImpl
@@ -15,10 +16,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminServiceImpl implements AdminService {
     @Autowired
-    private AdminMapper adminInfoDao;
+    private AdminMapper adminMapper;
 
     @Override
     public Admin findAdminByUsername(String username) {
-        return adminInfoDao.findAdminByUsername(username);
+        return adminMapper.findAdminByUsername(username);
+    }
+
+    @Override
+    public int updatePassword(int id, String password) {
+        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
+        return adminMapper.modifyPassword(id, md5Password);
     }
 }

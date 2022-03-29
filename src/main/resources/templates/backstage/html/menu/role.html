@@ -1,10 +1,193 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>这不是主页哦</title>
-	</head>
-	<body>
-		导航栏不变，只改变主体内容，  iframe就是这么牛逼    ---- 曹天化原创
-	</body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>BootStrap Table使用</title>
+
+	<link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
+	<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"5></script>
+	<script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+</head>
+<body>
+<div class="panel-body" style="padding-bottom:0px;">
+
+
+	<div id="toolbar" class="btn-group">
+		<button id="btn_add" type="button" class="btn btn-success">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+		</button>
+		<button id="btn_edit" type="button" class="btn btn-primary">
+			<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+		</button>
+		<button id="btn_delete" type="button" class="btn btn-danger">
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+		</button>
+	</div>
+
+	<table id="tb_pet"></table>
+</div>
+</body>
+
+<script>
+
+	//提示框
+	function prompt(message, style, time) {
+		style = (style === undefined) ? 'alert-success' : style;
+		time = (time === undefined) ? 1500 : time;
+		$('<div></div>')
+				.appendTo('body')
+				.addClass('alert ' + style)
+				.html(message)
+				.show()
+				.delay(time)
+				.fadeOut();
+	}
+
+	let nameFormatter = function nameFormatter(value, row, index) {
+		return '<a href="javascript:void(0)" onclick="toDetail(this)" title="' + value + '">' + value + '</a>';
+	}
+
+	function toDetail(obj) {
+		let id = $(obj).parent().parent().children().eq(1).text();
+		window.location.href = '/admin/role/detail/' + id;
+	}
+
+
+	$('#tb_pet').bootstrapTable({
+		url: '/admin/role/list_query',         //请求后台的URL（*）
+		method: 'get',                      //请求方式（*）
+		dataType: 'json',
+		toolbar: '#toolbar',                //工具按钮用哪个容器
+		theadClasses:'.thead-light',
+		striped: true,                      //是否显示行间隔色
+		cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+		pagination: true,                   //是否显示分页（*）
+		showPaginationSwitch: false,        //是否显示分页数
+		sortable: true,                     //是否启用排序
+		sortName: "id",                     //是否启用排序
+		sortOrder: "asc",                   //排序方式
+		queryParamsType: '',
+		sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+		pageNumber:1,                       //初始化加载第一页，默认第一页
+		pageSize: 10,                       //每页的记录行数（*）
+		pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+		queryParams:queryParams,
+		search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+		strictSearch: true,
+		showColumns: true,                  //是否显示所有的列
+		showRefresh: true,                  //是否显示刷新按钮
+		minimumCountColumns: 2,             //最少允许的列数
+		clickToSelect: true,                //是否启用点击选中行
+		singleSelect: false,                 //是否单选模式
+		height: $(window).height() - 200,   //table总高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+		uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+		showToggle: false,                    //是否显示详细视图和列表视图的切换按钮
+		cardView: false,                    //是否显示详细视图
+		detailView: false,                   //是否显示父子表
+		paginationPreText: "上一页",
+		paginationNextText: "下一页",
+		columns: [{
+			checkbox: true
+		}, {
+			field: 'id',
+			title: 'ID',
+			align: 'center',
+			sortable: true
+		}, {
+			field: 'description',
+			title: 'description',
+			sortable: true,
+			formatter: nameFormatter
+		}, {
+			field: 'role',
+			title: 'role',
+			sortable: true
+		}]
+	});
+	function queryParams(params){
+		return {
+			pageSize: params.pageSize,   //页面大小
+			pageNumber: params.pageNumber,  //页码
+			sort: params.sortName,
+			order:params.sortOrder,
+			search_status: $("#txt_search_status").val(),
+		};
+	}
+
+	$("#btn_add").click(function () {
+		window.location.href = "/admin/role/add";
+	})
+
+	//btn_edit
+	$("#btn_edit").click(function () {
+		var arrselections = $("#tb_pet").bootstrapTable('getSelections');
+		if (arrselections.length > 1) {
+			// alert('只能选择一行进行编辑');
+			prompt('只能选择一行进行编辑', 'alert-warning')
+			return;
+		}
+		if (arrselections.length <= 0) {
+			// alert('请选择有效数据');
+			prompt('请选择有效数据', 'alert-danger')
+			return;
+		}
+		let id = arrselections[0].id;
+		let url = '/admin/role/modify/'+id;
+		console.log('url: '+url);
+		//跳转
+		window.location.href=url;
+	})
+
+
+	$("#btn_delete").click(function () {
+		var arrselections = $("#tb_pet").bootstrapTable('getSelections');
+		var id_map = {};
+		var ids = [];
+		if (arrselections.length <= 0) {
+			prompt('请选择有效数据', 'alert-danger')
+			return;
+		} else {
+			console.log(arrselections)
+			for (let i = 0; i < arrselections.length; i++) {
+				console.log(arrselections[i].id);
+				id_map[i] = arrselections[i].id;
+				ids.push(arrselections[i].id)
+			}
+		}
+		if(!confirm('确认删除？')){
+			return;
+		}
+		console.log(id_map)
+		$.ajax({
+			type: "post",
+			url: "/admin/role/delete",
+			dataType: 'json',
+			data: {ids:ids+""},
+			success: function(res){
+				if(res.code === 200){
+					$("#tb_pet").bootstrapTable('refresh');
+					prompt(res.msg, 'alert-success', 1500);
+				}else{
+					prompt(res.msg, 'alert-danger', 1500);
+				}
+			},
+			error: function(err){
+				console.log(err);
+			},
+			complete: function () {
+
+			}
+
+		});
+	});
+
+	$("#btn_query").click(function () {
+		$("#tb_pet").bootstrapTable('refresh');
+	});
+</script>
 </html>
