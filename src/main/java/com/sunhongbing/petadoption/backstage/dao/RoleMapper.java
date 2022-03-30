@@ -40,8 +40,8 @@ public interface RoleMapper {
     //删除角色与菜单的关联
     @Delete("<script>" +
             "delete from role_menu_ref where role_id in " +
-            "<foreach collection='ids' item='id' index='index'  separator=','  >" +
-            " ( #{id} ) " +
+            "<foreach collection='ids' item='id' index='index'  open='(' separator=',' close=')'  >" +
+            " #{id} " +
             "</foreach> " +
             "</script>")
     int deleteRoleMenus(@Param(value="ids") List<Integer> ids);

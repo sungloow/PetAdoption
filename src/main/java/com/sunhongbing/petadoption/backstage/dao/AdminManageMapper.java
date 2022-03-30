@@ -24,6 +24,15 @@ public interface AdminManageMapper {
     //重置密码
     @Update("update admin set password=#{password} where username=#{username}")
     int resetPassword(String password, String adminId);
+    // 批量重置密码
+    //批量修改管理员账号状态
+    @Update("<script>"
+            + "update admin set password=#{password} where id in"
+            + "<foreach collection='ids' item='id' open='(' separator=',' close=')'>"
+            + "#{id}"
+            + "</foreach>"
+            + "</script>")
+    int resetPasswords(@Param("ids") List<Integer> ids, String password);
 
     //添加管理员
     @Insert("insert into admin(username,password,name,sex,tel,email,address) values" +

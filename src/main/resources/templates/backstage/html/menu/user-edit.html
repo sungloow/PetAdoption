@@ -9,56 +9,83 @@
     <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
 </head>
 <body>
-<div class="col-md-6">
-    <div class="card">
-        <div class="card-body">
+<div class="row">
+    <form id="staffForm" class="row container">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    基本信息
+                    <button  style="float: right" class="btn btn-primary" type="button" id="submit">提交</button>
+                    <button type="button" class="btn btn-info" style="float: right; margin-right: 30px" onclick="back()">返回</button>
+                </div>
+                <div class="card-body">
+                    <div class="form-group" hidden>
+                        <label for="id">id</label>
+                        <input class="form-control" type="text" id="id" name="id" th:value="${admin.id}">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">用户名</label>
+                        <input class="form-control" type="text" id="username" name="username" th:value="${admin.username}">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input class="form-control" type="text" id="name" name="name" th:value="${admin.name}">
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">性别</label>
+                        <select name="sex" id="sex"  class="form-control dropdown-toggle">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tel">电话</label>
+                        <input  class="form-control" type="number"  id="tel" name="tel" th:value="${admin.tel}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input  class="form-control" type="email" id="email" name="email" th:value="${admin.email}">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">地址</label>
+                        <input  class="form-control" type="text" id="address" name="address" th:value="${admin.address}">
+                    </div>
+                </div>
 
-            <form id="staffForm" >
-                <div class="form-group" hidden>
-                    <label for="id">id</label>
-                    <input class="form-control" type="text" id="id" name="id" th:value="${admin.id}">
-                </div>
-                <div class="form-group">
-                    <label for="username">用户名</label>
-                    <input class="form-control" type="text" id="username" name="username" th:value="${admin.username}">
-                </div>
-                <div class="form-group">
-                    <label for="name">姓名</label>
-                    <input class="form-control" type="text" id="name" name="name" th:value="${admin.name}">
-                </div>
-                <div class="form-group">
-                    <label for="sex">性别</label>
-                    <select name="sex" id="sex"  class="form-control dropdown-toggle">
-                        <option value="男">男</option>
-                        <option value="女">女</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="tel">电话</label>
-                    <input  class="form-control" type="number"  id="tel" name="tel" th:value="${admin.tel}">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input  class="form-control" type="email" id="email" name="email" th:value="${admin.email}">
-                </div>
-                <div class="form-group">
-                    <label for="address">地址</label>
-                    <input  class="form-control" type="text" id="address" name="address" th:value="${admin.address}">
-                </div>
-
-                <div class="form-group">
-                    <button class="btn btn-primary" type="button" id="submit">提交</button>
-                </div>
-            </form>
-
+            </div>
         </div>
-    </div>
+
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    角色
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <div class="form-check">
+                            <div th:each="role,roleStat: ${roleListAll}">
+                                <label>
+                                    <input class="first-title" type="checkbox" name="role" th:id="'role-'+${role.id}" th:value="${role.id}" th:text="${role.description}">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
 </div>
+
+
 </body>
 
 <script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
 <script th:src="@{/fore/js/bootstrap.min.js}"></script>
 <script >
+    function back() {
+        window.history.back();
+    }
 
     //提示框
     function prompt(message, style, time) {
@@ -120,7 +147,7 @@
             return false;
         }
         $.ajax({
-            url: '/admin/staff/edit',
+            url: '/admin-manage/staff/edit',
             type: 'POST',
             dataType: 'json',
             data: $('#staffForm').serialize(),
@@ -138,6 +165,20 @@
                 prompt('服务器错误', 'alert-danger', 1500);
             }
         });
+    });
+
+
+    //网页加载完成后执行
+    $(document).ready(function(){
+        let userRoleList = '[[${userRoleIds}]]';
+        // menuIdList 转数组
+        userRoleList = userRoleList.substr(1); //删除第一个字符
+        userRoleList = userRoleList.substr(0, userRoleList.length-1); //删除最后一个字符
+        userRoleList = userRoleList.replace(/\s+/g,"");	//去掉空格
+        userRoleList = userRoleList.split(",");
+        for (let i = 0; i < userRoleList.length; i++) {
+            $("#role-"+userRoleList[i]).prop('checked', true)
+        }
     });
 
 

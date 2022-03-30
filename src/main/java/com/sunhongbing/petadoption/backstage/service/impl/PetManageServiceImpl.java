@@ -5,6 +5,8 @@ import com.sunhongbing.petadoption.backstage.service.PetManageService;
 import com.sunhongbing.petadoption.forestage.dao.AdoptionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Blob;
 import java.sql.Timestamp;
@@ -68,15 +70,22 @@ public class PetManageServiceImpl implements PetManageService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updatePet(Animal animal) {
-        //如果已领养状态,修改为未领养需要删除领养记录
-        if (animal.getStatus() == 0) {
-            Animal pet = adoptionMapper.findPetById(animal.getId());
-            if (pet.getStatus() == 1) {
-                adoptionMapper.delete_adoption_ref(animal.getId());
+        try{
+            //如果已领养状态,修改为未领养需要删除领养记录
+            if (animal.getStatus() == 0) {
+                Animal pet = adoptionMapper.findPetById(animal.getId());
+                if (pet.getStatus() == 1) {
+                    adoptionMapper.delete_adoption_ref(animal.getId());
+                }
             }
+            return adoptionMapper.updatePet(animal);
+        } catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return 0;
         }
-        return adoptionMapper.updatePet(animal);
     }
 
     @Override
@@ -104,9 +113,6 @@ public class PetManageServiceImpl implements PetManageService {
 
     @Override
     public String findPetPicById(int id) {
-        String pic = adoptionMapper.findPetPicById(id);
-        System.out.println("findPetPicById: ");
-        System.out.println(pic);
         return adoptionMapper.findPetPicById(id);
     }
 
@@ -116,9 +122,16 @@ public class PetManageServiceImpl implements PetManageService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deletePets(int[] ids) {
-        adoptionMapper.delete_adoption_refs(ids);
-        return adoptionMapper.deletePets(ids);
+        try {
+            adoptionMapper.delete_adoption_refs(ids);
+            return adoptionMapper.deletePets(ids);
+        } catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return 0;
+        }
     }
 
     @Override

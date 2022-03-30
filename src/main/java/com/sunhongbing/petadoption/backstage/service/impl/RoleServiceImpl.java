@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +46,8 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.addRole(role);
     }
 
-    @Transactional(isolation = Isolation.DEFAULT)
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int modifyRole(int id, List<Integer> newMenuIds, List<Integer> newPermissions) {
         //查询角色关联的菜单
         List<Integer> oldMenuIds = roleMapper.getMenuIdByRoleId(id);
@@ -93,11 +94,13 @@ public class RoleServiceImpl implements RoleService {
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return 0;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteRole(int id) {
         List<Integer> ids = new ArrayList<>();
         ids.add(id);
@@ -113,12 +116,13 @@ public class RoleServiceImpl implements RoleService {
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return 0;
     }
 
-    @Transactional(isolation = Isolation.DEFAULT)
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteRoles(List<Integer> ids) {
         try {
             //删除角色
@@ -132,6 +136,7 @@ public class RoleServiceImpl implements RoleService {
             return 1;
         } catch (Exception e) {
             e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return 0;
     }

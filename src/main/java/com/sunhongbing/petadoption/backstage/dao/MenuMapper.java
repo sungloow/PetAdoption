@@ -15,6 +15,6 @@ public interface MenuMapper {
     List<SysMenu> getMenuListByRole(String role);
 
     //获取所有菜单列表
-    @Select("SELECT * FROM menu where type != 'root_menu' ORDER BY id")
+    @Select("SELECT * FROM menu ORDER BY id")
     List<SysMenu> getAllMenuList();
 }

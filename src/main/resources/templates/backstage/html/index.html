@@ -5,9 +5,17 @@
 		<meta charset="utf-8">
 		<title>Petco Admin</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link rel="stylesheet" type="text/css" th:href="@{/back/css/page.css}" />
-		<link th:href="@{/back/plugins/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
-		<link th:href="@{/back/plugins/css/icons.min.css}" rel="stylesheet" type="text/css" />
+		<link th:href="@{/back/Nav/css/page.css}" rel="stylesheet" type="text/css"  />
+		<link th:href="@{/back/Nav/plugins/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+		<link th:href="@{/back/Nav/plugins/css/icons.min.css}" rel="stylesheet" type="text/css" />
+		<style>
+			#adminName {
+			/*	加粗*/
+				font-weight: bold;
+				margin-left: 2%;
+				color: #ff4b36;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="page" id="app">
@@ -17,12 +25,10 @@
 				</div>
 				<div class="navDiv">
 					<div class="navName">导航</div>
-<!--					nav-list begin-->
 					<div class="nav-list">
 						<ul id="menu-ul">
 						</ul>
 					</div>
-<!--					nav-list end-->
 				</div>
 			</div>
 
@@ -32,6 +38,7 @@
 						<i class="bx bx-grid-alt" style="font-size: 16px;"></i>
 					</button>
 					<a style="float: right" th:href="@{/admin/logout}">Sign Out</a>
+					<span id="adminName" th:text="${admin.name}"></span>
 				</div>
 				<div class="content-page" ref="cPage">
 					<iframe name="iframe" width="100%" height="100%" frameborder="0" th:src="@{/admin/dashboard}"></iframe>
@@ -39,7 +46,7 @@
 			</div>
 		</div>
 
-		<script th:src="@{/back/js/vue.min.js}"></script>
+		<script th:src="@{/back/Nav/js/vue.min.js}"></script>
 		<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 
 		<script type="text/javascript">
@@ -54,25 +61,32 @@
 						let str = '';
 						$.each(data.result, function (i, item) {
 							item.childMenu = item.childMenu.length > 0 ? item.childMenu : [];
-							str += '<li class="nav-tab nav-ul">';
-							let h = item.childMenu.length !== 0 ? "javascript:void[0]" : item.url;
-							str += '<a href="'+h+'" class="li-a" target="iframe">';
-							str += '<i class="' + item.icon + '"></i>';
-							str += '<span>' + item.name + '</span>';
 							if (item.childMenu.length !== 0) {
+								str += '<li class="nav-tab nav-ul">';
+								str += '<a href="javascript:void[0]" class="li-a" target="iframe">';
+								str += '<i class="' + item.icon + '"></i>';
+								str += ''+item.name+'';
 								str += '<i class="bx bx-chevron-right" style="float: right;"></i>'
-							}
-							str += '</a>';
-							if (item.childMenu.length !== 0) {
+								str += '</a>';
+
 								str += '<div class="nav-box">';
 								$.each(item.childMenu, function (j, item2) {
 									str += '<a href="'+item2.url+'" class="li-a-a" target="iframe">'+item2.name+'</a>';
 								})
 								str += '</div>';
+								str += '</li>';
+							} else {
+								str += '<li class="nav-tab">';
+								str += '<a href="'+item.url+'" class="li-a" target="iframe">';
+								str += '<i class="' + item.icon + '"></i>';
+								str += ''+item.name+'';
+								str += '</a>';
+								str += '</li>';
 							}
-							str += '</li>';
 						});
-						$("#menu-ul").html(str);
+						// $("#menu-ul").html(str);
+						$("#menu-ul").append(str);
+
 					}
 				},
 				error: function () {
@@ -82,16 +96,18 @@
 
 		<script type="text/javascript">
 			$(function() {
-				var navflag = false;
+				let navflag = false;
 				$('.nav-tab').click(function() {
 					$(this).siblings().each(function() {
 						$(this).removeClass('a_active');
+						// $(this).removeClass('a_active');
 						$(this).find('.nav-box').css('height', '0')
 						//关闭右侧箭头
-						if ($(this).attr('class').indexOf('nav-ul') !== -1) {
+						if ($(this).attr('class').indexOf('nav-ul') != -1) {
 							$(this).find('.bx-chevron-right').css('transform', 'rotateZ(0deg)')
 							$(this).find('.bx-chevron-right').css('transition', 'all .5s')
 							$(this).removeClass('nav-show')
+							// $(this).find('div').removeClass('nav-box')
 						}
 					})
 					//当前选中
@@ -110,8 +126,8 @@
 					})
 					$(this).addClass('active-li-a');
 				})
-			})
 
+			})
 			const vue = new Vue({
 				el: '#app',
 				data: {
@@ -123,10 +139,18 @@
 							this.$refs.navRight.style.paddingLeft = '0px'
 							this.$refs.cPage.style.left = '0px';
 							this.navLeftFlag = false;
+							// this.$refs.navLeft.style.width = '0px';
+							// setTimeout(()=>{
+							// 	this.navLeftFlag = false;
+							// },200)
 						} else {
 							this.$refs.navRight.style.paddingLeft = '240px';
 							this.$refs.cPage.style.left = '240px';
 							this.navLeftFlag = true;
+							// this.$refs.navLeft.style.width = '240px';
+							// setTimeout(()=>{
+							// 	this.navLeftFlag = true;
+							// },200)
 						}
 					}
 				}

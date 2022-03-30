@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(isolation = Isolation.DEFAULT)
 public interface AdminManageService {
     // 查询所有用户
     List<Admin> queryAllUsers(int status, String order, String sort);
@@ -23,10 +22,10 @@ public interface AdminManageService {
     int deleteUserByIds(List<Integer> ids);
 
     // 添加用户
-    int addUser(Admin admin);
+    int addUser(Admin admin, List<Integer> roleIds);
 
     // 修改用户
-    int modifyUser(Admin admin);
+    int modifyUser(Admin admin, List<Integer> roleIds);
 
     //禁用用户
     int disableUser(List<Integer> ids);
@@ -45,4 +44,7 @@ public interface AdminManageService {
 
     //用户批量解绑角色
     int unbindRoles(List<Integer> roleId, int adminId);
+
+    //重置密码
+    int resetPassword(List<Integer> ids);
 }

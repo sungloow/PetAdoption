@@ -15,7 +15,6 @@ import java.util.List;
  * @author: Hunter Sun
  * @date: 2022-03-17 15:59
  */
-@Transactional(isolation = Isolation.DEFAULT)
 public interface PetManageService {
     List<Animal> findAll(int status, String order, String sort) throws ParseException;
 

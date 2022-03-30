@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(isolation = Isolation.DEFAULT)
 public interface ArticleService {
 
     //查询所有的文章

@@ -29,57 +29,75 @@
 	</style>
 </head>
 <body>
-<div class="card">
-	<div class="card-body">
-		编辑角色权限
-	</div>
-	<div class="card-body">
-		<div class="form-group">
-			<label for="id">id</label>
-			<input type="text" class="form-control" id="id" th:value="${role.id}" disabled>
-		</div>
-		<div class="form-group">
-			<label for="description">description</label>
-			<input type="text" class="form-control" id="description" th:value="${role.description}" disabled>
-		</div>
-		<div class="form-group">
-			<label for="role">role</label>
-			<input type="text" class="form-control" id="role" th:value="${role.role}" disabled>
-		</div>
-	</div>
-</div>
-<div class="card">
-	<div class="card-body">
-		菜单列表
-	</div>
-	<div class="container" id="menu">
-		<div class="first-list" th:each="menu,menuStat : ${menuList}" >
-			<label>
-				<input class="first-title" type="checkbox" th:id="'menu-'+${menu.id}" th:value="${menu.id}" th:text="${menu.name}" >
-			</label>
-			<div class="second-list" th:each="second_menu,second_menuStat : ${menu.childMenu}">
-				<label>
-					<input class="second-title" type="checkbox" th:id="'menu-'+${second_menu.id}"  th:value="${second_menu.id}" th:text="${second_menu.name}">
-				</label>
+
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="card">
+			<div class="card-header">
+				角色基本信息
+				<button class="btn btn-primary" onclick="submit()" style="float: right">提交</button>
+				<button type="button" class="btn btn-info" style="float: right; margin-right: 30px" onclick="back()">返回</button>
+				<div class="card-body">
+				<div class="form-group">
+					<label for="id">id</label>
+					<input type="text" class="form-control" id="id" th:value="${role.id}" disabled>
+				</div>
+				<div class="form-group">
+					<label for="description">description</label>
+					<input type="text" class="form-control" id="description" th:value="${role.description}" disabled>
+				</div>
+				<div class="form-group">
+					<label for="role">role</label>
+					<input type="text" class="form-control" id="role" th:value="${role.role}" disabled>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<div class="card">
-	<div class="card-body">
-		权限列表
-	</div>
-	<div class="container" id="permission">
-		<div class="first-list" th:each="permission,permissionStat : ${permissionList}">
-			<label>
-				<input class="first-title" type="checkbox" th:id="'permission-'+${permission.id}"  th:value="${permission.id}" th:text="${permission.name}">
-			</label>
+	<div class="row container-fluid">
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-header">
+					菜单列表
+				</div>
+				<div class="card-body">
+					<div class="container" id="menu">
+						<div class="first-list" th:each="menu,menuStat : ${menuList}" >
+							<label>
+								<input class="first-title" type="checkbox" th:id="'menu-'+${menu.id}" th:value="${menu.id}" th:text="${menu.name}" >
+							</label>
+							<div class="second-list" th:each="second_menu,second_menuStat : ${menu.childMenu}">
+								<label>
+									<input class="second-title" type="checkbox" th:id="'menu-'+${second_menu.id}" th:value="${second_menu.id}" th:text="${second_menu.name}">
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-header">
+					权限列表
+				</div>
+				<div class="card-body">
+					<div class="container" id="permission">
+						<div class="first-list" th:each="permission,permissionStat : ${permissionList}">
+							<label>
+								<input class="first-title" type="checkbox" th:id="'permission-'+${permission.id}"  th:value="${permission.id}" th:text="${permission.name}">
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+
 </div>
 
-<button class="btn btn-primary" onclick="submit()">提交</button>
+
 
 </body>
 
@@ -87,6 +105,9 @@
 <script th:src="@{/fore/js/bootstrap.min.js}"></script>
 
 <script>
+	function back() {
+		window.history.back();
+	}
 
 	//提示框
 	function prompt(message, style, time) {
