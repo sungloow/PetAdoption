@@ -42,7 +42,7 @@ public class RoleController {
 
     @GetMapping("/role/list_query")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "role:query"}, logical = Logical.OR)
     public Map<String, Object> roleList_query(RequestParamsPetList params) {
         PageHelper.startPage(params.getPageNumber(),params.getPageSize());
         List<SysRole> roleList = roleService.getAllRole(params.getSort(),params.getOrder());
@@ -54,7 +54,7 @@ public class RoleController {
         return hashMap;
     }
     @GetMapping("/role/detail/{id}")
-    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "role:query"}, logical = Logical.OR)
     public String roleDetail(Model model, @PathVariable int id) {
         SysRole role = roleService.getRoleById(id);
         //获取角色对应的菜单
@@ -69,7 +69,7 @@ public class RoleController {
     }
     //role modify
     @GetMapping("/role/modify/{id}")
-    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "role:update"}, logical = Logical.OR)
     public String roleModify(Model model, @PathVariable int id) {
         SysRole role = roleService.getRoleById(id);
         //获取角色对应的菜单
@@ -105,7 +105,7 @@ public class RoleController {
     }
     @PostMapping("/role/modify")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "role:update"}, logical = Logical.OR)
     public ResultVO roleModify_post(int id, @RequestParam List<Integer> menu_ids, @RequestParam List<Integer> permission_ids) {
         ResultVO vo = new ResultVO();
         int modifyRole = roleService.modifyRole(id, menu_ids, permission_ids);
@@ -120,7 +120,7 @@ public class RoleController {
     }
     //role add
     @GetMapping("/role/add")
-    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "role:insert"}, logical = Logical.OR)
     public String roleAdd(Model model) {
         //获取所有菜单
         List<SysMenu> menuList = menuService.getAllMenuList();
@@ -132,7 +132,7 @@ public class RoleController {
     }
     @PostMapping("/role/add")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "role:insert"}, logical = Logical.OR)
     @Transactional(isolation = Isolation.DEFAULT)
     public ResultVO roleAdd_post(String description, String role, @RequestParam List<Integer> menu_ids, @RequestParam List<Integer> permission_ids) {
         ResultVO vo = new ResultVO();
@@ -177,7 +177,7 @@ public class RoleController {
     //role delete
     @PostMapping("/role/delete")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "role:delete"}, logical = Logical.OR)
     public ResultVO roleDelete(@RequestParam List<Integer> ids) {
         ResultVO resultVO = new ResultVO();
         int i = roleService.deleteRoles(ids);

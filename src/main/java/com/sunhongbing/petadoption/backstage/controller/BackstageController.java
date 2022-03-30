@@ -61,8 +61,6 @@ public class BackstageController {
     }
 
 
-
-
     //modify password
     @RequestMapping("/modify-password")
     @RequiresPermissions(value = {"root", "modify:password"}, logical = Logical.OR)
@@ -74,16 +72,15 @@ public class BackstageController {
 
     //人员管理
     @GetMapping("/staff")
-    @RequiresPermissions(value = {"root", "staff:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:query"}, logical = Logical.OR)
     public String user() {
         return "backstage/html/menu/user";
     }
 
 
-
     //角色管理
     @GetMapping("/role")
-    @RequiresPermissions(value = {"root", "role:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "role:query"}, logical = Logical.OR)
     public String role() {
         return "backstage/html/menu/role";
     }
@@ -99,7 +96,7 @@ public class BackstageController {
 
     //宠物管理
     @GetMapping("/pet")
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:query")
     public String pet() {
         return "backstage/html/menu/pet-list2";
     }
@@ -115,19 +112,19 @@ public class BackstageController {
      宠物领养审批 begin
      */
     @GetMapping("/approval")
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:pet")
     public String approval() {
         return "backstage/html/menu/approval";
     }
     //宠物领养审批
     @GetMapping("/approval/pet")
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:pet")
     public String approvalPet() {
         return "backstage/html/menu/approval-pet";
     }
     @GetMapping("/approval/pet_list")
     @ResponseBody
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:pet")
     public Map<String, Object> approvalPetList(RequestParamsPetList params) {
         int status = params.getSearch_status();
         PageHelper.startPage(params.getPageNumber(),params.getPageSize());
@@ -141,7 +138,7 @@ public class BackstageController {
     }
     //审批页面
     @GetMapping("/approval/web/{petId}/{userId}")
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:pet")
     public String approvalWeb(@PathVariable("petId") Integer petId, @PathVariable("userId") Integer userId, Model model) {
         Animal animal = petManageService.findPetById(petId);
         User user = personalService.queryUserInfoById(userId);
@@ -151,7 +148,7 @@ public class BackstageController {
     }
     @PostMapping("/approval/edit")
     @ResponseBody
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:pet")
     public ResultVO approvalEdit(ApplyRecord apply) {
         ResultVO resultVO = new ResultVO();
         int re = 0;
@@ -171,7 +168,7 @@ public class BackstageController {
     }
     //查看用户信息
     @GetMapping("/user/info/{id}")
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:pet")
     public String userInfo(@PathVariable("id") Integer id, Model model) {
         User user = personalService.queryUserInfoById(id);
         model.addAttribute("user", user);
@@ -182,15 +179,15 @@ public class BackstageController {
      */
 
 
-
-    /*
-     文章审核 begin
-     */
+//文章审核
     @GetMapping("/approval/article")
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:article")
     public String approvalArticle() {
         return "backstage/html/menu/approval-article";
     }
+
+
+
     //新闻
     @GetMapping("/article/news-list")
     @RequiresPermissions("article:all")
@@ -227,9 +224,7 @@ public class BackstageController {
     public String aboutUs() {
         return "backstage/html/menu/about-us";
     }
-    /*
-     文章审核 end
-     */
+
 
 
 

@@ -121,7 +121,6 @@ public class AdoptionController {
         int userId;
         try {
             userId = (int) SecurityUtils.getSubject().getPrincipal();
-            System.out.println("userId: "+userId);
         } catch (Exception e) {
             return "redirect:/login";
         }
@@ -130,16 +129,13 @@ public class AdoptionController {
         return "forestage/adoption/apply";
     }
     @PostMapping("/apply/{id}")
-    @RequiresPermissions("user:apply")
+    @RequiresPermissions("user:all")
     @ResponseBody
     public ResultVO apply(@PathVariable(value="id") Integer petId) {
         ResultVO vo = new ResultVO();
         try {
             int userId = (int) SecurityUtils.getSubject().getPrincipal();
-            System.out.println("userId apply post : "+userId);
-            System.out.println("petId apply post : "+petId);
             int i = adoptionService.apply(userId, petId);
-            System.out.println("i: "+i);
             if (i == -1) {
                 vo.setCode(500);
                 vo.setMsg("您已经申请过了");
@@ -153,14 +149,13 @@ public class AdoptionController {
         } catch (Exception e) {
             vo.setCode(500);
             vo.setMsg("提交申请失败 ");
-            System.out.println("提交申请失败: "+e.getMessage());
         }
         return vo;
     }
 
     //取消申请
     @PostMapping("/cancel")
-    @RequiresPermissions("user:apply")
+    @RequiresPermissions("user:all")
     @ResponseBody
     public ResultVO cancel(Integer petId) {
         ResultVO vo = new ResultVO();

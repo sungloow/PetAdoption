@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     //logger
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+//    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping("/login")
     public String login() {
@@ -44,7 +44,6 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         String msg = "";
         try {
-            logger.info("user login: {}", param.getUsername());
             subject.login(token);
             return "redirect:/fore/home";
         } catch (UnknownAccountException | IncorrectCredentialsException e) {

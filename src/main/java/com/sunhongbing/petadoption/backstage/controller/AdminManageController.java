@@ -36,7 +36,7 @@ public class AdminManageController {
     //staff/list_query
     @GetMapping("/staff/list_query")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "staff:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:query"}, logical = Logical.OR)
     public Map<String, Object> staffList_query(RequestParamsPetList params) {
         int status = params.getSearch_status();
         PageHelper.startPage(params.getPageNumber(),params.getPageSize());
@@ -50,7 +50,7 @@ public class AdminManageController {
     }
     //staff/add
     @GetMapping("/staff/add")
-    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:insert"}, logical = Logical.OR)
     public String userAdd(Model model) {
         //查询所有角色
         List<SysRole> roleList = roleService.getAllRole("id", "asc");
@@ -60,7 +60,7 @@ public class AdminManageController {
     //staff/add post
     @PostMapping("/staff/add")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:insert"}, logical = Logical.OR)
     public ResultVO userAdd_post(Admin admin, @RequestParam(value = "role",required = false) List<Integer> roleIds) {
         ResultVO resultVO = new ResultVO();
         int addUser = adminManageService.addUser(admin, roleIds);
@@ -81,7 +81,7 @@ public class AdminManageController {
     }
     //staff/edit
     @GetMapping("/staff/edit/{id}")
-    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:update"}, logical = Logical.OR)
     public String userEdit(@PathVariable("id") Integer id, Model model) {
         Admin admin = adminManageService.queryUserById(id);
         //查询所有角色
@@ -101,7 +101,7 @@ public class AdminManageController {
     //staff/edit post
     @PostMapping("/staff/edit")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:update"}, logical = Logical.OR)
     public ResultVO userEdit(Admin admin, @RequestParam(value = "role",required = false) List<Integer> roleIds) {
         ResultVO resultVO = new ResultVO();
         int modifyUser = adminManageService.modifyUser(admin, roleIds);
@@ -123,7 +123,7 @@ public class AdminManageController {
     //staff/disable
     @PostMapping("/staff/disable")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:update"}, logical = Logical.OR)
     public ResultVO userBlock(@RequestParam List<Integer> ids) {
         ResultVO resultVO = new ResultVO();
         int blockUser = adminManageService.disableUser(ids);
@@ -139,7 +139,7 @@ public class AdminManageController {
     //staff/enable
     @PostMapping("/staff/enable")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:update"}, logical = Logical.OR)
     public ResultVO userEnable(@RequestParam List<Integer> ids) {
         ResultVO resultVO = new ResultVO();
         int enableUser = adminManageService.enableUser(ids);
@@ -155,7 +155,7 @@ public class AdminManageController {
     //staff/delete
     @PostMapping("/staff/delete")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "staff:del"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:delete"}, logical = Logical.OR)
     public ResultVO userDelete(@RequestParam List<Integer> ids) {
         ResultVO resultVO = new ResultVO();
         int deleteUserByIds = adminManageService.deleteUserByIds(ids);
@@ -172,13 +172,13 @@ public class AdminManageController {
     //reset password
     @PostMapping("/staff/reset")
     @ResponseBody
-    @RequiresPermissions(value = {"root", "staff:modify"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:update"}, logical = Logical.OR)
     public ResultVO resetPassword(@RequestParam List<Integer> ids) {
         ResultVO resultVO = new ResultVO();
         int resetPassword = adminManageService.resetPassword(ids);
         if (resetPassword == ids.size()) {
             resultVO.setCode(200);
-            resultVO.setMsg("重置成功");
+            resultVO.setMsg("重置成功，密码为123456789");
         } else {
             resultVO.setCode(500);
             resultVO.setMsg("重置失败");
@@ -188,7 +188,7 @@ public class AdminManageController {
 
     //staff/detail
     @GetMapping("/staff/detail/{id}")
-    @RequiresPermissions(value = {"root", "staff:manage"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"root", "staff:query"}, logical = Logical.OR)
     public String userDetail(@PathVariable int id, Model model) {
         //查询用户
         Admin admin = adminManageService.queryUserById(id);

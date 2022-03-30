@@ -306,7 +306,7 @@ public class ArticleController {
     }
     //all, 审批列表查询
     @GetMapping("/all/list_query")
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:pet")
     @ResponseBody
     public Map<String, Object> allList_query(RequestParamsPetList params) {
         System.out.println(params);
@@ -332,7 +332,7 @@ public class ArticleController {
 
     //删除文章
     @PostMapping("/delete")
-    @RequiresPermissions("article:all")
+    @RequiresPermissions("article:delete")
     @ResponseBody
     public ResultVO deleteArticles(int[] ids) {
         ResultVO resultVO = new ResultVO();
@@ -349,7 +349,7 @@ public class ArticleController {
 
     //删除banner
     @PostMapping("/banner/delete")
-    @RequiresPermissions("article:all")
+    @RequiresPermissions("article:delete")
     @ResponseBody
     public ResultVO deleteBanner(int[] ids) {
         ResultVO resultVO = new ResultVO();
@@ -366,7 +366,7 @@ public class ArticleController {
 
     //审核文章
     @GetMapping("/approve/{id}")
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:article")
     public String approvalArticle(Model model, @PathVariable int id) {
         Article article = articleService.getArticleById(id);
         model.addAttribute("article", article);
@@ -374,7 +374,7 @@ public class ArticleController {
     }
     @PostMapping("/approve_post")
     @ResponseBody
-    @RequiresPermissions("approval:all")
+    @RequiresPermissions("approval:article")
     public ResultVO approvalArticle_post(int id,int status) {
         ResultVO resultVO = new ResultVO();
         System.out.println("id:"+id+"  status:"+status);

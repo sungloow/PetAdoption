@@ -51,6 +51,7 @@ public class AboutUsController {
     //contact post
     @PostMapping("/contact")
     @ResponseBody
+    @RequiresPermissions("user:all")
     public ResultVO contactPost(Article article) {
         ResultVO vo = new ResultVO();
         int userId;

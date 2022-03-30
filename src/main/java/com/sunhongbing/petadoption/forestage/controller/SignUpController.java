@@ -27,11 +27,9 @@ public class SignUpController {
     @PostMapping("/sign-up")
     public String signUp(SignUpParam signUpParam, Model model) {
         //打印参数
-        System.out.println(signUpParam);
-
+//        System.out.println(signUpParam);
         //验证参数
         if (!signUpService.validateParam(signUpParam)) {
-            System.out.println("参数错误");
             model.addAttribute("signUpResult", "信息有错误！");
         } else if (!signUpService.checkUserExist(signUpParam.getEmail())) {
             //检查用户是否存在

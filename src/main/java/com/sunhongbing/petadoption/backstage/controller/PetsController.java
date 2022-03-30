@@ -36,7 +36,7 @@ public class PetsController {
 
     //查看宠物信息
     @GetMapping("/pet/list")
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:query")
     public String petInfo(Model model) throws ParseException {
         //查询所有宠物信息
         List<Animal> animalList = petManageService.findAll(PetStatus.ALL.getCode(), "id", "desc");
@@ -45,7 +45,7 @@ public class PetsController {
     }
     //查看单个宠物信息
     @GetMapping("/pet/info/{id}")
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:query")
     public String petInfo(@PathVariable("id") Integer id, Model model) {
         Animal animal = petManageService.findPetById(id);
         model.addAttribute("animal", animal);
@@ -54,9 +54,8 @@ public class PetsController {
 
     @GetMapping("/pet/list_query")
     @ResponseBody
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:query")
     public Map<String, Object> petInfo_query(RequestParamsPetList params) throws ParseException {
-        System.out.println(params);
         int status = params.getSearch_status();
         PageHelper.startPage(params.getPageNumber(),params.getPageSize());
         List<Animal> animalList = petManageService.findAll(status, params.getSort(), params.getOrder());
@@ -66,16 +65,15 @@ public class PetsController {
         hashMap.put("total", total);
         hashMap.put("rows", animalList);
         return hashMap;
-
     }
     //添加宠物
     @GetMapping("/pet/add")
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:insert")
     public String petAdd() {
         return "backstage/html/menu/pet-add";
     }
     @PostMapping("/pet/add")
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:insert")
     public String petAdd_post(Animal animal, Model model) {
         int i = petManageService.insertPet(animal);
         if (i > 0) {
@@ -94,7 +92,7 @@ public class PetsController {
     //上传宠物图片
     @PostMapping("/pet/upload/{id}")
     @ResponseBody
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:insert")
     public ResultVO petUpload(MultipartFile file, @PathVariable Integer id) throws IOException {
         ResultVO resultVO = new ResultVO();
         if (file.isEmpty()) {
@@ -134,7 +132,7 @@ public class PetsController {
     //查找宠物图片
     @GetMapping("/pet/img/{id}")
     @ResponseBody
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:query")
     public ResultVO petImg(@PathVariable Integer id) {
         String pic = petManageService.findPetPicById(id);
         ResultVO resultVO = new ResultVO();
@@ -150,14 +148,14 @@ public class PetsController {
     }
     //修改宠物信息
     @GetMapping("/pet/edit/{id}")
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:update")
     public String petEdit(@PathVariable("id") Integer id, Model model) {
         Animal animal = petManageService.findPetById(id);
         model.addAttribute("animal", animal);
         return "backstage/html/menu/pet-edit";
     }
     @PostMapping("/pet/edit")
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:update")
     public String petEdit(Animal animal, Model model ) {
         int re = petManageService.updatePet(animal);
         if (re == 1) {
@@ -172,7 +170,7 @@ public class PetsController {
     //删除宠物
     @PostMapping("/pet/delete")
     @ResponseBody
-    @RequiresPermissions("pet:all")
+    @RequiresPermissions("pet:delete")
     public ResultVO petDelete(int[] ids) {
         ResultVO resultVO = new ResultVO();
         int i = petManageService.deletePets(ids);

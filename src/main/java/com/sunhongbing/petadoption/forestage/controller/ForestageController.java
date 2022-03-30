@@ -43,19 +43,17 @@ public class ForestageController {
 
 
     //logback
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+//    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     // 访问首页
     @GetMapping("/")
     public String index2(Model model) {
-        logger.info("访问首页");
         List<Animal> randomPets = petManageService.getRandomPets();
         Animal bannerPet = randomPets.get(0);
         List<Banner> bannerList = articleService.queryBanners("id", "asc");
         model.addAttribute("bannerList", bannerList);
         model.addAttribute("bannerPet", bannerPet);
         model.addAttribute("randomPets", randomPets);
-        System.out.println(randomPets);
         return "forestage/index";
     }
 
@@ -69,7 +67,7 @@ public class ForestageController {
 
     //home
     @GetMapping("/home")
-//    @RequiresPermissions("user:home")
+    @RequiresPermissions("user:all")
     public String home(Model model) {
         try {
             int userId = (int) SecurityUtils.getSubject().getPrincipal();
@@ -83,7 +81,7 @@ public class ForestageController {
 
     //persom_info
     @GetMapping("/personal_info")
-    @RequiresPermissions("user:home")
+    @RequiresPermissions("user:all")
     public String personal_info(Model model) {
         try {
             int userId = (int) SecurityUtils.getSubject().getPrincipal();
@@ -94,9 +92,10 @@ public class ForestageController {
         }
         return "forestage/person-info";
     }
+
     //personal_info_edit
     @GetMapping("/personal_info_edit")
-    @RequiresPermissions("user:home")
+    @RequiresPermissions("user:all")
     public String personal_info_edit(Model model) {
         try {
             int userId = (int) SecurityUtils.getSubject().getPrincipal();
@@ -109,11 +108,10 @@ public class ForestageController {
     }
     //personal_info_edit post
     @PostMapping("/personal_info_edit")
-    @RequiresPermissions("user:home")
+    @RequiresPermissions("user:all")
     @ResponseBody
     public ResultVO personal_info_edit_post(EditParam param) {
         ResultVO vo = new ResultVO();
-        logger.error("param:{}", param);
         try {
             int userId = (int) SecurityUtils.getSubject().getPrincipal();
             param.setId(userId);
@@ -136,7 +134,7 @@ public class ForestageController {
     }
     //ApplyAnimalList
     @GetMapping("/apply_list")
-    @RequiresPermissions("user:home")
+    @RequiresPermissions("user:all")
     public String apply_list(Model model) {
         try {
             int userId = (int) SecurityUtils.getSubject().getPrincipal();
@@ -150,7 +148,7 @@ public class ForestageController {
 
     //editPwd
     @GetMapping("/editPwd")
-    @RequiresPermissions("user:home")
+    @RequiresPermissions("user:all")
     public String editPwd(Model model) {
         try {
             int userId = (int) SecurityUtils.getSubject().getPrincipal();
@@ -161,7 +159,7 @@ public class ForestageController {
     }
     //editPwd post
     @PostMapping("/editPwd")
-    @RequiresPermissions("user:home")
+    @RequiresPermissions("user:all")
     @ResponseBody
     public ResultVO editPwd_post(EditPasswordParam param) {
         ResultVO vo = new ResultVO();
