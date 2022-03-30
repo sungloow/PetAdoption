@@ -53,7 +53,6 @@ public class MenuServiceImpl implements MenuService {
     public List<SysMenu> getMenuListByRoles(String[] roles) {
         List<SysMenu> menuList;
         List<SysMenu> newMenuList = new ArrayList<>();
-        System.out.println("roles: " + Arrays.toString(roles));
         for (String role : roles) {
             try {
                 //1、根据角色获得所有的菜单（包括一级和二级）

@@ -101,8 +101,6 @@ public class RoleController {
         model.addAttribute("permissionList", permissionList);
         model.addAttribute("menuIdList", menuIdList);
         model.addAttribute("permissionIdList", permissionIdList);
-        System.out.println("menuIdList:"+menuIdList);
-        System.out.println("permissionIdList:"+permissionIdList);
         return "backstage/html/menu/role-modify";
     }
     @PostMapping("/role/modify")

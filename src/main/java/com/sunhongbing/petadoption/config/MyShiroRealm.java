@@ -30,29 +30,6 @@ public class MyShiroRealm extends AuthorizingRealm {
     private PermissionService permissionService;
 
     //主要是用来进行身份认证的，验证用户输入的账号和密码是否正确
-//    @Override
-//    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
-//            throws AuthenticationException {
-//        System.out.println("MyShiroRealm.doGetAuthenticationInfo() 身份认证");
-//        //获取用户的输入的账号
-//        String username = (String)token.getPrincipal();
-//        System.out.println(token.getCredentials());
-//        //通过username从数据库中查找 User对象
-//        //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-//        AdminInfo adminInfo = adminInfoService.findAdminByUsername(username);
-//        System.out.println("----->>adminInfo="+adminInfo);
-//        if(adminInfo == null){
-//            return null;
-//        }
-//        if (UserStatus.DISABLE.getCode()==adminInfo.getStatus()) {
-//            throw new LockedAccountException(username + "账号被锁定，请联系管理员！");
-//        }
-//        return new SimpleAuthenticationInfo(
-//                adminInfo.getId(), //用户名
-//                adminInfo.getPassword(), //密码
-//                getName()  //realm name
-//        );
-//    }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
@@ -94,16 +71,15 @@ public class MyShiroRealm extends AuthorizingRealm {
     //对用户角色权限进行控制
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
          //获取当前登录的用户ID
         int userId = (int)principals.getPrimaryPrincipal();
         List<SysRole> roleList = roleService.getRoleListById(userId);
-        System.out.println("----->>roleList="+roleList);
+//        System.out.println("----->>roleList="+roleList);
         for(SysRole role:roleList){
             authorizationInfo.addRole(role.getRole());
             List<SysPermission> permissionListByRoleId = permissionService.getPermissionListByRoleId(role.getId());
-            System.out.println("----->>permissionListByRoleId="+permissionListByRoleId);
+//            System.out.println("----->>permissionListByRoleId="+permissionListByRoleId);
             for(SysPermission p:permissionListByRoleId){
                 authorizationInfo.addStringPermission(p.getPermission());
             }

@@ -45,7 +45,7 @@ public class ArticleController {
     public String show(@PathVariable("id") int id, Model model){
         Article article = articleService.getArticleById(id);
         model.addAttribute("article",article);
-            return "backstage/html/menu/article";
+        return "backstage/html/menu/article";
     }
 
     //banner detail
