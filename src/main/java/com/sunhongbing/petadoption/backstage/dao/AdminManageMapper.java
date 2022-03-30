@@ -77,8 +77,8 @@ public interface AdminManageMapper {
     //用户批量解绑角色
     @Delete("<script>" +
             "delete from role_admin_ref where role_id in " +
-            "<foreach collection='roleId' item='item'  index='index' separator=',' >" +
-            " ( #{item} ) " +
+            "<foreach collection='roleId' item='item'  index='index' open='(' separator=',' close=')' >" +
+            "  #{item}  " +
             "</foreach> " +
             "and admin_id = #{adminId} " +
             "</script>")

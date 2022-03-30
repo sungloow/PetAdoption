@@ -67,7 +67,6 @@ public class ForestageController {
 
     //home
     @GetMapping("/home")
-    @RequiresPermissions("user:all")
     public String home(Model model) {
         try {
             int userId = (int) SecurityUtils.getSubject().getPrincipal();

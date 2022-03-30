@@ -74,6 +74,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
          //获取当前登录的用户ID
         int userId = (int)principals.getPrimaryPrincipal();
+//        System.out.println("----->>userId:"+userId);
         List<SysRole> roleList = roleService.getRoleListById(userId);
 //        System.out.println("----->>roleList="+roleList);
         for(SysRole role:roleList){

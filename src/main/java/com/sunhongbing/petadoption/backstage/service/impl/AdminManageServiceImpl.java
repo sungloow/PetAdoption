@@ -101,7 +101,7 @@ public class AdminManageServiceImpl implements AdminManageService {
                     //删除旧的角色
                     adminManageMapper.unbindRoles(oldIds, admin.getId());
                 }
-                if (roleIds.size() > 0) {
+                if (roleIds != null) {
                     //绑定新的角色
                     adminManageMapper.bindRoles(roleIds, admin.getId());
                 }
