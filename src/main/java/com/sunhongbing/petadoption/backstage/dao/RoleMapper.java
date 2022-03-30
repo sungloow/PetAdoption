@@ -17,6 +17,10 @@ public interface RoleMapper {
     @Select("SELECT * FROM role WHERE id = #{id} ")
     SysRole getRoleById(int id);
 
+    // getRoleByRole
+    @Select("SELECT * FROM role WHERE role = #{role} ")
+    SysRole getRoleByRole(String role);
+
     // 获取所有角色
     @Select("SELECT * FROM role where role != 'root' and role != 'user' order by ${order} ${sort} ")
     List<SysRole> getAllRole(String order, String sort);

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -133,7 +134,6 @@ public class RoleController {
     @PostMapping("/role/add")
     @ResponseBody
     @RequiresPermissions(value = {"root", "role:insert"}, logical = Logical.OR)
-    @Transactional(isolation = Isolation.DEFAULT)
     public ResultVO roleAdd_post(String description, String role, @RequestParam List<Integer> menu_ids, @RequestParam List<Integer> permission_ids) {
         ResultVO vo = new ResultVO();
         if ((description == null || description.equals("")) || (role == null || role.equals(""))) {
@@ -150,24 +150,13 @@ public class RoleController {
         SysRole sysRole = new SysRole();
         sysRole.setDescription(description);
         sysRole.setRole(role);
-        int addRole = roleService.addRole(sysRole);
+        int addRole = roleService.addRole(sysRole, menu_ids, permission_ids);
         if (addRole == 1) {
-            int roleId = roleService.getMaxRoleId();
-            int bindMenus = 0;
-            int bindPermissions = 0;
-            if (menu_ids.size() != 0) {
-                bindMenus = roleService.bindMenus(roleId, menu_ids);
-            }
-            if (permission_ids.size() != 0) {
-                bindPermissions = roleService.bindPermissions(roleId, permission_ids);
-            }
-            if (bindMenus == menu_ids.size() && bindPermissions == permission_ids.size()) {
-                vo.setCode(200);
-                vo.setMsg("添加成功");
-            } else {
-                vo.setCode(500);
-                vo.setMsg("添加失败");
-            }
+            vo.setCode(200);
+            vo.setMsg("添加成功");
+        } else if (addRole == -1) {
+            vo.setCode(500);
+            vo.setMsg("角色已存在");
         } else {
             vo.setCode(500);
             vo.setMsg("添加失败");

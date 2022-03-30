@@ -13,7 +13,9 @@ public interface AdminManageMapper {
 
     //查询所有管理员信息
     @Select("<script>"
-            + "select * from admin where status != -1"
+            + "select * from admin where id not in "
+            + "(SELECT admin_id FROM role INNER JOIN role_admin_ref ref ON role.id=ref.role_id WHERE role='root' ) "
+            + " and status != -1 "
             + "<if test=\"status != -99 \">"
             + "and status = #{status}"
             + "</if>"

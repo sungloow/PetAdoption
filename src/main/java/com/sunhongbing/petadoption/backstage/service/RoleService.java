@@ -21,7 +21,7 @@ public interface RoleService {
     List<SysRole> getAllRole(String order, String sort);
 
     //添加角色
-    int addRole(SysRole role);
+    int addRole(SysRole role, List<Integer> menuIds, List<Integer> permissionIds);
 
     //修改角色的权限和菜单
     int modifyRole(int id, List<Integer> menu_ids, List<Integer> permission_ids);

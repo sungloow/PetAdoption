@@ -42,8 +42,33 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public int addRole(SysRole role) {
-        return roleMapper.addRole(role);
+    @Transactional(rollbackFor = Exception.class)
+    public int addRole(SysRole role, List<Integer> menuIds, List<Integer> permissionIds) {
+        try {
+            //查询角色是否存在
+            SysRole role1 = roleMapper.getRoleByRole(role.getRole());
+            if (role1 != null) {
+                return -1;
+            }
+            //添加角色
+            roleMapper.addRole(role);
+            //从数据库中获取角色id（最大id）
+            int roleId = roleMapper.getMaxRoleId();
+            //如果 menuIds 不为空，添加角色与菜单的关联
+            if (menuIds != null && menuIds.size() > 0) {
+                roleMapper.bindMenus(roleId, menuIds);
+            }
+            //如果 permissionIds 不为空，添加角色与权限的关联
+            if (permissionIds != null && permissionIds.size() > 0) {
+                roleMapper.bindPermissions(roleId, permissionIds);
+            }
+            //如果都执行成功，返回1
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return 0;
+        }
     }
 
     @Override
