@@ -27,7 +27,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public List<SysRole> getRoleListById(int id) {
-        id = id<100?id:0;
+        id = id<10000?id:0;
         return roleMapper.getRoleListById(id);
     }
 
