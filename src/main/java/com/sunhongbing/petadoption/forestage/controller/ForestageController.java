@@ -48,8 +48,10 @@ public class ForestageController {
     // 访问首页
     @GetMapping("/")
     public String index2(Model model) {
-        List<Animal> randomPets = petManageService.getRandomPets();
+        // 随机查询5只宠物
+        List<Animal> randomPets = petManageService.getRandomPets(5);
         Animal bannerPet = randomPets.get(0);
+        // 查询Banner
         List<Banner> bannerList = articleService.queryBanners("id", "asc");
         model.addAttribute("bannerList", bannerList);
         model.addAttribute("bannerPet", bannerPet);

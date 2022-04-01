@@ -61,6 +61,7 @@
                                 <br>
                                 <div class="col-sm-5">
                                     <button type="button" id="btn_sub" class="btn btn-primary">提交</button>
+                                    <button type="button" class="btn-back" onclick="window.history.back()">返回</button>
                                 </div>
                             </div>
                         </form>
@@ -173,7 +174,6 @@
 <script th:src="@{/fore/js/main.js}"></script>
 
 <script type="text/javascript">
-
     //提示框
     function prompt(message, style, time) {
         style = (style === undefined) ? 'alert-success' : style;

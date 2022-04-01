@@ -7,54 +7,59 @@
     <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
     <link rel='stylesheet' th:href='@{/fore/css/bootstrap-4.1.min.css}'>
     <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
     <style>
-        p{
-            text-align: left;
+        label{
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-<div class="col-md-6">
+<div class="col-md-12">
     <div class="card">
+        <div class="card-header">
+            宠物详情
+            <button type="button" class="btn btn-info" style="float: right; margin-right: 30px"
+                    onclick="back()">返回
+            </button>
+        </div>
         <div class="card-body">
-            <button type="button" class="btn btn-warning" onclick="window.history.back()">返回</button>
-            <h3></h3>
             <div class="container">
-                <div class="row" >
-                    <span class="col-sm-2">ID</span>
-                    <p class="col-sm-8" id="id" name="id" ></p>
+                <div class="form-grp">
+                    <label for="id">ID：</label>
+                    <span type="text" id="id"></span>
                 </div>
-                <div class="row" >
-                    <span class="col-sm-2">名字</span>
-                    <p class="col-sm-8" id="name" name="name" ></p>
+                <div class="form-grp">
+                    <label for="name">名字：</label>
+                    <span type="text" id="name"></span>
                 </div>
-                <div class="row" >
-                    <span class="col-sm-2">性别</span>
-                    <p class="col-sm-8" id="sex" name="sex" ></p>
+                <div class="form-grp">
+                    <label for="sex">性别：</label>
+                    <span type="text" id="sex"></span>
                 </div>
-                <div class="row" >
-                    <span class="col-sm-2">种别</span>
-                    <p class="col-sm-8" id="type" name="type" ></p>
+                <div class="form-grp">
+                    <label for="type">种别：</label>
+                    <span type="text" id="type"></span>
                 </div>
-                <div class="row" >
-                    <span class="col-sm-2">生日</span>
-                    <p class="col-sm-8" id="birth" name="birth" ></p>
+                <div class="form-grp">
+                    <label for="birth">生日：</label>
+                    <span type="text" id="birth"></span>
                 </div>
-                <div class="row" >
-                    <span class="col-sm-2">年龄</span>
-                    <p class="col-sm-8" id="age" name="age" ></p>
+                <div class="form-grp">
+                    <label for="age">年龄：</label>
+                    <span type="text" id="age"></span>
                 </div>
-                <div class="row">
-                    <span class="col-sm-2">描述</span>
-                    <p  class="col-sm-8" id="detail" name="detail"></p>
+                <div class="form-grp">
+                    <label for="detail">描述：</label>
+                    <span type="text" id="detail"></span>
                 </div>
-                <div class="row" >
-                    <span class="col-sm-2">状态</span>
-                    <p class="col-sm-8" id="status" name="status" ></p>
+                <div class="form-grp">
+                    <label for="status">状态：</label>
+                    <span type="text" id="status"></span>
                 </div>
-                <div class="row" >
-                    <span class="col-sm-2">图片</span>
-                    <img class="col-sm-8" id="pic" alt="pic" th:src="${animal.pics}"/>
+                <div class="form-grp">
+                    <label for="pic">图片：</label>
+                    <img id="pic" alt="pic" width="40%" th:src="${animal.pics}"/>
                 </div>
             </div>
 
@@ -63,13 +68,16 @@
 </div>
 </body>
 
-<!-- jquery -->
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
 
-<!-- bootstrap脚本 -->
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
 <script>
+
+    function back() {
+        window.history.back();
+    }
 
     //提示框
     function prompt(message, style, time) {

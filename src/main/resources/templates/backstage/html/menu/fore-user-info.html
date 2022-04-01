@@ -1,0 +1,76 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Personal info</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
+    <link rel="stylesheet" th:href="@{/fore/css/bootstrap.min.css}">
+
+    <style>
+        label{
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            Personal Information
+            <button type="button" class="btn btn-info" style="float: right; margin-right: 30px"
+                    onclick="back()">返回
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="container">
+                <div class="form-grp">
+                    <label for="email">邮箱：</label>
+                    <span type="text" name="email" id="email" th:text="${user.email}"></span>
+                </div>
+                <div class="form-grp">
+                    <label for="tel">联系电话：</label>
+                    <span type="text" name="tel" id="tel" th:text="${user.tel}"></span>
+                </div>
+                <div class="form-grp">
+                    <label for="name">姓名：</label>
+                    <span type="text" name="name" id="name" th:text="${user.name}"></span>
+                </div>
+                <div class="form-grp">
+                    <label for="age">年龄：</label>
+                    <span type="number" name="age" id="age" th:text="${user.age}"></span>
+                </div>
+                <div class="form-grp">
+                    <label for="sex">性别：</label>
+                    <span name="sex" id="sex"  th:text="${user.sex}"></span>
+                </div>
+                <div class="form-grp">
+                    <label for="address">联系地址：</label>
+                    <span type="text" name="address" id="address" th:text="${user.address}"></span>
+                </div>
+                <div class="form-grp">
+                    <label for="experience">养宠经验：</label>
+                    <span name="experience" id="experience" th:text="${user.experience==0?'第一次养宠':'有养宠经验'}" ></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- JS here -->
+<script th:src="@{/fore/js/vendor/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/fore/js/bootstrap.min.js}"></script>
+<script>
+    function back() {
+        window.history.back();
+    }
+
+</script>
+</body>
+</html>

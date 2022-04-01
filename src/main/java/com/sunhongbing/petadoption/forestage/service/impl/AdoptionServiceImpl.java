@@ -50,7 +50,7 @@ public class AdoptionServiceImpl implements AdoptionService {
         if (applied == null) {
             return -100;
         } else {
-            //已通过的不能取消
+            //已审核过的不能取消
             if (applied.getStatus() == AdoptionStatus.ACCEPT.getCode()) {
                 return AdoptionStatus.ACCEPT.getCode();
             } else if (applied.getStatus() == AdoptionStatus.REJECT.getCode()) {
@@ -59,7 +59,12 @@ public class AdoptionServiceImpl implements AdoptionService {
                 try {
                     adoptionMapper.cancel_adoption(userId, petId);
                     //修改宠物状态
-                    return adoptionMapper.updatePetStatus(petId, PetStatus.WAIT.getCode());
+                    int a = adoptionMapper.updatePetStatus(petId, PetStatus.WAIT.getCode());
+                    if (a == 1) {
+                        return 100;
+                    } else {
+                        return 0;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

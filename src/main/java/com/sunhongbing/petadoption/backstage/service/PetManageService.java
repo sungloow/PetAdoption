@@ -34,6 +34,6 @@ public interface PetManageService {
 
     int deletePets(int[] ids);
 
-    List<Animal> getRandomPets();
+    List<Animal> getRandomPets(int num);
 
 }

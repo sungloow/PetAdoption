@@ -92,7 +92,7 @@ public interface AdoptionMapper {
     List<ApplyRecord> getApplyListByStatus(int status, String order, String sort);
 
     // 随机查找5条宠物记录
-    @Select("select * from animal where status=0 order by rand() limit 5")
-    List<Animal> getRandomPets();
+    @Select("select * from animal where status=0 order by rand() limit #{num}")
+    List<Animal> getRandomPets(int num);
 
 }

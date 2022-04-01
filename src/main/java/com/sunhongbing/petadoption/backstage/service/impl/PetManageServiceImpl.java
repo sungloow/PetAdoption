@@ -135,7 +135,7 @@ public class PetManageServiceImpl implements PetManageService {
     }
 
     @Override
-    public List<Animal> getRandomPets() {
-        return adoptionMapper.getRandomPets();
+    public List<Animal> getRandomPets(int num) {
+        return adoptionMapper.getRandomPets(num);
     }
 }

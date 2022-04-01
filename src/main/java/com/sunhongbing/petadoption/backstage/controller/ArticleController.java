@@ -174,7 +174,6 @@ public class ArticleController {
     @RequiresPermissions("article:all")
     @ResponseBody
     public Map<String, Object> newsList_query(RequestParamsPetList params) {
-        System.out.println(params);
         int status = params.getSearch_status();
         List<Article> articleList;
         List<Article> articleList_size;
@@ -192,7 +191,6 @@ public class ArticleController {
     @RequiresPermissions("article:all")
     @ResponseBody
     public Map<String, Object> activityList_query(RequestParamsPetList params) {
-        System.out.println(params);
         int status = params.getSearch_status();
         List<Article> articleList;
         List<Article> articleList_size;
@@ -210,7 +208,6 @@ public class ArticleController {
     @RequiresPermissions("article:all")
     @ResponseBody
     public Map<String, Object> articleList_query(RequestParamsPetList params) {
-        System.out.println(params);
         int status = params.getSearch_status();
         List<Article> articleList;
         List<Article> articleList_size;
@@ -228,7 +225,6 @@ public class ArticleController {
     @RequiresPermissions("article:all")
     @ResponseBody
     public Map<String, Object> happy_adoption_query(RequestParamsPetList params) {
-        System.out.println(params);
         int status = params.getSearch_status();
         List<Article> articleList;
         List<Article> articleList_size;
@@ -246,7 +242,6 @@ public class ArticleController {
     @RequiresPermissions("article:all")
     @ResponseBody
     public Map<String, Object> bannerList_query(RequestParamsPetList params) {
-        System.out.println(params);
         List<Banner> articleList;
         List<Banner> articleList_size;
         PageHelper.startPage(params.getPageNumber(),params.getPageSize());
@@ -263,7 +258,6 @@ public class ArticleController {
     @RequiresPermissions("article:all")
     @ResponseBody
     public Map<String, Object> about_usList_query(RequestParamsPetList params) {
-        System.out.println(params);
         int status = params.getSearch_status();
         List<Article> articleList;
         List<Article> articleList_size;
@@ -287,7 +281,6 @@ public class ArticleController {
     @RequiresPermissions("feedback:all")
     @ResponseBody
     public Map<String, Object> feedbackList_query(RequestParamsPetList params) {
-        System.out.println(params);
         int status = params.getSearch_status();
         List<Article> articleList;
         List<Article> articleList_size;
@@ -309,7 +302,6 @@ public class ArticleController {
     @RequiresPermissions("approval:pet")
     @ResponseBody
     public Map<String, Object> allList_query(RequestParamsPetList params) {
-        System.out.println(params);
         int status = params.getSearch_status();
         List<Article> articleList;
         List<Article> articleList_size;
@@ -377,7 +369,6 @@ public class ArticleController {
     @RequiresPermissions("approval:article")
     public ResultVO approvalArticle_post(int id,int status) {
         ResultVO resultVO = new ResultVO();
-        System.out.println("id:"+id+"  status:"+status);
         if (status == ArticleStatus.PASS.getCode()) {
             int i = articleService.pass(id);
             if (i == 1) {

@@ -171,7 +171,7 @@ public class AdoptionController {
             } else if (i == AdoptionStatus.ACCEPT.getCode()) {
                 vo.setCode(500);
                 vo.setMsg("已经过审核，不能撤销");
-            } else if (i == 1) {
+            } else if (i == 100) {
                 vo.setCode(200);
                 vo.setMsg("取消申请成功");
             } else {

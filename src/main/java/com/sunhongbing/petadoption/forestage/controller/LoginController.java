@@ -40,9 +40,11 @@ public class LoginController {
      */
     @PostMapping("/login")
     public String login(LoginParam param, Model model) {
-        UsernamePasswordToken token = new CommonUserToken(param.getUsername(), param.getPassword());
-        Subject subject = SecurityUtils.getSubject();
         String msg = "";
+        // 收集主题的主体和证书
+        UsernamePasswordToken token = new CommonUserToken(param.getUsername(), param.getPassword());
+        // 提交主体和凭据
+        Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
             return "redirect:/fore/home";
