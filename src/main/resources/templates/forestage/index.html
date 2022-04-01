@@ -196,7 +196,7 @@
                     <div class="adoption-item">
                         <div class="adopt-thumb">
                             <a th:href="@{'/adoption/detail/' + ${animalRan.id}}">
-                                <img th:src="@{${animalRan.pics}}" alt=""></a>
+                                <img width="400px" th:src="@{${animalRan.pics}}" alt=""></a>
                             <span class="status" th:text="${animalRan.sex}"></span>
                         </div>
                         <div class="adopt-content">
@@ -376,4 +376,5 @@
 <script th:src="@{/fore/js/wow.min.js}"></script>
 <script th:src="@{/fore/js/plugins.js}"></script>
 <script th:src="@{/fore/js/main.js}"></script>
+
 </html>

@@ -25,27 +25,30 @@ public class ShiroConfig {
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
 
 		// 设置拦截后跳转的请求路径
-		shiroFilterFactoryBean.setLoginUrl("/fore/");
+		shiroFilterFactoryBean.setLoginUrl("/login");
 		// 登录成功后要跳转的链接，首页
 //		shiroFilterFactoryBean.setSuccessUrl("/admin/index");
 		// 未授权页面;
 		shiroFilterFactoryBean.setUnauthorizedUrl("/admin/unAuth");
 		// 拦截器，此处应该使用LinkedHashMap，否则会出现资源只能加载一次然后就被拦截的情况
 		Map<String,String> filterChainDefinitionMap = new LinkedHashMap<>();
-		// 配置不会被拦截的链接，顺序判断
-		filterChainDefinitionMap.put("/static/**", "anon");
-		filterChainDefinitionMap.put("/fore/**", "anon");
-
+		// 配置不会被拦截的链接，顺序判断（anon：不拦截，authc：拦截）
+		filterChainDefinitionMap.put("/static/**", "anon");	// 静态资源
+		filterChainDefinitionMap.put("/fore/**", "anon");	// 前台公共页面
 		//adminUserLogin
-		filterChainDefinitionMap.put("/admin/login", "anon");
+		filterChainDefinitionMap.put("/admin/login", "anon");	// 管理员登录页面
 		//commonUserLogin
-		filterChainDefinitionMap.put("/login", "anon");
+		filterChainDefinitionMap.put("/login", "anon");		//用户登录页面
 
 		// 配置退出登录过滤器，退出代码Shiro已经实现了
 		filterChainDefinitionMap.put("/admin/logout", "logout");
 		// 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
 		// authc:所有url都必须认证通过才可以访问 anon:所有url都都可以匿名访问
 		filterChainDefinitionMap.put("/admin/**", "authc");
+		filterChainDefinitionMap.put("/personal/**", "authc");
+		filterChainDefinitionMap.put("/adoption/apply_post/**", "authc");
+		filterChainDefinitionMap.put("/adoption/cancel", "authc");
+
 
 		// 自定义filters，覆盖默认的Filter列表
 		Map<String, Filter> filters = new LinkedHashMap<>();

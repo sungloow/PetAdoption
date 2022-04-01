@@ -108,6 +108,7 @@ public class ArticleController {
         return resultVO;
     }
 
+    // 新增文章
     @PostMapping("/addArticle")
     @RequiresPermissions("article:all")
     public String addArticle(Article article, Model model){
@@ -140,7 +141,7 @@ public class ArticleController {
         return "backstage/html/menu/banner";
     }
 
-    //上传文章图片
+    //上传图片至OSS
     @PostMapping("/file/upload")
     @RequiresPermissions("article:all")
     @ResponseBody
@@ -297,7 +298,7 @@ public class ArticleController {
         hashMap.put("rows", articleList);
         return hashMap;
     }
-    //all, 审批列表查询
+    // 审批列表查询
     @GetMapping("/all/list_query")
     @RequiresPermissions("approval:pet")
     @ResponseBody

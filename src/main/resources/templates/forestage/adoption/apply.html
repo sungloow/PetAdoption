@@ -104,7 +104,7 @@
                                 </div>
 <input type="text" id="animalId" th:value="${animal.id}" hidden>
                             </div>
-                            <a href="#" class="btn" id="apply">Apply
+                            <a href="#" class="btn" id="apply">申请领养
                                 <img th:src="@{/fore/img/icon/w_pawprint.png}" alt="">
                             </a>
                         </div>
@@ -162,17 +162,19 @@
 
     $('#apply').click(function () {
         $.ajax({
-            url: '/adoption/apply/'+$('#animalId').val(),
+            url: '/adoption/apply_post/'+$('#animalId').val(),
             type: 'POST',
             data: {},
             success: function (data) {
                 if (data.code === 200) {
                     prompt(data.msg, 'alert-success', 1500);
-                } else {
+                } else if (data.code === 500) {
                     prompt(data.msg, 'alert-danger', 1500);
+                } else {
+                    window.location.href = '/login';
                 }
             },
-            error: function (data) {
+            error: function () {
                 prompt('Error', 'alert-danger', 1500);
             }
 

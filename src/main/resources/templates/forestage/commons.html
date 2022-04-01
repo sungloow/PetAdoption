@@ -68,31 +68,24 @@
                                     <li th:class="${target}=='keep-in-touch'?'active menu-item-has-children':'menu-item-has-children'">
                                         <a href="#">保持联系</a>
                                         <ul class="submenu">
-                                            <li><a href="/keep-in-touch/news">新闻</a></li>
-                                            <li><a href="/keep-in-touch/activity">活动</a></li>
+                                            <li><a href="/keep_in_touch/news">新闻</a></li>
+                                            <li><a href="/keep_in_touch/activity">活动</a></li>
                                         </ul>
                                     </li>
                                     <li th:class="${target}=='about-us'?'active menu-item-has-children':'menu-item-has-children'">
                                         <a href="#">关于我们</a>
                                         <ul class="submenu">
-                                            <li><a href="/about-us/introduction">组织介绍</a></li>
-                                            <li><a href="/about-us/contact">联系我们</a></li>
-                                            <li><a href="/about-us/working-time">时间和地点</a></li>
-                                            <li><a href="/about-us/faq">常见问答</a></li>
+                                            <li><a href="/about_us/introduction">组织介绍</a></li>
+                                            <li><a href="/about_us/contact">联系我们</a></li>
+                                            <li><a href="/about_us/working-time">时间和地点</a></li>
+                                            <li><a href="/about_us/faq">常见问答</a></li>
                                         </ul>
                                     </li>
                                     <li th:class="${target}=='personal'?'active menu-item-has-children':'menu-item-has-children'">
-                                        <a th:href="@{/fore/home}">个人中心</a>
+                                        <a th:href="@{/personal/home}">个人中心</a>
                                     </li>
                                 </ul>
                             </div>
-<!--                            <div class="header-action d-none d-md-block">-->
-<!--                                <ul>-->
-<!--                                    <li class="header-search"><a href="#"><i class="flaticon-search"></i></a></li>-->
-<!--                                    <li class="header-btn"><a href="/adoption/" class="btn">Adopt Here-->
-<!--                                        <img src="../fore/img/icon/w_pawprint.png" alt=""></a></li>-->
-<!--                                </ul>-->
-<!--                            </div>-->
                         </nav>
                     </div>
                     <!-- Mobile Menu  -->
@@ -122,28 +115,7 @@
         </div>
         <div class="header-shape" th:data-background="@{/fore/img/bg/header_shape.png}"></div>
     </div>
-    <!-- header-search -->
-    <div class="search-popup-wrap" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="search-close">
-            <span><i class="fas fa-times"></i></span>
-        </div>
-        <div class="search-wrap text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <h2 class="title">... Search Here ...</h2>
-                        <div class="search-form">
-                            <form action="#">
-                                <input type="text" name="search" placeholder="Type keywords here">
-                                <button class="search-btn"><i class="fas fa-search"></i></button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- header-search-end -->
+
 </header>
 <!-- header-area-end -->
 

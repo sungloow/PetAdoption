@@ -20,7 +20,7 @@ import java.util.List;
  * @date: 2022-02-10 17:41
  */
 @Controller
-@RequestMapping("/keep-in-touch")
+@RequestMapping("/keep_in_touch")
 public class KeepInTouchController {
     @Autowired
     private ArticleService articleService;

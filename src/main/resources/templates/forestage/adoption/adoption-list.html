@@ -190,7 +190,6 @@
             const list_scroll_height = $(document).scrollTop()
             const win_height = $(window).height();
             if (list_scroll_height + win_height >= list_height && isloding === false) {
-                console.log("到底啦！")
                 isloding = true
                 lod()
             }
@@ -220,7 +219,6 @@
                         console.log(res.result)
                         $.each(animalList, function(index, value) {
                             const animal = animalList[index];
-                            console.log(animal)
                             const html = `
                                 <div class="col-lg-4 col-md-6">
                                     <div class="adoption-shop-item">

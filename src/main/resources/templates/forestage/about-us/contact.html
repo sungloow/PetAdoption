@@ -80,15 +80,6 @@
                                         如果您的问题与下列目录无关， 请选择“一般性问题”作为您的理由。
                                     </p>
                                     <form action="#" id="contactForm" class="contact-form">
-<!--                                        <div class="form-grp">-->
-<!--                                            <label for="name">姓名 <span>*</span></label>-->
-<!--                                            <input type="text" id="name" placeholder="Jon Deo...">-->
-<!--                                        </div>-->
-<!--                                        <div class="form-grp">-->
-<!--                                            <label for="email">邮箱 <span>*</span></label>-->
-<!--                                            <input type="text" id="email" placeholder="info.example@.com">-->
-<!--                                        </div>-->
-
                                         <div class="form-grp">
                                             <label for="type">类别 <span>*</span></label>
                                             <select name="type" id="type"  class="form-control dropdown-toggle">
@@ -201,16 +192,18 @@
         $('#sub').click(function(){
             //ajax
             $.ajax({
-                url: '/about-us/contact',
+                url: '/about_us/contact_post',
                 type: 'POST',
                 dataType: 'json',
                 data: $('#contactForm').serialize(),
                 success: function(data){
-                    if (data.code===200){
+                    if (data.code===200) {
                         prompt(data.msg, 'alert-success', 1500);
                     } else {
                         prompt(data.msg, 'alert-danger', 1500);
                     }
+                }, error: function(data){
+                    prompt('网络错误', 'alert-danger', 1500);
                 }
             });
         });

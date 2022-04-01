@@ -21,6 +21,7 @@ body{
       z-index: -2;
         }
 
+
         .box-conatiner{
                contain: content;
     margin: 50px auto;

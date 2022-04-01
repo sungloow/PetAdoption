@@ -27,7 +27,7 @@ import java.util.List;
  * @date: 2022-02-10 17:43
  */
 @Controller
-@RequestMapping("/about-us")
+@RequestMapping("/about_us")
 public class AboutUsController {
     @Autowired
     private ArticleService articleService;
@@ -48,10 +48,9 @@ public class AboutUsController {
     public String contact() {
         return "forestage/about-us/contact";
     }
-    //contact post
-    @PostMapping("/contact")
+    // contact post
+    @PostMapping("/contact_post")
     @ResponseBody
-    @RequiresPermissions("user:all")
     public ResultVO contactPost(Article article) {
         ResultVO vo = new ResultVO();
         int userId;

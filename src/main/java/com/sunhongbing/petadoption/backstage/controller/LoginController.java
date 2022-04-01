@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller("backstageLoginController")
 @RequestMapping("/admin")
 public class LoginController {
+
     @GetMapping("/login")
     public String login() {
         return "backstage/html/adminUserLogin";
@@ -33,16 +34,19 @@ public class LoginController {
      */
     @PostMapping("/login")
     public String login(LoginParam param, Model model) {
+        // check param
+        if (param == null || param.getUsername().isEmpty() || param.getPassword().isEmpty()) {
+            model.addAttribute("msg", "用户名或密码不能为空");
+            return "backstage/html/adminUserLogin";
+        }
         UsernamePasswordToken token = new AdminUserToken(param.getUsername(), param.getPassword());
         Subject subject = SecurityUtils.getSubject();
         String msg = "";
         try {
             subject.login(token);
             return "redirect:/admin/index";
-        } catch (UnknownAccountException e) {
-            msg = "账号不存在！";
-        } catch (IncorrectCredentialsException e) {
-            msg = "密码不正确！";
+        } catch (UnknownAccountException | IncorrectCredentialsException e) {
+            msg = "账号或密码不正确！";
         } catch (LockedAccountException e) {
             msg = "账号被锁定！请联系管理员。";
         } catch (Exception e) {

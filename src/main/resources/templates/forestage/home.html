@@ -21,20 +21,20 @@
             <div class="nav-list">
                 <ul id="menu-ul">
                     <li class="nav-tab nav-ul">
-                        <a th:href="@{/fore/personal_info}" class="li-a" target="iframe">
+                        <a th:href="@{/personal/personal_info}" class="li-a" target="iframe">
                             <i class="bx bx-layer"></i>
                             <span>个人资料</span>
                         </a>
                     </li>
                     <li class="nav-tab nav-ul">
-                        <a th:href="@{/fore/apply_list}" class="li-a" target="iframe">
+                        <a th:href="@{/personal/apply_list}" class="li-a" target="iframe">
                             <i class="bx bx-layer"></i>
                             <span>领养列表</span>
                         </a>
                     </li>
 <!--                    edit password-->
                     <li class="nav-tab nav-ul">
-                        <a th:href="@{/fore/editPwd}" class="li-a" target="iframe">
+                        <a th:href="@{/personal/editPwd}" class="li-a" target="iframe">
                             <i class="bx bx-layer"></i>
                             <span>修改密码</span>
                         </a>
@@ -53,7 +53,7 @@
             <a style="float: right" th:href="@{/admin/logout}">Sign Out</a>
         </div>
         <div class="content-page" ref="cPage">
-            <iframe name="iframe" width="100%" height="100%" frameborder="0" th:src="@{/fore/personal_info}"></iframe>
+            <iframe name="iframe" width="100%" height="100%" frameborder="0" th:src="@{/personal/personal_info}"></iframe>
         </div>
     </div>
 </div>

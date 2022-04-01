@@ -40,6 +40,11 @@ public class LoginController {
      */
     @PostMapping("/login")
     public String login(LoginParam param, Model model) {
+        // check param
+        if (param == null || param.getUsername().isEmpty() || param.getPassword().isEmpty()) {
+            model.addAttribute("msg", "用户名或密码不能为空");
+            return "forestage/commonUserLogin";
+        }
         String msg = "";
         // 收集主题的主体和证书
         UsernamePasswordToken token = new CommonUserToken(param.getUsername(), param.getPassword());
@@ -47,7 +52,7 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
-            return "redirect:/fore/home";
+            return "redirect:/personal/home";
         } catch (UnknownAccountException | IncorrectCredentialsException e) {
             msg = "账号或密码不正确！";
         } catch (LockedAccountException e) {

@@ -99,6 +99,7 @@ public class AdoptionController {
         model.addAttribute("articleList", articleList);
         return "forestage/adoption/happy-adoption";
     }
+
     //science-feed
     @RequestMapping("/science-feed")
     public String science(Model model) {
@@ -118,17 +119,12 @@ public class AdoptionController {
     //申请
     @GetMapping("/apply/{id}")
     public String apply(@PathVariable(value="id") Integer petId, Model model) {
-        int userId;
-        try {
-            userId = (int) SecurityUtils.getSubject().getPrincipal();
-        } catch (Exception e) {
-            return "redirect:/login";
-        }
         Animal animal = petManageService.findPetById(petId);
         model.addAttribute("animal", animal);
         return "forestage/adoption/apply";
     }
-    @PostMapping("/apply/{id}")
+
+    @PostMapping("/apply_post/{id}")
     @RequiresPermissions("user:all")
     @ResponseBody
     public ResultVO apply(@PathVariable(value="id") Integer petId) {
