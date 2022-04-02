@@ -21,12 +21,12 @@
     <form name="mdEditorForm">
         <div class="form-group">
             <label for="title"><b>标题</b></label>
-            <input type="text" class="form-control"  name="title" id="title">
+            <input type="text" class="form-control"  name="title" id="title" required>
         </div>
         <div class="form-row">
             <div class="col">
                 <label for="author"><b>作者</b></label>
-                <input type="text" class="form-control"  name="author" id="author">
+                <input type="text" class="form-control"  name="author" id="author" required>
             </div>
 
             <div class="col">
@@ -54,7 +54,6 @@
 
 <script type="text/javascript">
 
-
     //提示框
     function prompt(message, style, time) {
         style = (style === undefined) ? 'alert-success' : style;
@@ -67,6 +66,14 @@
             .delay(time)
             .fadeOut();
     }
+
+    $(document).ready(function() {
+        const msg = '[[${msg}]]';
+        if (msg !== "") {
+            prompt(msg, 'alert-danger');
+        }
+    });
+
 
     function uploadCover() {
         var formData = new FormData();

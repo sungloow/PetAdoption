@@ -75,6 +75,27 @@ public class PetsController {
     @PostMapping("/pet/add")
     @RequiresPermissions("pet:insert")
     public String petAdd_post(Animal animal, Model model) {
+        if (animal.getName() == null || animal.getName().equals("")) {
+            model.addAttribute("msg_flag", "fail");
+            model.addAttribute("msg", "宠物名称不能为空");
+            return "backstage/html/menu/pet-add";
+        }
+        if (animal.getBirth() == null || animal.getBirth().equals("")) {
+            model.addAttribute("msg_flag", "fail");
+            model.addAttribute("msg", "宠物出生日期不能为空");
+            return "backstage/html/menu/pet-add";
+        }
+        if (animal.getSex() == null || animal.getSex().equals("")) {
+            model.addAttribute("msg_flag", "fail");
+            model.addAttribute("msg", "宠物性别不能为空");
+            return "backstage/html/menu/pet-add";
+        }
+        if (animal.getType() == null || animal.getType().equals("")) {
+            model.addAttribute("msg_flag", "fail");
+            model.addAttribute("msg", "宠物类型不能为空");
+            return "backstage/html/menu/pet-add";
+        }
+
         int i = petManageService.insertPet(animal);
         if (i > 0) {
             model.addAttribute("msg_flag", "ok");

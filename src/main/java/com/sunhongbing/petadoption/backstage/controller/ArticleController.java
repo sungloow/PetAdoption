@@ -112,6 +112,20 @@ public class ArticleController {
     @PostMapping("/addArticle")
     @RequiresPermissions("article:all")
     public String addArticle(Article article, Model model){
+        String emptyUrl = "backstage/html/menu/editor";
+        if (article.getTitle() == null || article.getTitle().equals("")){
+            model.addAttribute("msg","标题不能为空");
+            return emptyUrl;
+        }
+        if (article.getAuthor() == null || article.getAuthor().equals("")){
+            model.addAttribute("msg","作者不能为空");
+            return emptyUrl;
+        }
+        if (article.getContent() == null || article.getContent().equals("")){
+            model.addAttribute("msg","内容不能为空");
+            return emptyUrl;
+        }
+
         int i = articleService.addArticle(article);
         if(i == 1){
             Date ss = new Date();
@@ -128,6 +142,24 @@ public class ArticleController {
     @PostMapping("/addBanner")
     @RequiresPermissions("article:all")
     public String addBanner(Banner banner, @RequestParam("cover_url") String cover, Model model){
+        String emptyUrl = "backstage/html/menu/banner_editor";
+        if (banner.getTitle() == null || banner.getTitle().equals("")){
+            model.addAttribute("msg","标题不能为空");
+            return emptyUrl;
+        }
+        if (banner.getAuthor() == null || banner.getAuthor().equals("")){
+            model.addAttribute("msg","作者不能为空");
+            return emptyUrl;
+        }
+        if (cover == null || cover.equals("")){
+            model.addAttribute("msg","封面不能为空");
+            return emptyUrl;
+        }
+        if (banner.getContent() == null || banner.getContent().equals("")){
+            model.addAttribute("msg","内容不能为空");
+            return emptyUrl;
+        }
+
         banner.setCover(cover);
         int i = articleService.addBanner(banner);
         if(i == 1){
@@ -135,7 +167,6 @@ public class ArticleController {
             SimpleDateFormat format0 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String time = format0.format(ss.getTime());
             banner.setCreateTime(time);
-//            model.addAttribute("banner",banner);
             model.addAttribute("msg","发布成功");
         }
         return "backstage/html/menu/banner";

@@ -11,6 +11,8 @@
     <!--Editor.md-->
     <link rel="stylesheet" th:href="@{/back/editormd/css/editormd.css}"/>
     <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+
 </head>
 
 <body>
@@ -19,12 +21,12 @@
     <form name="mdEditorForm">
         <div class="form-group">
             <label for="title"><b>标题</b></label>
-            <input type="text" class="form-control"  name="title" id="title">
+            <input type="text" class="form-control"  name="title" id="title" required>
         </div>
         <div class="form-row">
             <div class="col">
                 <label for="author"><b>作者</b></label>
-                <input type="text" class="form-control"  name="author" id="author" aria-describedby="Help">
+                <input type="text" class="form-control"  name="author" id="author" required>
             </div>
             <div class="col">
                 <label for="type"><b>类型</b></label>
@@ -57,8 +59,29 @@
 <script th:src="@{/back/editormd/editormd.js}"></script>
 
 <script type="text/javascript">
-    var testEditor;
 
+    //提示框
+    function prompt(message, style, time) {
+        style = (style === undefined) ? 'alert-success' : style;
+        time = (time === undefined) ? 1500 : time;
+        $('<div></div>')
+            .appendTo('body')
+            .addClass('alert ' + style)
+            .html(message)
+            .show()
+            .delay(time)
+            .fadeOut();
+    }
+
+    $(document).ready(function() {
+        const msg = '[[${msg}]]';
+        if (msg !== "") {
+            prompt(msg, 'alert-danger');
+        }
+    });
+
+
+    var testEditor;
     //window.onload = function(){ }
     $(function() {
         testEditor = editormd("article-content", {

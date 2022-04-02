@@ -111,11 +111,6 @@ public class BackstageController {
     /*
      宠物领养审批 begin
      */
-    @GetMapping("/approval")
-    @RequiresPermissions("approval:pet")
-    public String approval() {
-        return "backstage/html/menu/approval";
-    }
     //宠物领养审批
     @GetMapping("/approval/pet")
     @RequiresPermissions("approval:pet")
@@ -159,10 +154,10 @@ public class BackstageController {
         }
         if (re == 1) {
             resultVO.setCode(200);
-            resultVO.setMsg("修改成功！");
+            resultVO.setMsg("success！");
         } else {
             resultVO.setCode(500);
-            resultVO.setMsg("修改失败！");
+            resultVO.setMsg("fail！");
         }
         return resultVO;
     }
