@@ -3781,7 +3781,7 @@ label {
     text-align: center;
     line-height: 41px;
     border-radius: 50%;
-    background: #385594;
+    background: #1aad19;
     color: #fff;
     font-size: 14px;
 }
@@ -3793,11 +3793,11 @@ label {
 }
 .contact-social ul li:nth-child(2) a i,
 .blog-details-social ul li:nth-child(2) a i {
-    background: #4eabee;
+    background: #e6162d;
 }
 .contact-social ul li:nth-child(3) a i,
 .blog-details-social ul li:nth-child(3) a i {
-    background: #1976d2;
+    background: #e0306f;
 }
 .contact-social {
     margin-top: 40px;

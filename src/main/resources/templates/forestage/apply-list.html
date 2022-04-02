@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Petco - Pet Protection & Adoption</title>
+        <title>Petco - 宠物领养</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -67,8 +67,6 @@
                             <div class="section-title text-center mb-65">
                                 <div class="section-icon"><img th:src="@{/fore/img/icon/pawprint.png}" alt=""></div>
                                 <h5 class="sub-title">Meet the animals</h5>
-<!--                                <h2 class="title">等待收养的小伙伴</h2>-->
-<!--                                <p>它们正在等待你的到来。</p>-->
                             </div>
                         </div>
                     </div>
@@ -78,9 +76,6 @@
                             <div class="adoption-shop-item">
                                 <div class="adoption-shop-thumb">
                                     <img th:src="${animal.pics}" alt="" >
-<!--                                    <a th:href="@{${'/adoption/apply/'+animal.id}}" class="btn">领养-->
-<!--                                        <img th:src="@{/fore/img/icon/w_pawprint.png}" alt="">-->
-<!--                                    </a>-->
                                 </div>
                                 <div class="adoption-shop-content">
                                     <h4 class="title"><a th:href="@{${'/adoption/detail/'+animal.id}}" th:text="${animal.name}"></a></h4>

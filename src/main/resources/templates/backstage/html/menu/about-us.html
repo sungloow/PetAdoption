@@ -2,17 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>BootStrap Table使用</title>
-
+    <title>about us</title>
     <link rel="stylesheet" th:href="@{/fore/css/alert.css}">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/fore/img/favicon.png}">
 
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"5></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 </head>
+
 <body>
 <div class="panel-body" style="padding-bottom:0px;">
     <div class="panel panel-default">
@@ -51,7 +52,6 @@
 </body>
 
 <script>
-
     //提示框
     function prompt(message, style, time) {
         style = (style === undefined) ? 'alert-success' : style;
@@ -68,7 +68,6 @@
     $("#btn_add").click(function () {
         window.location.href = "/article/toEditor";
     })
-
 
     let statusFormatter = function statusFormatter(value, row, index) {
         if (value === 1) {
@@ -108,7 +107,6 @@
         let id = $(obj).parent().parent().children().eq(1).text();
         window.location.href = '/article/' + id;
     }
-
 
     $('#tb_pet').bootstrapTable({
         url: '/article/about-us/list_query',         //请求后台的URL（*）
@@ -232,4 +230,5 @@
         $("#tb_pet").bootstrapTable('refresh');
     });
 </script>
+
 </html>

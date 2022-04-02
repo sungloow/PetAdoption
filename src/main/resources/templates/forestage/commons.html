@@ -17,6 +17,10 @@
     <link rel="stylesheet" th:href="@{fore/css/default.css}">
     <link rel="stylesheet" th:href="@{fore/css/style.css}">
     <link rel="stylesheet" th:href="@{fore/css/responsive.css}">
+
+    <link rel="stylesheet" th:href="@{/back/editormd/css/editormd.preview.css}">
+    <link rel="stylesheet" th:href="@{/back/Nav/plugins/css/icons.min.css}">
+
 </head>
 
 <body>
@@ -47,7 +51,7 @@
                             <div class="navbar-wrap main-menu d-none d-lg-flex">
                                 <ul class="navigation">
                                     <li th:class="${target}=='home'?'active menu-item-has-children':'menu-item-has-children'">
-                                        <a href="/">Home</a>
+                                        <a href="/">首页</a>
                                     </li>
                                     <li th:class="${target}=='adoption'?'active menu-item-has-children':'menu-item-has-children'">
                                         <a href="#">领养</a>
@@ -58,13 +62,6 @@
                                             <li><a href="/adoption/science-feed">科学喂养</a></li>
                                         </ul>
                                     </li>
-<!--                                    <li th:class="${target}=='volunteer'?'active menu-item-has-children':'menu-item-has-children'">-->
-<!--                                        <a href="#">志愿者</a>-->
-<!--                                        <ul class="submenu">-->
-<!--                                            <li><a href="/volunteer/information">志愿者信息</a></li>-->
-<!--                                            <li><a href="/volunteer/foster">寄养信息</a></li>-->
-<!--                                        </ul>-->
-<!--                                    </li>-->
                                     <li th:class="${target}=='keep-in-touch'?'active menu-item-has-children':'menu-item-has-children'">
                                         <a href="#">保持联系</a>
                                         <ul class="submenu">
@@ -99,9 +96,8 @@
                             </div>
                             <div class="social-links">
                                 <ul class="clearfix">
-                                    <li><a href="#"><span class="fab fa-twitter"></span></a></li>
-                                    <li><a href="#"><span class="fab fa-facebook-square"></span></a></li>
-                                    <li><a href="#"><span class="fab fa-pinterest-p"></span></a></li>
+                                    <li><a href="#"><span class="fab fa-weixin"></span></a></li>
+                                    <li><a href="#"><span class="fab fa-weibo"></span></a></li>
                                     <li><a href="#"><span class="fab fa-instagram"></span></a></li>
                                     <li><a href="#"><span class="fab fa-youtube"></span></a></li>
                                 </ul>
@@ -168,10 +164,10 @@
                         </div>
                         <div class="footer-social">
                             <ul>
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fab fa-weixin"></i></a></li>
+                                <li><a href="#"><i class="fab fa-weibo"></i></a></li>
                                 <li><a href="#"><i class="fab fa-youtube"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -227,7 +223,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="copyright-text">
-                        <p>Copyright &copy; 2022 Petco. All Rights By bootstrapmb.</p>
+                        <p>Copyright &copy; 2022 Petco. All Rights By Bootstrap.</p>
                     </div>
                 </div>
                 <div class="col-md-4 d-none d-md-block">
