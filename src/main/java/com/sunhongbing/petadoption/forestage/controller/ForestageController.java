@@ -37,11 +37,13 @@ public class ForestageController {
     public String index(Model model) {
         // 随机查询5只宠物
         List<Animal> randomPets = petManageService.getRandomPets(5);
-        Animal bannerPet = randomPets.get(0);
+        if (randomPets.size() > 0) {
+            Animal bannerPet = randomPets.get(0);
+            model.addAttribute("bannerPet", bannerPet);
+        }
         // 查询Banner
         List<Banner> bannerList = articleService.queryBanners("id", "asc");
         model.addAttribute("bannerList", bannerList);
-        model.addAttribute("bannerPet", bannerPet);
         model.addAttribute("randomPets", randomPets);
         return "forestage/index";
     }
