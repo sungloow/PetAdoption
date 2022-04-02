@@ -57,6 +57,15 @@ public class BackstageController {
     // 后台欢迎页
     @GetMapping("/dashboard")
     public String home(Model model) {
+        // 获取当前用户
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            int id = (int) subject.getPrincipal();
+            Admin admin = adminManageService.queryUserById(id);
+            model.addAttribute("admin", admin);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "backstage/html/menu/home";
     }
 
