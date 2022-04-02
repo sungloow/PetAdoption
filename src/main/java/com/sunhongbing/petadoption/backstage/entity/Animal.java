@@ -1,12 +1,7 @@
 package com.sunhongbing.petadoption.backstage.entity;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @className: Animal

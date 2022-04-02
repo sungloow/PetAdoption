@@ -1,14 +1,11 @@
 package com.sunhongbing.petadoption.forestage.service.impl;
 
-import com.sunhongbing.petadoption.backstage.entity.Animal;
 import com.sunhongbing.petadoption.backstage.entity.User;
 import com.sunhongbing.petadoption.forestage.dao.PersonalMapper;
 import com.sunhongbing.petadoption.forestage.entity.ApplyAnimal;
 import com.sunhongbing.petadoption.forestage.entity.EditParam;
 import com.sunhongbing.petadoption.forestage.entity.EditPasswordParam;
-import com.sunhongbing.petadoption.forestage.entity.SignUpParam;
 import com.sunhongbing.petadoption.forestage.service.PersonalService;
-import com.sunhongbing.petadoption.forestage.service.SignUpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;

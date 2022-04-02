@@ -1,13 +1,10 @@
 package com.sunhongbing.petadoption.backstage.service.impl;
 
-import com.sunhongbing.petadoption.backstage.dao.AdminMapper;
 import com.sunhongbing.petadoption.backstage.dao.RoleMapper;
-import com.sunhongbing.petadoption.backstage.entity.SysPermission;
 import com.sunhongbing.petadoption.backstage.entity.SysRole;
 import com.sunhongbing.petadoption.backstage.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 

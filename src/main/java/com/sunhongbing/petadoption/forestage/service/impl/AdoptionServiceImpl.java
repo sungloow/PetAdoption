@@ -1,6 +1,5 @@
 package com.sunhongbing.petadoption.forestage.service.impl;
 
-import com.sunhongbing.petadoption.backstage.entity.Animal;
 import com.sunhongbing.petadoption.backstage.enums.PetStatus;
 import com.sunhongbing.petadoption.forestage.dao.AdoptionMapper;
 import com.sunhongbing.petadoption.forestage.entity.AdoptionStatus;

@@ -1,14 +1,11 @@
 package com.sunhongbing.petadoption.backstage.controller;
 
 import com.github.pagehelper.PageHelper;
-import com.sunhongbing.petadoption.backstage.dao.ArticleMapper;
-import com.sunhongbing.petadoption.backstage.entity.Animal;
 import com.sunhongbing.petadoption.backstage.entity.Article;
 import com.sunhongbing.petadoption.backstage.entity.Banner;
 import com.sunhongbing.petadoption.backstage.entity.RequestParamsPetList;
 import com.sunhongbing.petadoption.backstage.enums.ArticleStatus;
 import com.sunhongbing.petadoption.backstage.enums.ArticleType;
-import com.sunhongbing.petadoption.backstage.enums.PetStatus;
 import com.sunhongbing.petadoption.backstage.result.ResultVO;
 import com.sunhongbing.petadoption.backstage.service.ArticleService;
 import com.sunhongbing.petadoption.config.OSSUtil;
@@ -21,10 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

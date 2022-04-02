@@ -9,7 +9,6 @@ import com.sunhongbing.petadoption.backstage.service.UserService;
 import com.sunhongbing.petadoption.forestage.Utils;
 import com.sunhongbing.petadoption.forestage.entity.AdoptionStatus;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

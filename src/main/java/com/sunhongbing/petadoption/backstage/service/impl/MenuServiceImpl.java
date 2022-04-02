@@ -2,13 +2,11 @@ package com.sunhongbing.petadoption.backstage.service.impl;
 
 import com.sunhongbing.petadoption.backstage.dao.MenuMapper;
 import com.sunhongbing.petadoption.backstage.entity.SysMenu;
-import com.sunhongbing.petadoption.backstage.entity.SysRole;
 import com.sunhongbing.petadoption.backstage.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
