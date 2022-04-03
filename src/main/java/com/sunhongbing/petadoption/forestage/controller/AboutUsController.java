@@ -61,6 +61,11 @@ public class AboutUsController {
             return vo;
         }
         User user = userService.getUserById(userId);
+        if (user == null) {
+            vo.setCode(500);
+            vo.setMsg("请先登录");
+            return vo;
+        }
         article.setAuthor(user.getEmail());
         int i = articleService.addArticle(article);
         if (i == 1) {
