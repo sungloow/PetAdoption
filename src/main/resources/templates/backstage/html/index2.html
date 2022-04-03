@@ -62,7 +62,7 @@
 	<div class="menu_dropdown bk_2" id="menu-ul">
 		<dl  th:each="menu,menuStat : ${menuList}">
 			<dt th:if="${menu}">
-				<i th:class="${menu.icon}"></i> <span th:text="${menu.name}"></span><i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
+				<i th:class="${menu.icon}"></i><span th:text="'&nbsp;'+${menu.name}"></span><i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i>
 			</dt>
 			<dd th:if="${menu.childMenu.size()==0}">
 				<ul>
