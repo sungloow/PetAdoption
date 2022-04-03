@@ -50,8 +50,16 @@ public class BackstageController {
         Subject subject = SecurityUtils.getSubject();
         int id = (int) subject.getPrincipal();
         Admin admin = adminManageService.queryUserById(id);
+        // 获取当前用户的菜单
+        List<SysRole> roleList = roleService.getRoleListById(id);
+        String[] roles = new String[roleList.size()];
+        for (int i = 0; i < roleList.size(); i++) {
+            roles[i] = roleList.get(i).getRole();
+        }
+        List<SysMenu> menuList = menuService.getMenuListByRoles(roles);
+        model.addAttribute("menuList", menuList);
         model.addAttribute("admin", admin);
-        return "backstage/html/index";
+        return "backstage/html/index2";
     }
 
     // 后台欢迎页
