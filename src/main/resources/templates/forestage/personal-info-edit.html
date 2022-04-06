@@ -125,7 +125,7 @@
 
     $(document).ready(function(){
         $("#back").click(function(){
-            window.location.href="/fore/personal_info";
+            window.location.href="/personal/personal_info";
         });
     });
 
@@ -185,7 +185,7 @@
                     return;
                 }
                 $.ajax({
-                    url: '/fore/personal_info_edit',
+                    url: '/personal/personal_info_edit',
                     type: 'post',
                     dataType: 'json',
                     data: $('#editForm').serialize(),
