@@ -1,5 +1,5 @@
 # PetAdoption
-### 基于springboot+mybatis+mysql的企业个性化平台网站
+### 基于springboot+mybatis+mysql的宠物领养中心个性化平台网站
 
 预览：
 ![img.png](PreviewImage/img.png)
